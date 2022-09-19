@@ -1,28 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import api from './utils/api';
+import { supabase } from './supabase/client';
+import { User } from '@supabase/supabase-js';
 // import _ from 'lodash';
 import './App.css';
-
 import { BeakerIcon, ZapIcon } from '@primer/octicons-react';
+
 function App() {
+  const [user, setUser] = useState<User | null>();
+
+  useEffect(() => {
+    checkUser();
+    window.addEventListener('hashchange', () => {
+      checkUser();
+    });
+  }, []);
+  async function checkUser() {
+    const user = supabase.auth.user();
+    const session = supabase.auth.session();
+    console.log(user);
+    console.log(session?.provider_token);
+    setUser(user);
+  }
+
+  async function signInWithGithub() {
+    await supabase.auth.signIn(
+      {
+        provider: 'github'
+      },
+      {
+        scopes: 'repo gist notifications'
+      }
+    );
+  }
+
+  async function signOut() {
+    await supabase.auth.signOut();
+    setUser(null);
+  }
+
+  if (user) {
+    return (
+      <div className='App'>
+        <h1>hello, {user.email}</h1>
+        <button onClick={signOut}>sign out</button>
+      </div>
+    );
+  }
+
   return (
     <div className='App'>
-      <header className='App-header'>
-        <BeakerIcon />
-        <ZapIcon />
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
+      <BeakerIcon />
+      <button onClick={signInWithGithub}>sign in</button>
+      <ZapIcon />
     </div>
   );
 }
