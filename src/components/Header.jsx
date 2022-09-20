@@ -128,6 +128,9 @@ const Bell = styled(BellIcon)`
   &:hover {
     color: rgba(255, 255, 255, 0.7);
   }
+  @media screen and (max-width:767px){
+    margin: 0;
+  }
 `;
 
 const PlusWrapper = styled.div`

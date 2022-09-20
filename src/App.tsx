@@ -7,6 +7,7 @@ import { ResetStyle, GlobalStyle } from './components/globalStyle';
 import './App.css';
 import Header from './components/Header';
 import ItemMenu from './components/ItemMenu';
+import UserDropDown from './components/UserDropDown';
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -58,6 +59,7 @@ function App() {
       <GlobalStyle />
       <Header className='Header' />
       <ItemMenu />
+      <UserDropDown />
       <button onClick={signInWithGithub}>sign in</button>
     </div>
   );

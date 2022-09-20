@@ -51,6 +51,7 @@ const SearchBtn = styled.div`
     display: none;
   }
 `;
+// eslint-disable-next-line react/prop-types
 const SearchBar = () => {
   return (
     <>
