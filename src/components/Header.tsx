@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 
 const Icon = styled(MarkGithubIcon)`
   cursor: pointer;
-  margin-right: 15px;
+  margin-right: 16px;
 `;
 
 const SearchWrapper = styled.div`
@@ -28,6 +28,7 @@ const SearchWrapper = styled.div`
   min-height: 28px;
   display: flex;
   align-items: center;
+  margin-right: 16px;
   color: #57606a;
 `;
 
@@ -49,6 +50,14 @@ const SearchBtn = styled.div`
   line-height: 20px;
 `;
 
+const Link = styled.a`
+  font-size: 14px;
+  margin-right: 16px;
+  color: #ffffff;
+  padding: 16px 0;
+  font-weight: 600;
+`;
+
 const Header = ({ className }: Props) => {
   return (
     <Wrapper className={className}>
@@ -57,6 +66,10 @@ const Header = ({ className }: Props) => {
         <SearchInput placeholder='Search or jump to...' />
         <SearchBtn>/</SearchBtn>
       </SearchWrapper>
+      <Link href='#'>Pulls</Link>
+      <Link href='#'>Issues</Link>
+      <Link href='#'>Marketplace</Link>
+      <Link href='#'>Explore</Link>
     </Wrapper>
   );
 };
