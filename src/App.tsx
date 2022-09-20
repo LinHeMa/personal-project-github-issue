@@ -6,6 +6,7 @@ import { ResetStyle, GlobalStyle } from './components/globalStyle';
 // import _ from 'lodash';
 import './App.css';
 import Header from './components/Header';
+import ItemMenu from './components/ItemMenu';
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -56,6 +57,7 @@ function App() {
       <ResetStyle />
       <GlobalStyle />
       <Header className='Header' />
+      <ItemMenu />
       <button onClick={signInWithGithub}>sign in</button>
     </div>
   );

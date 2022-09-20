@@ -41,7 +41,7 @@ const SearchWrapper = styled.div`
   transition: width 0.8s ease-in-out, background-color 0.01s ease-in-out;
   &:focus-within {
     background-color: #ffffff;
-    width: 500px;
+    width: 100%;
   }
 `;
 
@@ -55,13 +55,17 @@ const SearchInput = styled.input`
   color: #ffffff;
   &::placeholder {
     color: #ffffff;
-    opacity: 0.8; 
+    opacity: 0.8;
   }
   transition: width 1.3s ease-in-out;
   ${SearchWrapper}:focus-within & {
     background-color: #ffffff;
     width: 100%;
     color: #000000;
+    &::placeholder {
+      color: #000000;
+      opacity: 0.8;
+    }
   }
 `;
 
@@ -136,6 +140,7 @@ const PlusWrapper = styled.div`
 const ProfileWrapper = styled.div`
   display: flex;
   cursor: pointer;
+  align-items: center;
   @media screen and (max-width: 767px) {
     ${(props) => props.hideOnMobile && 'display: none'};
   }
