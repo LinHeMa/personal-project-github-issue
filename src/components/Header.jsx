@@ -22,6 +22,9 @@ const Wrapper = styled.div`
   @media screen and (max-width: 767px) {
     ${(props) => props.showOnMobile && 'justify-content: space-between;'}
   }
+  @media screen and (max-width: 1011px) {
+    padding: 16px 24px;
+  }
 `;
 
 const Icon = styled(MarkGithubIcon)`
@@ -31,6 +34,7 @@ const Icon = styled(MarkGithubIcon)`
 
 const SearchWrapper = styled.div`
   border-radius: 6px;
+  min-width: 272px;
   width: 272px;
   border: 1px solid #57606a;
   min-height: 28px;
@@ -38,15 +42,15 @@ const SearchWrapper = styled.div`
   align-items: center;
   margin-right: 16px;
   color: #57606a;
+  justify-content: space-between;
   transition: width 0.8s ease-in-out, background-color 0.01s ease-in-out;
   &:focus-within {
     background-color: #ffffff;
-    width: 100%;
+    width: 52%;
   }
 `;
 
 const SearchInput = styled.input`
-  width: 270px;
   border: 0;
   opacity: 1;
   background-color: inherit;
@@ -57,10 +61,8 @@ const SearchInput = styled.input`
     color: #ffffff;
     opacity: 0.8;
   }
-  transition: width 1.3s ease-in-out;
   ${SearchWrapper}:focus-within & {
     background-color: #ffffff;
-    width: 100%;
     color: #000000;
     &::placeholder {
       color: #000000;
@@ -71,6 +73,7 @@ const SearchInput = styled.input`
 
 const SearchBtn = styled.div`
   cursor: pointer;
+  opacity: 1;
   width: 19.86px;
   height: 19.86px;
   border: 1px solid #57606a;
@@ -78,7 +81,7 @@ const SearchBtn = styled.div`
   margin-right: 4px;
   line-height: 20px;
   ${SearchWrapper}:focus-within & {
-    display: none;
+    opacity: 0;
   }
 `;
 
@@ -101,7 +104,7 @@ const Request = styled.div`
   }
 `;
 
-const ProfileImage = styled.div`
+export const ProfileImage = styled.div`
   cursor: pointer;
   background-image: url(${(props) => props.bg});
   width: 20px;
@@ -129,6 +132,7 @@ const Bell = styled(BellIcon)`
 
 const PlusWrapper = styled.div`
   margin-right: 16px;
+  display: flex;
   &:hover {
     color: rgba(255, 255, 255, 0.7);
   }

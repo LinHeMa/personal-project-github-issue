@@ -1,5 +1,8 @@
+import { SignOutIcon } from '@primer/octicons-react';
 import React from 'react';
 import styled from 'styled-components';
+import profileImg from '../images/github_avatar.png';
+import SearchBar from './SearchBar';
 
 const itemList = [
   'Dashboard',
@@ -9,9 +12,7 @@ const itemList = [
   'Marketplace',
   'Explore',
   'Sponsors',
-  'Settings',
-  'LinHeMa',
-  'Sign out'
+  'Settings'
 ];
 
 const Conatainer = styled.div`
@@ -23,6 +24,21 @@ const Conatainer = styled.div`
     color: #ffffff;
     padding: 16px;
   }
+`;
+
+const Profile = styled.div`
+  background-image: url(${(props) => props.img});
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-right: 3px;
+`;
+
+const Signout = styled(SignOutIcon)`
+  margin-right: 3px;
 `;
 
 const Item = styled.div`
@@ -41,12 +57,21 @@ const Item = styled.div`
   }
 `;
 
+
 const ItemMenu = () => {
   return (
     <Conatainer hideOnDesktop>
+      <SearchBar />
       {itemList.map((item, index) => (
         <Item key={index}>{item}</Item>
       ))}
+      <Item>
+        <Profile img={profileImg} /> LinHeMa
+      </Item>
+      <Item>
+        <Signout size={16} />
+        Sign out
+      </Item>
     </Conatainer>
   );
 };
