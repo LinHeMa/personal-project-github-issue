@@ -52,14 +52,16 @@ const SearchInput = styled.input`
   background-color: inherit;
   padding: 0 12px;
   outline: none;
+  color: #ffffff;
   &::placeholder {
     color: #ffffff;
-    opacity: 0.8; /* Firefox */
+    opacity: 0.8; 
   }
-  transition: width 1.3s ease-in-out, opacity 0.8s ease-in-out;
+  transition: width 1.3s ease-in-out;
   ${SearchWrapper}:focus-within & {
-    opacity: 0;
+    background-color: #ffffff;
     width: 100%;
+    color: #000000;
   }
 `;
 
