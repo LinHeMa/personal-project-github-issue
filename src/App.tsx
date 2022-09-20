@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import api from './utils/api';
 import { supabase } from './supabase/client';
 import { User } from '@supabase/supabase-js';
+import { ResetStyle, GlobalStyle } from './components/globalStyle';
 // import _ from 'lodash';
 import './App.css';
 import { BeakerIcon, ZapIcon } from '@primer/octicons-react';
+import Header from './components/Header';
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -39,20 +41,23 @@ function App() {
     setUser(null);
   }
 
-  if (user) {
-    return (
-      <div className='App'>
-        <h1>hello, {user.email}</h1>
-        <button onClick={signOut}>sign out</button>
-      </div>
-    );
-  }
+  // if (user) {
+  //   return (
+  //     <div className='App'>
+  //       <ResetStyle />
+  //       <GlobalStyle />
+  //       <h1>hello, {user.email}</h1>
+  //       <button onClick={signOut}>sign out</button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className='App'>
-      <BeakerIcon />
-      <button onClick={signInWithGithub}>sign in</button>
-      <ZapIcon />
+      <ResetStyle />
+      <GlobalStyle />
+      <Header className='Header'/>
+      {/* <button onClick={signInWithGithub}>sign in</button> */}
     </div>
   );
 }
