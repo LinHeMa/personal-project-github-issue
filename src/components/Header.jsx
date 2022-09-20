@@ -31,20 +31,36 @@ const Icon = styled(MarkGithubIcon)`
 
 const SearchWrapper = styled.div`
   border-radius: 6px;
+  width: 272px;
   border: 1px solid #57606a;
   min-height: 28px;
   display: flex;
   align-items: center;
   margin-right: 16px;
   color: #57606a;
+  transition: width 0.8s ease-in-out, background-color 0.01s ease-in-out;
+  &:focus-within {
+    background-color: #ffffff;
+    width: 500px;
+  }
 `;
 
 const SearchInput = styled.input`
   width: 270px;
   border: 0;
+  opacity: 1;
   background-color: inherit;
   padding: 0 12px;
   outline: none;
+  &::placeholder {
+    color: #ffffff;
+    opacity: 0.8; /* Firefox */
+  }
+  transition: width 1.3s ease-in-out, opacity 0.8s ease-in-out;
+  ${SearchWrapper}:focus-within & {
+    opacity: 0;
+    width: 100%;
+  }
 `;
 
 const SearchBtn = styled.div`
@@ -55,6 +71,9 @@ const SearchBtn = styled.div`
   border-radius: 4px;
   margin-right: 4px;
   line-height: 20px;
+  ${SearchWrapper}:focus-within & {
+    display: none;
+  }
 `;
 
 const Link = styled.div`
