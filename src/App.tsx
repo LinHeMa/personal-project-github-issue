@@ -5,7 +5,6 @@ import { User } from '@supabase/supabase-js';
 import { ResetStyle, GlobalStyle } from './components/globalStyle';
 // import _ from 'lodash';
 import './App.css';
-import { BeakerIcon, ZapIcon } from '@primer/octicons-react';
 import Header from './components/Header';
 
 function App() {

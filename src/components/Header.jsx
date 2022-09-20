@@ -4,6 +4,7 @@ import {
   BellIcon,
   MarkGithubIcon,
   PlusIcon,
+  ThreeBarsIcon,
   TriangleDownIcon
 } from '@primer/octicons-react';
 import profileImg from '../images/github_avatar.png';
@@ -18,6 +19,9 @@ const Wrapper = styled.div`
   align-items: center;
   font-size: 14px;
   line-height: 1.5;
+  @media screen and (max-width: 767px) {
+    ${(props) => props.showOnMobile && 'justify-content: space-between;'}
+  }
 `;
 
 const Icon = styled(MarkGithubIcon)`
@@ -53,12 +57,23 @@ const SearchBtn = styled.div`
   line-height: 20px;
 `;
 
-const Link = styled.a`
+const Link = styled.div`
+  display: flex;
   font-size: 14px;
   margin-right: 16px;
   color: #ffffff;
   padding: 16px 0;
   font-weight: 600;
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+`;
+
+const Request = styled.div`
+  white-space: pre-wrap;
+  @media screen and (max-width: 1011px) {
+    ${(props) => props.hideOnMobile && 'display: none'};
+  }
 `;
 
 const ProfileImage = styled.div`
@@ -75,37 +90,78 @@ const ListSearchContainer = styled.div`
   display: flex;
   flex-grow: 1;
   align-items: center;
+  @media screen and (max-width: 767px) {
+    ${(props) => props.hideOnMobile && 'display:none'}
+  }
 `;
 
 const Bell = styled(BellIcon)`
   margin-right: 16px;
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
 `;
+
 const PlusWrapper = styled.div`
   margin-right: 16px;
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  @media screen and (max-width: 767px) {
+    ${(props) => props.hideOnMobile && 'display: none'};
+  }
+`;
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  cursor: pointer;
+  @media screen and (max-width: 767px) {
+    ${(props) => props.hideOnMobile && 'display: none'};
+  }
+`;
+
+const ProfileDown = styled(TriangleDownIcon)`
+  ${ProfileWrapper}:hover & {
+    fill: rgba(255, 255, 255, 0.7);
+  }
+`;
+
+const MenuWrapper = styled.div`
+  cursor: pointer;
+  @media screen and (min-width: 767px) {
+    ${(props) => props.showOnMobile && 'display: none;'}
+  }
 `;
 
 // eslint-disable-next-line react/prop-types
 const Header = ({ className }) => {
   return (
-    <Wrapper className={className}>
+    <Wrapper className={className} showOnMobile>
+      <MenuWrapper showOnMobile>
+        <ThreeBarsIcon size={24} />
+      </MenuWrapper>
       <Icon size={32} className='icon' />
-      <ListSearchContainer>
+      <ListSearchContainer hideOnMobile>
         <SearchWrapper>
           <SearchInput placeholder='Search or jump to...' />
           <SearchBtn>/</SearchBtn>
         </SearchWrapper>
-        <Link href='#'>Pulls</Link>
+        <Link href='#'>
+          Pull<Request hideOnMobile> Request</Request>s
+        </Link>
         <Link href='#'>Issues</Link>
         <Link href='#'>Marketplace</Link>
         <Link href='#'>Explore</Link>
       </ListSearchContainer>
       <Bell size={16} />
-      <PlusWrapper>
+      <PlusWrapper hideOnMobile>
         <PlusIcon size={16} />
         <TriangleDownIcon size={16} />
       </PlusWrapper>
-      <ProfileImage className='profile-img' bg={profileImg} />
-      <TriangleDownIcon size={16} />
+      <ProfileWrapper hideOnMobile>
+        <ProfileImage className='profile-img' bg={profileImg} />
+        <ProfileDown size={16} />
+      </ProfileWrapper>
     </Wrapper>
   );
 };
