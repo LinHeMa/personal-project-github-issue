@@ -9,6 +9,7 @@ import Header from './components/Header';
 import ItemMenu from './components/ItemMenu';
 import UserDropDown from './components/UserDropDown';
 import Footer from './components/Footer/Footer';
+import Subtitle from './components/subtitle/Subtitle';
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -59,7 +60,8 @@ function App() {
       <ResetStyle />
       <GlobalStyle />
       <Header className='Header' />
-      <button onClick={signInWithGithub}>sign in</button>
+      {/* <button onClick={signInWithGithub}>sign in</button> */}
+      <Subtitle />
       <Footer />
     </div>
   );
