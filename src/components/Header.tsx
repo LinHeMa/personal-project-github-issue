@@ -8,7 +8,34 @@ import {
   TriangleDownIcon
 } from '@primer/octicons-react';
 import profileImg from '../images/github_avatar.png';
+import UserDropDown from './UserDropDown';
+import DropDown from './DropDown';
 
+const ListOfCreate = [
+  'New repository',
+  'Import repository',
+  'New gist',
+  'New organization',
+] 
+
+const Hr = styled.hr`
+  width: 110%;
+  border: 0.5px solid #d0d7de;
+`;
+const dropDownMenu = [
+  'Your profile',
+  'Your repositories',
+  'Your codespaces',
+  'Your organizations',
+  'Your projects',
+  'Your stars',
+  'Your gitst',
+  <Hr key='hr' />,
+  'Upgrade',
+  'Feature preview',
+  'Help',
+  'Settings'
+];
 interface WrapperProps {
   showOnMobile: boolean;
 }
@@ -37,6 +64,7 @@ interface ProfileImageProps {
 }
 
 const Wrapper = styled.div<WrapperProps>`
+  position: relative;
   height: 62px;
   width: 100%;
   background-color: #24292f;
@@ -192,6 +220,12 @@ const MenuWrapper = styled.div<MenuWrapperProps>`
     ${(props) => props.showOnMobile && 'display: none;'}
   }
 `;
+
+const DropdownWrapper = styled.div`
+  position: absolute;
+  right: 26px;
+  top: 49px;
+`;
 interface HeaderProps {
   className: string;
 }
@@ -224,6 +258,10 @@ const Header = ({ className }: HeaderProps) => {
         <ProfileImage className='profile-img' bg={profileImg} />
         <ProfileDown size={16} />
       </ProfileWrapper>
+      {/* <DropdownWrapper>
+        <UserDropDown dropDownMenu={dropDownMenu} />
+      </DropdownWrapper> */}
+      <DropDown list={ListOfCreate}/>
     </Wrapper>
   );
 };

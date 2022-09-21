@@ -1,3 +1,4 @@
+import { SmileyIcon } from '@primer/octicons-react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -6,7 +7,7 @@ const Hr = styled.hr`
   border: 0.5px solid #d0d7de;
 `;
 
-const dorpDownMenu = [
+export const dropDownMenu = [
   'Your profile',
   'Your repositories',
   'Your codespaces',
@@ -22,6 +23,7 @@ const dorpDownMenu = [
 ];
 
 const Container = styled.div`
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -31,11 +33,26 @@ const Container = styled.div`
   border: 1px solid #d0d7de;
   border-radius: 10px 10px 10px 10px;
   padding-bottom: 8px;
+  position: relative;
+  &:after {
+    border-right: solid 10px transparent;
+    border-left: solid 10px transparent;
+    border-bottom: solid 10px #ffffff;
+    transform: translateX(-50%);
+    position: absolute;
+    z-index: 1;
+    content: '';
+    top: -10px;
+    right: 0px;
+    height: 0;
+    width: 0;
+  }
 `;
 
 const Strong = styled.strong`
   display: inline;
 `;
+
 const Item = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -55,20 +72,54 @@ const Item = styled.div`
     margin-bottom: 8px;
   }
   &:nth-child(2) {
+    /* pointer-events: none; */
+    &:hover {
+      background-color: #fff;
+    }
+    border-bottom: 1px solid #d0d7de;
   }
-  &:nth-child(9) {
-    padding: 0;
-    margin: 8px 0;
+  &:nth-child(8) {
+  }
+`;
+const Status = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 31px;
+  padding: 4px 8px;
+  background-color: #ffffff;
+  color: #57606a;
+  border: 1px solid #d0d7de;
+  border-radius: 5px;
+  margin: 8px 0px;
+  margin-top: 0;
+  cursor: pointer;
+  &:hover {
+    color: rgb(14, 81, 208);
   }
 `;
 
-const UserDropDown = () => {
+const SmileIcon = styled(SmileyIcon)`
+  margin-right: 4px;
+`
+
+interface UserDropDonw {
+  dropDownMenu: (string | JSX.Element)[];
+}
+
+const UserDropDown = ({ dropDownMenu }: UserDropDonw) => {
   return (
     <Container>
       <Item>
         Signed in as <Strong>LinHeMa</Strong>
       </Item>
-      {dorpDownMenu.map((item, index) => (
+      <Item>
+        <Status>
+          <SmileIcon size={16} /> Set status
+        </Status>
+      </Item>
+      {dropDownMenu.map((item, index) => (
         <Item key={index}>{item}</Item>
       ))}
       <Item>Sign out</Item>

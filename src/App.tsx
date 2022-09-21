@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api from './utils/api';
+// import api from './utils/api';
 import { supabase } from './supabase/client';
 import { User } from '@supabase/supabase-js';
 import { ResetStyle, GlobalStyle } from './components/globalStyle';
@@ -58,8 +58,6 @@ function App() {
       <ResetStyle />
       <GlobalStyle />
       <Header className='Header' />
-      <ItemMenu />
-      <UserDropDown />
       <button onClick={signInWithGithub}>sign in</button>
     </div>
   );
