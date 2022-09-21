@@ -8,6 +8,7 @@ import './App.css';
 import Header from './components/Header';
 import ItemMenu from './components/ItemMenu';
 import UserDropDown from './components/UserDropDown';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -59,6 +60,7 @@ function App() {
       <GlobalStyle />
       <Header className='Header' />
       <button onClick={signInWithGithub}>sign in</button>
+      <Footer />
     </div>
   );
 }
