@@ -9,7 +9,34 @@ import {
 } from '@primer/octicons-react';
 import profileImg from '../images/github_avatar.png';
 
-const Wrapper = styled.div`
+interface WrapperProps {
+  showOnMobile: boolean;
+}
+
+interface RequestProps {
+  hideOnMobile: boolean;
+}
+
+interface ListSearchContainerProps {
+  hideOnMobile: boolean;
+}
+
+interface PlusWrapperProps {
+  hideOnMobile: boolean;
+}
+
+interface ProfileWrapperProps {
+  hideOnMobile: boolean;
+}
+interface MenuWrapperProps {
+  showOnMobile: boolean;
+}
+
+interface ProfileImageProps {
+  bg: string;
+}
+
+const Wrapper = styled.div<WrapperProps>`
   height: 62px;
   width: 100%;
   background-color: #24292f;
@@ -97,14 +124,14 @@ const Link = styled.div`
   }
 `;
 
-const Request = styled.div`
+const Request = styled.div<RequestProps>`
   white-space: pre-wrap;
   @media screen and (max-width: 1011px) {
     ${(props) => props.hideOnMobile && 'display: none'};
   }
 `;
 
-export const ProfileImage = styled.div`
+export const ProfileImage = styled.div<ProfileImageProps>`
   cursor: pointer;
   background-image: url(${(props) => props.bg});
   width: 20px;
@@ -114,7 +141,7 @@ export const ProfileImage = styled.div`
   background-size: cover;
 `;
 
-const ListSearchContainer = styled.div`
+const ListSearchContainer = styled.div<ListSearchContainerProps>`
   display: flex;
   flex-grow: 1;
   align-items: center;
@@ -128,12 +155,12 @@ const Bell = styled(BellIcon)`
   &:hover {
     color: rgba(255, 255, 255, 0.7);
   }
-  @media screen and (max-width:767px){
+  @media screen and (max-width: 767px) {
     margin: 0;
   }
 `;
 
-const PlusWrapper = styled.div`
+const PlusWrapper = styled.div<PlusWrapperProps>`
   margin-right: 16px;
   display: flex;
   &:hover {
@@ -144,7 +171,7 @@ const PlusWrapper = styled.div`
   }
 `;
 
-const ProfileWrapper = styled.div`
+const ProfileWrapper = styled.div<ProfileWrapperProps>`
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -159,15 +186,17 @@ const ProfileDown = styled(TriangleDownIcon)`
   }
 `;
 
-const MenuWrapper = styled.div`
+const MenuWrapper = styled.div<MenuWrapperProps>`
   cursor: pointer;
   @media screen and (min-width: 767px) {
     ${(props) => props.showOnMobile && 'display: none;'}
   }
 `;
-
+interface HeaderProps {
+  className: string;
+}
 // eslint-disable-next-line react/prop-types
-const Header = ({ className }) => {
+const Header = ({ className }: HeaderProps) => {
   return (
     <Wrapper className={className} showOnMobile>
       <MenuWrapper showOnMobile>
@@ -179,12 +208,12 @@ const Header = ({ className }) => {
           <SearchInput placeholder='Search or jump to...' />
           <SearchBtn>/</SearchBtn>
         </SearchWrapper>
-        <Link href='#'>
+        <Link>
           Pull<Request hideOnMobile> Request</Request>s
         </Link>
-        <Link href='#'>Issues</Link>
-        <Link href='#'>Marketplace</Link>
-        <Link href='#'>Explore</Link>
+        <Link>Issues</Link>
+        <Link>Marketplace</Link>
+        <Link>Explore</Link>
       </ListSearchContainer>
       <Bell size={16} />
       <PlusWrapper hideOnMobile>

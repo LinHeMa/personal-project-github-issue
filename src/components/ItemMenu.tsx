@@ -14,8 +14,13 @@ const itemList = [
   'Sponsors',
   'Settings'
 ];
-
-const Conatainer = styled.div`
+interface ContainerProps {
+  hideOnDesktop: boolean;
+}
+interface ProfileProps {
+  img: string;
+}
+const Conatainer = styled.div<ContainerProps>`
   ${(props) => props.hideOnDesktop && 'display: none;'}
   @media screen and (max-width: 767px) {
     display: flex;
@@ -26,7 +31,7 @@ const Conatainer = styled.div`
   }
 `;
 
-const Profile = styled.div`
+const Profile = styled.div<ProfileProps>`
   background-image: url(${(props) => props.img});
   cursor: pointer;
   width: 20px;

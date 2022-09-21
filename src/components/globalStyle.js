@@ -9,9 +9,12 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   vertical-align: baseline;
   box-sizing: border-box;
 }
-address, caption, cite, code, dfn, em, strong, th, var, b {
+address, caption, cite, code, dfn, em, th, var, b {
   font-weight: normal;
   font-style: normal;
+}
+strong{
+  font-weight: bold;
 }
 abbr, acronym {
   border: 0;
