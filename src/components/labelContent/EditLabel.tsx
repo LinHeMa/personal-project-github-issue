@@ -65,6 +65,10 @@ const Title = styled.div`
 const BottomBlock = styled.div`
   display: flex;
   padding-top: 20px;
+  margin-left: auto;
+  @media screen and (max-width: 767px) {
+    margin-left: 0;
+  }
 `;
 
 const ChangeColorWrapper = styled.div`

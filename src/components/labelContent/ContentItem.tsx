@@ -48,6 +48,7 @@ const ToggleBtn = styled.button`
   min-width: 42px;
   min-height: 28px;
   background-color: #f6f8fa;
+  position: relative;
   cursor: pointer;
   &:hover {
     background-color: #0969da;
@@ -74,6 +75,34 @@ const FunctionBtn = styled.button`
   color: #57606a;
   cursor: pointer;
   margin-left: 16px;
+`;
+
+const FunctionBtnMobileWrapper = styled.div`
+  position: absolute;
+  right: 0;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background-color: #fff;
+  padding: 4px 0;
+`;
+
+const FunctionBtnMobile = styled.div`
+  display: none;
+  @media screen and (max-width: 1011px) {
+    display: block;
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    width: 158px;
+    height: 26px;
+    padding: 4px 8px 4px 16px;
+    color: #24292f;
+    font-size: 12px;
+    &:hover {
+      background-color: #0969da;
+      color: #ffffff;
+    }
+  }
 `;
 
 const EditWrapper = styled.div`
@@ -117,6 +146,10 @@ const ContentItem = ({
         </FunctionWrapper>
         <ToggleBtn>
           <ToggleIcon />
+          <FunctionBtnMobileWrapper>
+            <FunctionBtnMobile>Edit</FunctionBtnMobile>
+            <FunctionBtnMobile>Delete</FunctionBtnMobile>
+          </FunctionBtnMobileWrapper>
         </ToggleBtn>
       </LabelWrapper>
       <EditWrapper>
