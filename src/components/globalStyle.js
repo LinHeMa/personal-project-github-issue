@@ -78,6 +78,7 @@ button {
 export const GlobalStyle = createGlobalStyle`
 html {
   min-height: 100%;
+  position: relative;
   box-sizing: border-box;
   font-size: 62.5%; 
   font-family: 'HelveticaNeue', Helvetica, Arial, 'Lucida Grande', sans-serif;

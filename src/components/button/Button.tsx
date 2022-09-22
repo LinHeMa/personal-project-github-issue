@@ -47,7 +47,7 @@ export interface ButtonProps {
   icon?: React.ReactNode;
   text: string;
   number?: number;
-  hasDropDown: boolean;
+  hasDropDown?: boolean;
   bgColor?: string;
   color?: string;
   hoverColor?: string;

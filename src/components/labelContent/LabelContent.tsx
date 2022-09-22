@@ -1,22 +1,24 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
 import React from 'react';
 import styled from 'styled-components';
+import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
+import { labelInfo } from './FakeLabelsInfo';
 
 const Wrapper = styled.div`
   max-width: 1280px;
   margin: 0 auto;
   margin-top: 24px;
   padding: 0 16px;
+  padding-bottom: 143px;
   @media screen and (max-width: 1011px) {
-    padding: 0 24px;
+    padding: 0 24px 143px;
   }
   @media screen and (max-width: 767px) {
-    padding: 0 32px;
+    padding: 0 32px 183px;
   }
 `;
-const ContentContainer = styled.div`
-`;
+const ContentContainer = styled.div``;
 
 const Title = styled.div`
   display: flex;
@@ -36,6 +38,7 @@ const LabelCount = styled.h1`
 const SortBtn = styled.div`
   font-size: 14px;
   color: #57606a;
+  cursor: pointer;
 `;
 
 const LabelContent = () => {
@@ -50,6 +53,16 @@ const LabelContent = () => {
           </SortBtn>
         </Title>
       </ContentContainer>
+      {labelInfo.map(({ id, url, name, color, description }) => (
+        <ContentItem
+          key={id}
+          id={id}
+          url={url}
+          name={name}
+          color={color}
+          description={description}
+        />
+      ))}
     </Wrapper>
   );
 };

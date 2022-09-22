@@ -5,7 +5,6 @@ import BiFunctionButton from '../button/BiFunctionButton';
 import Button from '../button/Button';
 
 const Wrapper = styled.div`
-  outline: 1px solid;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -59,6 +58,9 @@ const NewLabel = styled(Button)`
 
 const DoubleBtn = styled.div`
   order: -1;
+  @media screen and  (min-width:1011px){
+    margin-right: 8px;
+  }
 `;
 
 const NewLabelWrapper = styled.div`
