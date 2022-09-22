@@ -49,11 +49,19 @@ const BreadCrumb = styled.div`
   font-size: 20px;
   align-items: center;
   justify-content: space-between;
+  @media screen and (max-width: 1054px) {
+    flex-direction: column;
+  }
 `;
 
 const RouteWrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  @media screen and (max-width: 1054px) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 `;
 
 const Owner = styled.a`
@@ -76,6 +84,12 @@ const Repo = styled.a`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+  @media screen and (max-width: 1054px) {
+    width: 100%;
+  }
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Pin = styled(PinIcon)`
@@ -127,6 +141,7 @@ const TabsWrapper = styled.div`
   min-height: 48px;
   padding: 0 32px;
   padding-left: 0;
+  overflow-x: auto;
 `;
 
 const Subtitle = () => {

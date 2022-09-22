@@ -15,8 +15,8 @@ const ListOfCreate = [
   'New repository',
   'Import repository',
   'New gist',
-  'New organization',
-] 
+  'New organization'
+];
 
 const Hr = styled.hr`
   width: 110%;
