@@ -2,21 +2,29 @@ import { TriangleDownIcon } from '@primer/octicons-react';
 import React from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+interface WrapperProps {
+  bgColor?: string;
+  hoverColor?: string;
+  fontSize?: string;
+}
+
+const Wrapper = styled.div<WrapperProps>`
   display: flex;
+  white-space: nowrap;
   align-items: center;
-  font-size: 12px;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '12px;')};
   font-weight: 500;
   cursor: pointer;
   line-height: 20px;
   border: 1px solid rgba(27, 31, 36, 0.15);
   border-radius: 6px;
-  color: #24292f;
-  background-color: #f6f8fa;
+  color: ${(props) => (props.color ? props.color : '#24292f;')};
+  background-color: ${(props) => (props.bgColor ? props.bgColor : '#f6f8fa;')};
   padding: 3px 12px;
   margin-right: 8px;
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${(props) =>
+      props.hoverColor ? props.hoverColor : '#f3f4f6;'};
   }
   &:last-child {
     margin-right: 0;
@@ -36,15 +44,33 @@ const Notification = styled.div`
 `;
 
 export interface ButtonProps {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   text: string;
   number?: number;
   hasDropDown: boolean;
+  bgColor?: string;
+  color?: string;
+  hoverColor?: string;
+  fontSize?: string;
 }
 
-const Button = ({ icon, text, number, hasDropDown }: ButtonProps) => {
+const Button = ({
+  icon,
+  text,
+  number,
+  hasDropDown,
+  bgColor,
+  color,
+  hoverColor,
+  fontSize
+}: ButtonProps) => {
   return (
-    <Wrapper>
+    <Wrapper
+      bgColor={bgColor}
+      color={color}
+      hoverColor={hoverColor}
+      fontSize={fontSize}
+    >
       {icon}
       {text}
       {number ? <Notification>{number}</Notification> : null}

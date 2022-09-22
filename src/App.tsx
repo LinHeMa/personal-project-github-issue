@@ -10,6 +10,7 @@ import ItemMenu from './components/ItemMenu';
 import UserDropDown from './components/UserDropDown';
 import Footer from './components/Footer/Footer';
 import Subtitle from './components/subtitle/Subtitle';
+import LabelContent from './components/labelContent/LabelContent';
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -62,6 +63,7 @@ function App() {
       <Header className='Header' />
       {/* <button onClick={signInWithGithub}>sign in</button> */}
       <Subtitle />
+      <LabelContent />
       <Footer />
     </div>
   );

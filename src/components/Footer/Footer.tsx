@@ -6,6 +6,9 @@ import styled from 'styled-components';
 // TODO padding  544以下16px ;544~1011 40px  ;>1012 16px
 
 const Outer = styled.div`
+  width: 100%;
+  position: absolute;
+  bottom: 0;
   display: flex;
   align-items: center;
   padding: 0 16px;
