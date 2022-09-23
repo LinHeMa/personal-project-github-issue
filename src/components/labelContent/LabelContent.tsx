@@ -5,6 +5,8 @@ import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
 import { labelInfo } from './FakeLabelsInfo';
 import SortDropdown from './SortDropdown';
+import { useGetLabelListQuery } from '../../feature/Label/LabelListSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -44,6 +46,14 @@ const SortBtn = styled.div`
 `;
 
 const LabelContent = () => {
+  const { data, isError, isFetching, isSuccess } =
+    useGetLabelListQuery('LinHeMa');
+  if (isFetching) console.log('success');
+  if (isSuccess) console.table(data);
+  const navigate = useNavigate();
+  if (isError) {
+    navigate('/ErrorPage');
+  }
   return (
     <Wrapper>
       <FunctionBar />
@@ -52,11 +62,11 @@ const LabelContent = () => {
           <LabelCount>15 labels</LabelCount>
           <SortBtn>
             Sort <TriangleDownIcon />
-            <SortDropdown />
+            {/* <SortDropdown /> */}
           </SortBtn>
         </Title>
       </ContentContainer>
-      {labelInfo.map(({ id, url, name, color, description }) => (
+      {data?.map(({ id, url, name, color, description }) => (
         <ContentItem
           key={id}
           id={id}
