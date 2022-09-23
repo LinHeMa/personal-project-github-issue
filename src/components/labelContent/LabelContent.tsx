@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
 import { labelInfo } from './FakeLabelsInfo';
+import SortDropdown from './SortDropdown';
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -36,6 +37,7 @@ const LabelCount = styled.h1`
 `;
 
 const SortBtn = styled.div`
+  position: relative;
   font-size: 14px;
   color: #57606a;
   cursor: pointer;
@@ -50,6 +52,7 @@ const LabelContent = () => {
           <LabelCount>15 labels</LabelCount>
           <SortBtn>
             Sort <TriangleDownIcon />
+            <SortDropdown />
           </SortBtn>
         </Title>
       </ContentContainer>

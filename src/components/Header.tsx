@@ -9,7 +9,7 @@ import {
 } from '@primer/octicons-react';
 import profileImg from '../images/github_avatar.png';
 import UserDropDown from './UserDropDown';
-import DropDown from './DropDown';
+import DropDown from './labelContent/DropDown';
 
 const ListOfCreate = [
   'New repository',
