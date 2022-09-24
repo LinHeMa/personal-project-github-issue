@@ -52,6 +52,7 @@ export interface ButtonProps {
   color?: string;
   hoverColor?: string;
   fontSize?: string;
+  onClick?: () => void;
 }
 
 const Button = ({

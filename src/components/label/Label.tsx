@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import _ from 'lodash';
 interface WrapperProps {
   borderColor?: string;
   color?: string;
   bgColor?: string;
   fontSize?: string;
   fontWeight?: string;
+  isLight?: boolean;
+  $labelColor?: string;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -17,12 +19,14 @@ const Wrapper = styled.div<WrapperProps>`
   padding: 0 7px;
   line-height: 18px;
   white-space: nowrap;
-  color: ${(props) => props.color};
-  background-color: ${(props) => (props.bgColor ? props.bgColor : '')};
+  color: ${(props) => (props.isLight ? props.color : '#000000')};
+  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => (props.$labelColor ? props.$labelColor : '')};
   border-radius: 2em;
   border-width: 1px;
   border-style: solid;
-  border-color: ${(props) => props.borderColor};
+  border-color: ${(props) =>
+    _.lowerCase(props.bgColor) === 'ffffff' ? '#d0d7de' : props.borderColor};
 `;
 
 interface LabelProps {
@@ -32,6 +36,10 @@ interface LabelProps {
   bgColor?: string;
   fontSize?: string;
   fontWeight?: string;
+  isLight?: boolean;
+  $labelColor?: string;
+  $newName?: string;
+  // $newDescription: string;
 }
 
 const Label = ({
@@ -40,7 +48,10 @@ const Label = ({
   color,
   bgColor,
   fontWeight,
-  fontSize
+  fontSize,
+  isLight,
+  $labelColor,
+  $newName
 }: LabelProps) => {
   return (
     <Wrapper
@@ -49,8 +60,10 @@ const Label = ({
       bgColor={bgColor}
       fontWeight={fontWeight}
       fontSize={fontSize}
+      isLight={isLight}
+      $labelColor={$labelColor}
     >
-      {text}
+      {$newName ? $newName : text}
     </Wrapper>
   );
 };

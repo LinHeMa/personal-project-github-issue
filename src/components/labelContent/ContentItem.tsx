@@ -1,8 +1,15 @@
 import { KebabHorizontalIcon } from '@primer/octicons-react';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import Label from '../label/Label';
 import EditLabel from './EditLabel';
+
+type FunctionButtonMobileWrapperProps = {
+  isToggle: boolean;
+  ref: React.MutableRefObject<null>;
+};
+
 const Wrapper = styled.div`
   padding: 16px;
   display: flex;
@@ -27,15 +34,21 @@ const LabelWrapper = styled.div`
   justify-content: space-between;
   height: 24px;
 `;
-
-const Description = styled.div`
+type DescritpionProps = {
+  $isEdit: boolean;
+};
+const Description = styled.div<DescritpionProps>`
+  visibility: ${(props) => (props.$isEdit ? 'hidden' : 'visible')};
   color: #57606a;
   word-wrap: break-word;
   width: 239px;
   text-align: start;
 `;
-
-const IssueCommon = styled.a`
+type IssueCommonProps = {
+  $isEdit: boolean;
+};
+const IssueCommon = styled.a<IssueCommonProps>`
+  visibility: ${(props) => (props.$isEdit ? 'hidden' : 'visible')};
   color: #57606a;
   word-wrap: break-word;
   width: 239px;
@@ -77,8 +90,11 @@ const FunctionBtn = styled.button`
   margin-left: 16px;
 `;
 
-const FunctionBtnMobileWrapper = styled.div`
+const FunctionBtnMobileWrapper = styled.div<FunctionButtonMobileWrapperProps>`
+  /* TODO */
+  display: ${(props) => (props.isToggle ? 'none' : 'block')};
   position: absolute;
+  z-index: 10;
   right: 0;
   border: 1px solid #d0d7de;
   border-radius: 6px;
@@ -116,6 +132,7 @@ interface ContentItemProps {
   name: string;
   color: string;
   description: string;
+  isLight?: boolean;
 }
 
 const ContentItem = ({
@@ -123,8 +140,21 @@ const ContentItem = ({
   url,
   name,
   color,
-  description
+  description,
+  isLight
 }: ContentItemProps) => {
+  const [isToggle, setIsToggle] = useState(true);
+  const toggleRef = useRef(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [labelColor, setLabelColor] = useState<string>(`#${color}`);
+  const [newName, setNewName] = useState<string>(name ? name : '');
+  const [newDescription, setNewDescription] = useState<string>(
+    description ? description : ''
+  );
+  const [isRightFormat, setIsRightFormat] = useState(true);
+
+  useOnClickOutside(toggleRef, () => setIsToggle(true));
+
   return (
     <Wrapper>
       <LabelWrapper>
@@ -136,25 +166,61 @@ const ContentItem = ({
             borderColor='transparent'
             fontWeight='700'
             fontSize='12px'
+            isLight={isLight}
+            $labelColor={labelColor}
+            $newName={newName}
           />
         </LabelContainer>
-        <Description>{description}</Description>
-        <IssueCommon href={url}>1 open issue or pull request </IssueCommon>
+        <Description $isEdit={isEdit}>
+          {newDescription ? newDescription : description}
+        </Description>
+        <IssueCommon href={url} $isEdit={isEdit}>
+          1 open issue or pull request{' '}
+        </IssueCommon>
         <FunctionWrapper>
-          <FunctionBtn>Edit</FunctionBtn>
+          <FunctionBtn
+            onClick={() => {
+              setIsEdit(true);
+            }}
+          >
+            Edit
+          </FunctionBtn>
           <FunctionBtn>Delete</FunctionBtn>
         </FunctionWrapper>
-        <ToggleBtn>
+        <ToggleBtn
+          ref={toggleRef}
+          onClick={() => {
+            setIsToggle((prev) => !prev);
+          }}
+        >
           <ToggleIcon />
-          <FunctionBtnMobileWrapper>
-            <FunctionBtnMobile>Edit</FunctionBtnMobile>
+          <FunctionBtnMobileWrapper isToggle={isToggle} ref={toggleRef}>
+            <FunctionBtnMobile onClick={() => setIsEdit(true)}>
+              Edit
+            </FunctionBtnMobile>
             <FunctionBtnMobile>Delete</FunctionBtnMobile>
           </FunctionBtnMobileWrapper>
         </ToggleBtn>
       </LabelWrapper>
-      <EditWrapper>
-        <EditLabel />
-      </EditWrapper>
+      {isEdit ? (
+        <EditWrapper>
+          <EditLabel
+            name={name}
+            description={description}
+            color={color}
+            isLight={isLight}
+            setIsEdit={setIsEdit}
+            setLabelColor={setLabelColor}
+            setNewName={setNewName}
+            setNewDescription={setNewDescription}
+            setIsRightFormat={setIsRightFormat}
+            newName={newName}
+            newDescription={newDescription}
+            labelColor={labelColor}
+            isRightFormat={isRightFormat}
+          />
+        </EditWrapper>
+      ) : null}
     </Wrapper>
   );
 };

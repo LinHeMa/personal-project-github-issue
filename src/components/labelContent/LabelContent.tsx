@@ -1,12 +1,12 @@
-import { TriangleDownIcon } from '@primer/octicons-react';
-import React from 'react';
-import styled from 'styled-components';
-import ContentItem from './ContentItem';
-import FunctionBar from './FunctionBar';
-import { labelInfo } from './FakeLabelsInfo';
-import SortDropdown from './SortDropdown';
-import { useGetLabelListQuery } from '../../feature/Label/LabelListSlice';
-import { useNavigate } from 'react-router-dom';
+import { TriangleDownIcon } from "@primer/octicons-react";
+import React from "react";
+import styled from "styled-components";
+import ContentItem from "./ContentItem";
+import FunctionBar from "./FunctionBar";
+import { labelInfo } from "./FakeLabelsInfo";
+import SortDropdown from "./SortDropdown";
+import { useGetLabelListQuery } from "../../feature/Label/LabelListSlice";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -46,14 +46,13 @@ const SortBtn = styled.div`
 `;
 
 const LabelContent = () => {
-  const { data, isError, isFetching, isSuccess } =
-    useGetLabelListQuery('LinHeMa');
-  if (isFetching) console.log('success');
-  if (isSuccess) console.table(data);
-  const navigate = useNavigate();
-  if (isError) {
-    navigate('/ErrorPage');
-  }
+  const { data, isError, isFetching } = useGetLabelListQuery({
+    name: "LinHeMa",
+    repo: "TEST",
+  });
+  console.log(data);
+  if (isFetching) console.log("抓資料抓抓抓");
+
   return (
     <Wrapper>
       <FunctionBar />
@@ -62,11 +61,11 @@ const LabelContent = () => {
           <LabelCount>15 labels</LabelCount>
           <SortBtn>
             Sort <TriangleDownIcon />
-            {/* <SortDropdown /> */}
+            {/*}<SortDropdown />*/}
           </SortBtn>
         </Title>
       </ContentContainer>
-      {data?.map(({ id, url, name, color, description }) => (
+      {data?.map(({ id, url, name, color, description, isLight }) => (
         <ContentItem
           key={id}
           id={id}
@@ -74,6 +73,7 @@ const LabelContent = () => {
           name={name}
           color={color}
           description={description}
+          isLight={isLight}
         />
       ))}
     </Wrapper>

@@ -1,8 +1,8 @@
-import { MilestoneIcon, SearchIcon, TagIcon } from '@primer/octicons-react';
-import React from 'react';
-import styled from 'styled-components';
-import BiFunctionButton from '../button/BiFunctionButton';
-import Button from '../button/Button';
+import { MilestoneIcon, SearchIcon, TagIcon } from "@primer/octicons-react";
+import React from "react";
+import styled from "styled-components";
+import BiFunctionButton from "../button/BiFunctionButton";
+import Button from "../button/Button";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const SearchWrapper = styled.div`
     margin-top: 16px;
     order: 3;
   }
-  @media screen and (min-width: 680px) and (max-width: 767px){
+  @media screen and (min-width: 680px) and (max-width: 767px) {
     margin-right: 100px;
   }
 `;
@@ -58,7 +58,7 @@ const NewLabel = styled(Button)`
 
 const DoubleBtn = styled.div`
   order: -1;
-  @media screen and  (min-width:1011px){
+  @media screen and (min-width: 1011px) {
     margin-right: 8px;
   }
 `;
@@ -74,23 +74,23 @@ const FunctionBar = () => {
         <BiFunctionButton
           icon={<Tag />}
           iconRight={<MileStone />}
-          text='Labels'
-          textRight='Milestones'
+          text="Labels"
+          textRight="Milestones"
         />
       </DoubleBtn>
       <SearchWrapper>
         <Icon />
-        <SearchBar placeholder='Search all labels' />
+        <SearchBar placeholder="Search all labels" />
       </SearchWrapper>
 
       <NewLabelWrapper>
         <NewLabel
-          text='New label'
+          text="New label"
           hasDropDown={false}
-          bgColor='#2da44e'
-          color='#ffffff'
-          hoverColor='#2c974b;'
-          fontSize='14px'
+          bgColor="#2da44e"
+          color="#ffffff"
+          hoverColor="#2c974b;"
+          fontSize="14px"
         />
       </NewLabelWrapper>
     </Wrapper>

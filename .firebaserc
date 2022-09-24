@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "personal-project-b6277"
+  },
+  "targets": {
+    "personal-project-b6277": {
+      "hosting": {
+        "storybook": [
+          "linhemapersonalprojectstorybook"
+        ],
+        "github-issue": [
+          "personal-project-b6277"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
