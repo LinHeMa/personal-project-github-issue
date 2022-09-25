@@ -3,12 +3,16 @@ import { type } from '@testing-library/user-event/dist/type';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useDeleteLabelListMutation } from '../../sevices/api/labelApi';
+import {
+  labelApi,
+  useDeleteLabelListMutation
+} from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import Label from '../label/Label';
 import EditLabel from './EditLabel';
 import { checkLight } from '../../sevices/api/labelApi';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 type FunctionButtonMobileWrapperProps = {
   isToggle: boolean;
@@ -156,6 +160,7 @@ const ContentItem = ({
   isCreating,
   setIsCreating
 }: ContentItemProps) => {
+  const dispatch = useDispatch();
   const [isToggle, setIsToggle] = useState(true);
   const toggleRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
@@ -221,7 +226,7 @@ const ContentItem = ({
                     name: 'LinHeMa',
                     repo: 'TEST',
                     lableName: name
-                  }).then((result) => navigate('/'));
+                  });
               }}
             >
               Delete
@@ -250,7 +255,7 @@ const ContentItem = ({
                     name: 'LinHeMa',
                     repo: 'TEST',
                     lableName: name
-                  }).then((result) => navigate('/'));
+                  });
                 }
               }}
             >

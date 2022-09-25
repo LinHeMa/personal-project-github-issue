@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/dist/query';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import { labelApi } from '../sevices/api/labelApi';
 export const store = configureStore({
   reducer: {
