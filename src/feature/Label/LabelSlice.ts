@@ -21,6 +21,6 @@ export const LabelSlice = createSlice({
 export const { startEdit, endEdit } = LabelSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectLabel = (state: RootState) => state.label.isEdit;
+// export const selectLabel = (state: RootState) => state.label.isEdit;
 
 export default LabelSlice.reducer;

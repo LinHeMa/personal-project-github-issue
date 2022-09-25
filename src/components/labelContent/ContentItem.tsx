@@ -1,6 +1,7 @@
 import { KebabHorizontalIcon } from '@primer/octicons-react';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useDeleteLabelMutation } from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import Label from '../label/Label';
 import EditLabel from './EditLabel';
@@ -91,7 +92,6 @@ const FunctionBtn = styled.button`
 `;
 
 const FunctionBtnMobileWrapper = styled.div<FunctionButtonMobileWrapperProps>`
-  /* TODO */
   display: ${(props) => (props.isToggle ? 'none' : 'block')};
   position: absolute;
   z-index: 10;
@@ -152,6 +152,7 @@ const ContentItem = ({
     description ? description : ''
   );
   const [isRightFormat, setIsRightFormat] = useState(true);
+  const [deleteLabel] = useDeleteLabelMutation();
 
   useOnClickOutside(toggleRef, () => setIsToggle(true));
 
@@ -175,7 +176,7 @@ const ContentItem = ({
           {newDescription ? newDescription : description}
         </Description>
         <IssueCommon href={url} $isEdit={isEdit}>
-          1 open issue or pull request{' '}
+          1 open issue or pull request
         </IssueCommon>
         <FunctionWrapper>
           <FunctionBtn
@@ -185,7 +186,13 @@ const ContentItem = ({
           >
             Edit
           </FunctionBtn>
-          <FunctionBtn>Delete</FunctionBtn>
+          <FunctionBtn
+            onClick={() => {
+              deleteLabel({ name: 'LinHeMa', repo: 'TEST', lableName: name });
+            }}
+          >
+            Delete
+          </FunctionBtn>
         </FunctionWrapper>
         <ToggleBtn
           ref={toggleRef}
@@ -198,7 +205,13 @@ const ContentItem = ({
             <FunctionBtnMobile onClick={() => setIsEdit(true)}>
               Edit
             </FunctionBtnMobile>
-            <FunctionBtnMobile>Delete</FunctionBtnMobile>
+            <FunctionBtnMobile
+              onClick={() => {
+                deleteLabel({ name: 'LinHeMa', repo: 'TEST', lableName: name });
+              }}
+            >
+              Delete
+            </FunctionBtnMobile>
           </FunctionBtnMobileWrapper>
         </ToggleBtn>
       </LabelWrapper>

@@ -1,12 +1,12 @@
-import { TriangleDownIcon } from "@primer/octicons-react";
-import React from "react";
-import styled from "styled-components";
-import ContentItem from "./ContentItem";
-import FunctionBar from "./FunctionBar";
-import { labelInfo } from "./FakeLabelsInfo";
-import SortDropdown from "./SortDropdown";
-import { useGetLabelListQuery } from "../../feature/Label/LabelListSlice";
-import { useNavigate } from "react-router-dom";
+import { TriangleDownIcon } from '@primer/octicons-react';
+import React from 'react';
+import styled from 'styled-components';
+import ContentItem from './ContentItem';
+import FunctionBar from './FunctionBar';
+import { labelInfo } from './FakeLabelsInfo';
+import SortDropdown from './SortDropdown';
+import { useGetLabelListQuery } from '../../sevices/api/labelApi';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -46,12 +46,10 @@ const SortBtn = styled.div`
 `;
 
 const LabelContent = () => {
-  const { data, isError, isFetching } = useGetLabelListQuery({
-    name: "LinHeMa",
-    repo: "TEST",
+  const { data, isError, isFetching, isSuccess } = useGetLabelListQuery({
+    name: 'LinHeMa',
+    repo: 'TEST'
   });
-  console.log(data);
-  if (isFetching) console.log("抓資料抓抓抓");
 
   return (
     <Wrapper>

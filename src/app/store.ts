@@ -1,13 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import labelSliceReducer from '../feature/Label/LabelSlice';
-import { LabelApiSlice } from '../sevices/api/LabelApiSlice';
-const store = configureStore({
+import { labelApi } from '../sevices/api/labelApi';
+export const store = configureStore({
   reducer: {
-    label: labelSliceReducer,
-    [LabelApiSlice.reducerPath]: LabelApiSlice.reducer
+    // label: labelSliceReducer,
+    [labelApi.reducerPath]: labelApi.reducer
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(LabelApiSlice.middleware);
+    return getDefaultMiddleware().concat(labelApi.middleware);
   }
 });
 
@@ -15,5 +14,3 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
-
-export default store;

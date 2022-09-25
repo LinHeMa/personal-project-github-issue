@@ -5,10 +5,9 @@ import ErrorPage from './pages/ErrorPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import store from './app/store';
+import { store } from '../src/app/store';
 import { Provider } from 'react-redux';
-
-const router = createBrowserRouter([ 
+const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,

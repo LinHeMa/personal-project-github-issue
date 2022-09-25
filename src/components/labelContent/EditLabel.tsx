@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import Button from '../button/Button';
 import _ from 'lodash';
 import ColorPicker from './ColorPicker';
-import { useUpdateLabelListMutation } from '../../feature/Label/LabelListSlice';
-import { deepStrictEqual } from 'assert';
+import { useUpdateLabelListMutation } from '../../sevices/api/labelApi';
 type ChangeColorBtnProps = {
   color: string;
   $isRightFormat?: boolean;
@@ -192,6 +191,7 @@ const EditLabel = ({
   };
   const [useUpdateLabelList, { isLoading: isUpdating }] =
     useUpdateLabelListMutation();
+
   useEffect(() => {
     if (newName !== '' || newName !== name) {
       setUpdateBody((prev) => ({ ...prev, new_name: newName }));
