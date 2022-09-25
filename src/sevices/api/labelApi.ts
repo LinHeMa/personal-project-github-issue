@@ -17,14 +17,22 @@ interface updateBody {
   color?: string;
   description?: string;
 }
+
+type postBody = {
+  name: string;
+  color?: string;
+  description?: string;
+};
+
 type QueryParams = {
   name: string;
   repo: string;
   lableName?: string;
   updateBody?: updateBody;
+  postBody?: postBody;
 };
 
-function checkLight(bgcolor: string) {
+export function checkLight(bgcolor: string) {
   const r = parseInt(bgcolor.slice(0, 2), 16);
   const g = parseInt(bgcolor.slice(2, 4), 16);
   const b = parseInt(bgcolor.slice(4, 6), 16);
@@ -36,7 +44,7 @@ function checkLight(bgcolor: string) {
   }
 }
 
-function addLightOrDark(data: LabelsList[]) {
+export function addLightOrDark(data: LabelsList[]) {
   const result = data.map((item) => {
     const isLight = checkLight(item.color);
     return { ...item, isLight: isLight };
@@ -62,6 +70,14 @@ export const labelApi = createApi({
       transformResponse: (response: LabelsList[]) => addLightOrDark(response),
       providesTags: ['Labels']
     }),
+    addLabel: builder.mutation<LabelsList, QueryParams>({
+      query: ({ name, repo, postBody }) => ({
+        url: `/${name}/${repo}/labels`,
+        method: 'POST',
+        body: postBody
+      }),
+      invalidatesTags: ['Labels']
+    }),
     updateLabelList: builder.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName, updateBody }) => ({
         url: `/${name}/${repo}/labels/${lableName}`,
@@ -82,6 +98,7 @@ export const labelApi = createApi({
 
 export const {
   useGetLabelListQuery,
+  useAddLabelMutation,
   useUpdateLabelListMutation,
   useDeleteLabelMutation
 } = labelApi;

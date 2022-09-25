@@ -1,8 +1,9 @@
-import { MilestoneIcon, SearchIcon, TagIcon } from "@primer/octicons-react";
-import React from "react";
-import styled from "styled-components";
-import BiFunctionButton from "../button/BiFunctionButton";
-import Button from "../button/Button";
+import { MilestoneIcon, SearchIcon, TagIcon } from '@primer/octicons-react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import BiFunctionButton from '../button/BiFunctionButton';
+import Button from '../button/Button';
+import ContentItem from './ContentItem';
 
 const Wrapper = styled.div`
   display: flex;
@@ -67,32 +68,56 @@ const NewLabelWrapper = styled.div`
   order: 2;
 `;
 
+const CreateWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  order: 4;
+  background-color: #f6f8fa;
+  margin-top: 24px;
+`;
+
 const FunctionBar = () => {
+  const [isCreating, setIsCreating] = useState(false);
+
   return (
     <Wrapper>
       <DoubleBtn>
         <BiFunctionButton
           icon={<Tag />}
           iconRight={<MileStone />}
-          text="Labels"
-          textRight="Milestones"
+          text='Labels'
+          textRight='Milestones'
         />
       </DoubleBtn>
       <SearchWrapper>
         <Icon />
-        <SearchBar placeholder="Search all labels" />
+        <SearchBar placeholder='Search all labels' />
       </SearchWrapper>
 
-      <NewLabelWrapper>
+      <NewLabelWrapper onClick={() => setIsCreating((prev) => !prev)}>
         <NewLabel
-          text="New label"
+          text='New label'
           hasDropDown={false}
-          bgColor="#2da44e"
-          color="#ffffff"
-          hoverColor="#2c974b;"
-          fontSize="14px"
+          bgColor='#2da44e'
+          color='#ffffff'
+          hoverColor='#2c974b;'
+          fontSize='14px'
         />
       </NewLabelWrapper>
+      {isCreating && (
+        <CreateWrapper>
+          <ContentItem
+            id={0}
+            url={'url'}
+            name='Lable preview'
+            color='c2e0c6'
+            description=''
+            isLight={false}
+            isCreating={isCreating}
+            setIsCreating={setIsCreating}
+          />
+        </CreateWrapper>
+      )}
     </Wrapper>
   );
 };

@@ -4,7 +4,11 @@ import styled from 'styled-components';
 import Button from '../button/Button';
 import _ from 'lodash';
 import ColorPicker from './ColorPicker';
-import { useUpdateLabelListMutation } from '../../sevices/api/labelApi';
+import { checkLight } from '../../sevices/api/labelApi';
+import {
+  useAddLabelMutation,
+  useUpdateLabelListMutation
+} from '../../sevices/api/labelApi';
 type ChangeColorBtnProps = {
   color: string;
   $isRightFormat?: boolean;
@@ -13,6 +17,7 @@ type ChangeColorBtnProps = {
 
 type ChangeIconProps = {
   isLight?: boolean;
+  $isWhite?: boolean;
 };
 
 const Wrapper = styled.div`
@@ -109,7 +114,8 @@ const ChangeColorWrapper = styled.div`
 `;
 
 const ChangeIcon = styled(SyncIcon)<ChangeIconProps>`
-  color: ${(props) => (props.isLight ? '#ffffff;' : '#000000')};
+  color: ${(props) =>
+    props.isLight || props.$isWhite ? '#ffffff;' : '#000000'};
 `;
 
 const ChangeColorBtn = styled.div<ChangeColorBtnProps>`
@@ -135,25 +141,33 @@ const CancelWrapper = styled.div`
 const SaveChangeWrapper = styled.div``;
 
 type EditLabelProps = {
-  color: string;
-  isLight?: boolean;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   setLabelColor: React.Dispatch<React.SetStateAction<string>>;
   setNewName: React.Dispatch<React.SetStateAction<string>>;
   setNewDescription: React.Dispatch<React.SetStateAction<string>>;
   setIsRightFormat: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCreating?: React.Dispatch<React.SetStateAction<boolean>>;
+  color: string;
+  isLight?: boolean;
   newName: string;
   newDescription: string;
   labelColor: string;
   isRightFormat: boolean;
   name: string;
   description: string;
+  isCreating?: boolean;
+  $isWhite?: boolean;
 };
 interface updateBody {
   new_name?: string;
   color?: string;
   description?: string;
 }
+type postBody = {
+  name: string;
+  color?: string;
+  description?: string;
+};
 const EditLabel = ({
   name,
   description,
@@ -167,10 +181,14 @@ const EditLabel = ({
   newName,
   newDescription,
   labelColor,
-  isRightFormat
+  isRightFormat,
+  isCreating,
+  $isWhite,
+  setIsCreating
 }: EditLabelProps) => {
   const [visible, setVisible] = useState(false);
   const [updateBody, setUpdateBody] = useState<updateBody>();
+  const [postBody, setPostBody] = useState<postBody>();
   const handleNameChange = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     setNewName(target.value);
@@ -189,24 +207,28 @@ const EditLabel = ({
       return;
     }
   };
-  const [useUpdateLabelList, { isLoading: isUpdating }] =
-    useUpdateLabelListMutation();
-
+  const [useUpdateLabelList] = useUpdateLabelListMutation();
+  const [AddLabel] = useAddLabelMutation();
   useEffect(() => {
     if (newName !== '' || newName !== name) {
       setUpdateBody((prev) => ({ ...prev, new_name: newName }));
+      setPostBody((prev) => ({ ...prev, name: newName }));
     }
     if (newDescription !== description) {
       setUpdateBody((prev) => ({ ...prev, description: newDescription }));
+      setPostBody((prev) => ({ ...prev, description: newDescription }));
     }
     if (labelColor !== color) {
       setUpdateBody((prev) => ({
         ...prev,
         color: _.trimStart(labelColor, '#')
       }));
+      setPostBody((prev) => ({
+        ...prev,
+        color: _.trimStart(labelColor, '#')
+      }));
     }
   }, [newName, newDescription, labelColor]);
-
   return (
     <Wrapper>
       <FormBlock>
@@ -229,7 +251,7 @@ const EditLabel = ({
             $newColor={labelColor}
             $isRightFormat={isRightFormat}
           >
-            <ChangeIcon isLight={isLight} />
+            <ChangeIcon isLight={isLight} $isWhite={$isWhite} />
           </ChangeColorBtn>
           <ColorInput
             maxLength={7}
@@ -253,6 +275,9 @@ const EditLabel = ({
             setLabelColor(`#${color}`);
             setNewName(name);
             setNewDescription(description ? description : '');
+            if (setIsCreating) {
+              setIsCreating(false);
+            }
           }}
         >
           <Button
@@ -262,21 +287,30 @@ const EditLabel = ({
             fontSize='14px'
           />
         </CancelWrapper>
+
         <SaveChangeWrapper
           onClick={() => {
-            console.log('clicked');
             setIsEdit(false);
-            useUpdateLabelList({
-              name: 'LinHeMa',
-              repo: 'TEST',
-              lableName: name,
-              updateBody: updateBody
-            });
+            isCreating
+              ? AddLabel({
+                  name: 'LinHeMa',
+                  repo: 'TEST',
+                  postBody: postBody
+                })
+              : useUpdateLabelList({
+                  name: 'LinHeMa',
+                  repo: 'TEST',
+                  lableName: name,
+                  updateBody: updateBody
+                });
             setIsEdit(false);
+            if (setIsCreating) {
+              setIsCreating(false);
+            }
           }}
         >
           <Button
-            text='Save changes'
+            text={isCreating ? 'Create label' : 'Save changes'}
             color='#ffffff'
             bgColor='#2da44e'
             fontSize='14px'

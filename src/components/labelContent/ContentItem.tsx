@@ -1,26 +1,34 @@
 import { KebabHorizontalIcon } from '@primer/octicons-react';
-import React, { useRef, useState } from 'react';
+import { type } from '@testing-library/user-event/dist/type';
+import _ from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDeleteLabelMutation } from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import Label from '../label/Label';
 import EditLabel from './EditLabel';
+import { checkLight } from '../../sevices/api/labelApi';
 
 type FunctionButtonMobileWrapperProps = {
   isToggle: boolean;
   ref: React.MutableRefObject<null>;
 };
 
-const Wrapper = styled.div`
+type WrapperProps = {
+  isCreating?: boolean;
+};
+
+const Wrapper = styled.div<WrapperProps>`
+  width: 100%;
   padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   border: 1px solid #d0d7de;
-  border-top: 0;
+  border-top: ${(props) => (props.isCreating ? '' : 0)};
   &:last-child {
-    border-radius: 0 0 6px 6px;
+    border-radius: ${(props) => (props.isCreating ? '6px' : '0 0 6px 6px')};
   }
 `;
 
@@ -133,6 +141,8 @@ interface ContentItemProps {
   color: string;
   description: string;
   isLight?: boolean;
+  isCreating?: boolean;
+  setIsCreating?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ContentItem = ({
@@ -141,11 +151,14 @@ const ContentItem = ({
   name,
   color,
   description,
-  isLight
+  isLight,
+  isCreating,
+  setIsCreating
 }: ContentItemProps) => {
   const [isToggle, setIsToggle] = useState(true);
   const toggleRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
+  const [isWhite, setIsWhite] = useState(true);
   const [labelColor, setLabelColor] = useState<string>(`#${color}`);
   const [newName, setNewName] = useState<string>(name ? name : '');
   const [newDescription, setNewDescription] = useState<string>(
@@ -153,11 +166,14 @@ const ContentItem = ({
   );
   const [isRightFormat, setIsRightFormat] = useState(true);
   const [deleteLabel] = useDeleteLabelMutation();
-
   useOnClickOutside(toggleRef, () => setIsToggle(true));
+  useEffect(() => {
+    const color = _.trimStart(labelColor, '#');
+    setIsWhite(checkLight(color ? color : ''));
+  }, [labelColor]);
 
   return (
-    <Wrapper>
+    <Wrapper isCreating={isCreating}>
       <LabelWrapper>
         <LabelContainer>
           <Label
@@ -170,30 +186,37 @@ const ContentItem = ({
             isLight={isLight}
             $labelColor={labelColor}
             $newName={newName}
+            $isWhite={isWhite}
           />
         </LabelContainer>
-        <Description $isEdit={isEdit}>
-          {newDescription ? newDescription : description}
-        </Description>
-        <IssueCommon href={url} $isEdit={isEdit}>
-          1 open issue or pull request
-        </IssueCommon>
-        <FunctionWrapper>
-          <FunctionBtn
-            onClick={() => {
-              setIsEdit(true);
-            }}
-          >
-            Edit
-          </FunctionBtn>
-          <FunctionBtn
-            onClick={() => {
-              deleteLabel({ name: 'LinHeMa', repo: 'TEST', lableName: name });
-            }}
-          >
-            Delete
-          </FunctionBtn>
-        </FunctionWrapper>
+        {!isCreating && (
+          <Description $isEdit={isEdit}>
+            {newDescription ? newDescription : description}
+          </Description>
+        )}
+        {!isCreating && (
+          <IssueCommon href={url} $isEdit={isEdit}>
+            1 open issue or pull request
+          </IssueCommon>
+        )}
+        {!isCreating && (
+          <FunctionWrapper>
+            <FunctionBtn
+              onClick={() => {
+                setIsEdit(true);
+              }}
+            >
+              Edit
+            </FunctionBtn>
+            <FunctionBtn
+              onClick={() => {
+                deleteLabel({ name: 'LinHeMa', repo: 'TEST', lableName: name });
+              }}
+            >
+              Delete
+            </FunctionBtn>
+          </FunctionWrapper>
+        )}
         <ToggleBtn
           ref={toggleRef}
           onClick={() => {
@@ -215,7 +238,7 @@ const ContentItem = ({
           </FunctionBtnMobileWrapper>
         </ToggleBtn>
       </LabelWrapper>
-      {isEdit ? (
+      {isEdit || isCreating ? (
         <EditWrapper>
           <EditLabel
             name={name}
@@ -231,6 +254,9 @@ const ContentItem = ({
             newDescription={newDescription}
             labelColor={labelColor}
             isRightFormat={isRightFormat}
+            setIsCreating={setIsCreating}
+            isCreating={isCreating}
+            $isWhite={isWhite}
           />
         </EditWrapper>
       ) : null}

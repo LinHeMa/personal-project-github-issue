@@ -9,6 +9,7 @@ interface WrapperProps {
   fontWeight?: string;
   isLight?: boolean;
   $labelColor?: string;
+  $isWhite?: boolean;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -19,7 +20,8 @@ const Wrapper = styled.div<WrapperProps>`
   padding: 0 7px;
   line-height: 18px;
   white-space: nowrap;
-  color: ${(props) => (props.isLight ? props.color : '#000000')};
+  color: ${(props) =>
+    props.isLight || props.$isWhite ? props.color : '#000000'};
   background-color: ${(props) => props.bgColor};
   background-color: ${(props) => (props.$labelColor ? props.$labelColor : '')};
   border-radius: 2em;
@@ -39,6 +41,7 @@ interface LabelProps {
   isLight?: boolean;
   $labelColor?: string;
   $newName?: string;
+  $isWhite?: boolean;
   // $newDescription: string;
 }
 
@@ -51,7 +54,8 @@ const Label = ({
   fontSize,
   isLight,
   $labelColor,
-  $newName
+  $newName,
+  $isWhite
 }: LabelProps) => {
   return (
     <Wrapper
@@ -62,6 +66,7 @@ const Label = ({
       fontSize={fontSize}
       isLight={isLight}
       $labelColor={$labelColor}
+      $isWhite={$isWhite}
     >
       {$newName ? $newName : text}
     </Wrapper>
