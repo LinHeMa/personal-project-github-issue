@@ -44,23 +44,23 @@ function App() {
     setUser(null);
   }
 
-  if (user) {
-    return (
-      <div className='App'>
-        <ResetStyle />
-        <GlobalStyle />
-        <h1>hello, {user.email}</h1>
-        <button onClick={signOut}>sign out</button>
-      </div>
-    );
-  }
+  // if (user) {
+  //   return (
+  //     <div className='App'>
+  //       <ResetStyle />
+  //       <GlobalStyle />
+  //       <h1>hello, {user.email}</h1>
+  //       <button onClick={signOut}>sign out</button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className='App'>
       <ResetStyle />
       <GlobalStyle />
       <Header className='Header' />
-      {/* <button onClick={signInWithGithub}>sign in</button> */}
+      <button onClick={signInWithGithub}>sign in</button>
       <Subtitle />
       <LabelContent />
       <Footer />

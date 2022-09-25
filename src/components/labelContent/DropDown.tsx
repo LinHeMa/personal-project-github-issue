@@ -39,9 +39,10 @@ const Item = styled.div`
 `;
 interface DropProps {
   list: (string | JSX.Element)[];
+  ref: React.MutableRefObject<null>;
 }
 
-const DropDown = ({ list }: DropProps) => {
+const DropDown: React.FC<DropProps> = ({ list }: DropProps) => {
   return (
     <Wrapper>
       {list.map((item, index) => (

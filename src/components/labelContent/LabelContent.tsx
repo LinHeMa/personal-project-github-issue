@@ -49,7 +49,7 @@ const SortBtn = styled.div`
 const LabelContent = () => {
   const [open, setOpen] = useState(false);
   const dropDownRef = useRef(null);
-  const { data } = useGetLabelListQuery({
+  const { data, isSuccess } = useGetLabelListQuery({
     name: 'LinHeMa',
     repo: 'TEST'
   });
@@ -60,7 +60,7 @@ const LabelContent = () => {
       <FunctionBar />
       <ContentContainer>
         <Title>
-          <LabelCount>15 labels</LabelCount>
+          <LabelCount>{isSuccess ? data?.length : 0} labels</LabelCount>
           <SortBtn
             ref={dropDownRef}
             onClick={() => {

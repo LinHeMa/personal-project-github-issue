@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { supabase } from '../../supabase/client';
 
 type LabelsList = {
   id: number;
@@ -53,15 +54,14 @@ export function addLightOrDark(data: LabelsList[]) {
   return result;
 }
 
+const session = supabase.auth.session();
+
 export const labelApi = createApi({
   reducerPath: 'labelApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.github.com/repos',
     prepareHeaders: (headers) => {
-      headers.set(
-        'Authorization',
-        `Bearer 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`
-      );
+      headers.set('Authorization', `Bearer ${session?.provider_token}`);
       return headers;
     }
   }),
@@ -93,7 +93,7 @@ export const labelApi = createApi({
         url: `/${name}/${repo}/labels/${lableName}`,
         method: 'DELETE'
       }),
-      invalidatesTags: [{ type: 'Labels', id: 'List' }]
+      invalidatesTags: ['Labels']
     })
   })
 });

@@ -10,7 +10,9 @@ const Wrapper = styled.div`
   font-size: 14px;
   padding: 0 8px;
   padding-bottom: 7px;
-  border-bottom: 2px solid #fd8c73;
+  &:nth-child(2) {
+    border-bottom: 2px solid #fd8c73;
+  }
   color: #24292f;
   margin-right: 8px;
 `;

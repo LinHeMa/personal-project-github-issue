@@ -5,10 +5,10 @@ import ErrorPage from './pages/ErrorPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { store } from '../src/app/store';
-import { Provider } from 'react-redux';
 import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
 import { labelApi } from './sevices/api/labelApi';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -21,13 +21,13 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  // <Provider store={store}>
   <React.StrictMode>
-    <ApiProvider api={labelApi}>
+    <Provider store={store}>
+      {/* <ApiProvider api={labelApi}> */}
       <RouterProvider router={router} />
-    </ApiProvider>
+      {/* </ApiProvider> */}
+    </Provider>
   </React.StrictMode>
-  // </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

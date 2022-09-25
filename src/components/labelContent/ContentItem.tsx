@@ -167,7 +167,7 @@ const ContentItem = ({
   );
   const [isRightFormat, setIsRightFormat] = useState(true);
   const [deleteLabelList] = useDeleteLabelListMutation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useOnClickOutside(toggleRef, () => setIsToggle(true));
   useEffect(() => {
     const color = _.trimStart(labelColor, '#');

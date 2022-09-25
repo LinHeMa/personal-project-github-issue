@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import {
   BellIcon,
@@ -10,6 +10,7 @@ import {
 import profileImg from '../images/github_avatar.png';
 import UserDropDown from './UserDropDown';
 import DropDown from './labelContent/DropDown';
+import useOnClickOutside from '../utils/hooks/useOnClidkOutside';
 
 const ListOfCreate = [
   'New repository',
@@ -190,6 +191,7 @@ const Bell = styled(BellIcon)`
 
 const PlusWrapper = styled.div<PlusWrapperProps>`
   margin-right: 16px;
+  cursor: pointer;
   display: flex;
   &:hover {
     color: rgba(255, 255, 255, 0.7);
@@ -231,7 +233,13 @@ interface HeaderProps {
 }
 // eslint-disable-next-line react/prop-types
 const Header = ({ className }: HeaderProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isPlusOpen, setIsPlusOpen] = useState(false);
+  const profileRef = useRef(null);
+  const plusRef = useRef(null);
+  useOnClickOutside(profileRef, () => setIsProfileOpen(false));
+  useOnClickOutside(plusRef, () => setIsPlusOpen(false));
+  console.log(isProfileOpen);
 
   return (
     <Wrapper className={className} showOnMobile>
@@ -252,20 +260,23 @@ const Header = ({ className }: HeaderProps) => {
         <Link>Explore</Link>
       </ListSearchContainer>
       <Bell size={16} />
-      <PlusWrapper hideOnMobile>
+      <PlusWrapper hideOnMobile onClick={() => setIsPlusOpen((prev) => !prev)}>
         <PlusIcon size={16} />
         <TriangleDownIcon size={16} />
       </PlusWrapper>
-      <ProfileWrapper hideOnMobile>
+      <ProfileWrapper
+        hideOnMobile
+        onClick={() => setIsProfileOpen((prev) => !prev)}
+      >
         <ProfileImage className='profile-img' bg={profileImg} />
         <ProfileDown size={16} />
       </ProfileWrapper>
-      {isOpen && (
-        <DropdownWrapper onClick={() => setIsOpen(false)}>
+      {isProfileOpen && (
+        <DropdownWrapper ref={profileRef}>
           <UserDropDown dropDownMenu={dropDownMenu} />
         </DropdownWrapper>
       )}
-      <DropDown list={ListOfCreate} />
+      {isPlusOpen && <DropDown list={ListOfCreate} ref={plusRef} />}
     </Wrapper>
   );
 };
