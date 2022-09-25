@@ -14,11 +14,12 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   display: flex;
+  width: fit-content;
   align-items: center;
-  font-size: 12px;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '12px')};
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '500')};
   padding: 0 7px;
-  line-height: 18px;
+  line-height: normal;
   white-space: nowrap;
   color: ${(props) =>
     props.isLight || props.$isWhite ? props.color : '#000000'};

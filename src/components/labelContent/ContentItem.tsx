@@ -3,11 +3,12 @@ import { type } from '@testing-library/user-event/dist/type';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useDeleteLabelMutation } from '../../sevices/api/labelApi';
+import { useDeleteLabelListMutation } from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import Label from '../label/Label';
 import EditLabel from './EditLabel';
 import { checkLight } from '../../sevices/api/labelApi';
+import { useNavigate } from 'react-router-dom';
 
 type FunctionButtonMobileWrapperProps = {
   isToggle: boolean;
@@ -165,7 +166,8 @@ const ContentItem = ({
     description ? description : ''
   );
   const [isRightFormat, setIsRightFormat] = useState(true);
-  const [deleteLabel] = useDeleteLabelMutation();
+  const [deleteLabelList] = useDeleteLabelListMutation();
+  const navigate = useNavigate()
   useOnClickOutside(toggleRef, () => setIsToggle(true));
   useEffect(() => {
     const color = _.trimStart(labelColor, '#');
@@ -215,11 +217,11 @@ const ContentItem = ({
                     'Are you sure? Deleting a label will remove it from all issues and pull requests.'
                   )
                 )
-                  deleteLabel({
+                  deleteLabelList({
                     name: 'LinHeMa',
                     repo: 'TEST',
                     lableName: name
-                  });
+                  }).then((result) => navigate('/'));
               }}
             >
               Delete
@@ -244,11 +246,11 @@ const ContentItem = ({
                     'Are you sure? Deleting a label will remove it from all issues and pull requests.'
                   )
                 ) {
-                  deleteLabel({
+                  deleteLabelList({
                     name: 'LinHeMa',
                     repo: 'TEST',
                     lableName: name
-                  });
+                  }).then((result) => navigate('/'));
                 }
               }}
             >

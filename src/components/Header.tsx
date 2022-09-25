@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
   BellIcon,
@@ -231,6 +231,8 @@ interface HeaderProps {
 }
 // eslint-disable-next-line react/prop-types
 const Header = ({ className }: HeaderProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Wrapper className={className} showOnMobile>
       <MenuWrapper showOnMobile>
@@ -258,10 +260,12 @@ const Header = ({ className }: HeaderProps) => {
         <ProfileImage className='profile-img' bg={profileImg} />
         <ProfileDown size={16} />
       </ProfileWrapper>
-      {/* <DropdownWrapper>
-        <UserDropDown dropDownMenu={dropDownMenu} />
-      </DropdownWrapper>
-      <DropDown list={ListOfCreate} /> */}
+      {isOpen && (
+        <DropdownWrapper onClick={() => setIsOpen(false)}>
+          <UserDropDown dropDownMenu={dropDownMenu} />
+        </DropdownWrapper>
+      )}
+      <DropDown list={ListOfCreate} />
     </Wrapper>
   );
 };

@@ -1,5 +1,5 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
@@ -7,6 +7,7 @@ import { labelInfo } from './FakeLabelsInfo';
 import SortDropdown from './SortDropdown';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import { useNavigate } from 'react-router-dom';
+import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -46,10 +47,13 @@ const SortBtn = styled.div`
 `;
 
 const LabelContent = () => {
-  const { data, isError, isFetching, isSuccess } = useGetLabelListQuery({
+  const [open, setOpen] = useState(false);
+  const dropDownRef = useRef(null);
+  const { data } = useGetLabelListQuery({
     name: 'LinHeMa',
     repo: 'TEST'
   });
+  useOnClickOutside(dropDownRef, () => setOpen(false));
 
   return (
     <Wrapper>
@@ -57,9 +61,14 @@ const LabelContent = () => {
       <ContentContainer>
         <Title>
           <LabelCount>15 labels</LabelCount>
-          <SortBtn>
+          <SortBtn
+            ref={dropDownRef}
+            onClick={() => {
+              setOpen((prev) => !prev);
+            }}
+          >
             Sort <TriangleDownIcon />
-            {/*}<SortDropdown />*/}
+            {open && <SortDropdown />}
           </SortBtn>
         </Title>
       </ContentContainer>

@@ -1,9 +1,6 @@
 import { MarkGithubIcon } from '@primer/octicons-react';
 import React from 'react';
 import styled from 'styled-components';
-// TODO desktop
-// TODO mobile 1011px
-// TODO padding  544以下16px ;544~1011 40px  ;>1012 16px
 
 const Outer = styled.div`
   width: 100%;

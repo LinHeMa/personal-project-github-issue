@@ -30,6 +30,7 @@ type QueryParams = {
   lableName?: string;
   updateBody?: updateBody;
   postBody?: postBody;
+  id?: number | string;
 };
 
 export function checkLight(bgcolor: string) {
@@ -53,6 +54,7 @@ export function addLightOrDark(data: LabelsList[]) {
 }
 
 export const labelApi = createApi({
+  reducerPath: 'labelApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.github.com/repos',
     prepareHeaders: (headers) => {
@@ -64,13 +66,13 @@ export const labelApi = createApi({
     }
   }),
   tagTypes: ['Labels'],
-  endpoints: (builder) => ({
-    getLabelList: builder.query<LabelsList[], QueryParams>({
+  endpoints: (build) => ({
+    getLabelList: build.query<LabelsList[], QueryParams>({
       query: ({ name, repo }) => `/${name}/${repo}/labels`,
       transformResponse: (response: LabelsList[]) => addLightOrDark(response),
       providesTags: ['Labels']
     }),
-    addLabel: builder.mutation<LabelsList, QueryParams>({
+    addLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, postBody }) => ({
         url: `/${name}/${repo}/labels`,
         method: 'POST',
@@ -78,7 +80,7 @@ export const labelApi = createApi({
       }),
       invalidatesTags: ['Labels']
     }),
-    updateLabelList: builder.mutation<LabelsList, QueryParams>({
+    updateLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName, updateBody }) => ({
         url: `/${name}/${repo}/labels/${lableName}`,
         method: 'PATCH',
@@ -86,19 +88,19 @@ export const labelApi = createApi({
       }),
       invalidatesTags: ['Labels']
     }),
-    deleteLabel: builder.mutation<LabelsList, QueryParams>({
+    deleteLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName }) => ({
         url: `/${name}/${repo}/labels/${lableName}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['Labels']
+      invalidatesTags: [{ type: 'Labels', id: 'List' }]
     })
   })
 });
 
 export const {
   useGetLabelListQuery,
-  useAddLabelMutation,
+  useAddLabelListMutation,
   useUpdateLabelListMutation,
-  useDeleteLabelMutation
+  useDeleteLabelListMutation
 } = labelApi;

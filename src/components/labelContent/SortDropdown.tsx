@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   align-items: flex-start;
   background-color: #fff;
   position: absolute;
+  z-index: 10;
   border: 1px solid #d0d7de;
   border-radius: 6px;
   padding: 4px 0;
@@ -26,6 +27,7 @@ const Choice = styled.div`
   padding: 8px;
   padding-left: 30px;
   width: 100%;
+  border-top: 1px solid #d0d7de;
   &:hover {
     background-color: #0969da;
     color: #ffffff;

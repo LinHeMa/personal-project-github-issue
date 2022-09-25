@@ -9,6 +9,7 @@ interface WrapperProps {
 }
 
 const Wrapper = styled.div<WrapperProps>`
+  width: fit-content;
   display: flex;
   white-space: nowrap;
   align-items: center;

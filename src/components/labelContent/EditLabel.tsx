@@ -6,7 +6,7 @@ import _ from 'lodash';
 import ColorPicker from './ColorPicker';
 import { checkLight } from '../../sevices/api/labelApi';
 import {
-  useAddLabelMutation,
+  useAddLabelListMutation,
   useUpdateLabelListMutation
 } from '../../sevices/api/labelApi';
 type ChangeColorBtnProps = {
@@ -209,12 +209,12 @@ const EditLabel = ({
     }
   };
   const [useUpdateLabelList] = useUpdateLabelListMutation();
-  const [AddLabel] = useAddLabelMutation();
+  const [addLabelList] = useAddLabelListMutation();
   function generateRandomColor() {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
     return randomColor;
   }
-  
+
   useEffect(() => {
     if (newName !== '' || newName !== name) {
       setUpdateBody((prev) => ({ ...prev, new_name: newName }));
@@ -302,7 +302,7 @@ const EditLabel = ({
           onClick={() => {
             setIsEdit(false);
             isCreating
-              ? AddLabel({
+              ? addLabelList({
                   name: 'LinHeMa',
                   repo: 'TEST',
                   postBody: postBody
