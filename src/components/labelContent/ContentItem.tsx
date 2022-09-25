@@ -210,7 +210,16 @@ const ContentItem = ({
             </FunctionBtn>
             <FunctionBtn
               onClick={() => {
-                deleteLabel({ name: 'LinHeMa', repo: 'TEST', lableName: name });
+                if (
+                  confirm(
+                    'Are you sure? Deleting a label will remove it from all issues and pull requests.'
+                  )
+                )
+                  deleteLabel({
+                    name: 'LinHeMa',
+                    repo: 'TEST',
+                    lableName: name
+                  });
               }}
             >
               Delete
@@ -230,7 +239,17 @@ const ContentItem = ({
             </FunctionBtnMobile>
             <FunctionBtnMobile
               onClick={() => {
-                deleteLabel({ name: 'LinHeMa', repo: 'TEST', lableName: name });
+                if (
+                  confirm(
+                    'Are you sure? Deleting a label will remove it from all issues and pull requests.'
+                  )
+                ) {
+                  deleteLabel({
+                    name: 'LinHeMa',
+                    repo: 'TEST',
+                    lableName: name
+                  });
+                }
               }}
             >
               Delete

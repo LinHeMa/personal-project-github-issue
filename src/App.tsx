@@ -14,7 +14,6 @@ import LabelContent from './components/labelContent/LabelContent';
 
 function App() {
   const [user, setUser] = useState<User | null>();
-
   useEffect(() => {
     checkUser();
     window.addEventListener('hashchange', () => {

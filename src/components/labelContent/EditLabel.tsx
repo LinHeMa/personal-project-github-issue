@@ -119,6 +119,7 @@ const ChangeIcon = styled(SyncIcon)<ChangeIconProps>`
 `;
 
 const ChangeColorBtn = styled.div<ChangeColorBtnProps>`
+  cursor: pointer;
   min-width: 32px;
   min-height: 32px;
   margin-top: 8px;
@@ -209,6 +210,11 @@ const EditLabel = ({
   };
   const [useUpdateLabelList] = useUpdateLabelListMutation();
   const [AddLabel] = useAddLabelMutation();
+  function generateRandomColor() {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    return randomColor;
+  }
+  
   useEffect(() => {
     if (newName !== '' || newName !== name) {
       setUpdateBody((prev) => ({ ...prev, new_name: newName }));
@@ -229,6 +235,7 @@ const EditLabel = ({
       }));
     }
   }, [newName, newDescription, labelColor]);
+
   return (
     <Wrapper>
       <FormBlock>
@@ -250,6 +257,9 @@ const EditLabel = ({
             color={color}
             $newColor={labelColor}
             $isRightFormat={isRightFormat}
+            onClick={() => {
+              setLabelColor(`#${generateRandomColor()}`);
+            }}
           >
             <ChangeIcon isLight={isLight} $isWhite={$isWhite} />
           </ChangeColorBtn>
