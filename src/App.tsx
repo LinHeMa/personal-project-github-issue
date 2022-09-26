@@ -11,6 +11,7 @@ import UserDropDown from './components/UserDropDown';
 import Footer from './components/Footer/Footer';
 import Subtitle from './components/subtitle/Subtitle';
 import LabelContent from './components/labelContent/LabelContent';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -59,10 +60,9 @@ function App() {
     <div className='App'>
       <ResetStyle />
       <GlobalStyle />
-      <Header className='Header'  signInWithGithub={signInWithGithub}/>
-      {/* <button onClick={signInWithGithub}>sign in</button> */}
+      <Header className='Header' signInWithGithub={signInWithGithub} />
       <Subtitle />
-      <LabelContent />
+      <Outlet/>
       <Footer />
     </div>
   );
