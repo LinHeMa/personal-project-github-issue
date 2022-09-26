@@ -69,8 +69,8 @@ export const labelApi = createApi({
   endpoints: (build) => ({
     getLabelList: build.query<LabelsList[], QueryParams>({
       query: ({ name, repo }) => `/${name}/${repo}/labels`,
-      transformResponse: (response: LabelsList[]) => addLightOrDark(response),
-      providesTags: ['Labels']
+      providesTags: ['Labels'],
+      transformResponse: (response: LabelsList[]) => addLightOrDark(response)
     }),
     addLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, postBody }) => ({

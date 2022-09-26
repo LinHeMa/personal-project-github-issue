@@ -42,6 +42,8 @@ const Notification = styled.div`
   background-color: #1b1f2414;
   margin-left: 2px;
   margin-right: 4px;
+  display: flex;
+  justify-content: center;
 `;
 
 export interface ButtonProps {

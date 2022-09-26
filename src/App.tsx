@@ -59,8 +59,8 @@ function App() {
     <div className='App'>
       <ResetStyle />
       <GlobalStyle />
-      <Header className='Header' />
-      <button onClick={signInWithGithub}>sign in</button>
+      <Header className='Header'  signInWithGithub={signInWithGithub}/>
+      {/* <button onClick={signInWithGithub}>sign in</button> */}
       <Subtitle />
       <LabelContent />
       <Footer />

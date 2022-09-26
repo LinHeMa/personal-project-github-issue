@@ -47,6 +47,8 @@ const SearchBtn = styled.div`
   border-radius: 4px;
   margin-right: 4px;
   line-height: 20px;
+  display: flex;
+  justify-content: center;
   ${SearchWrapper}:focus-within & {
     display: none;
   }

@@ -136,6 +136,8 @@ const SearchBtn = styled.div`
   border-radius: 4px;
   margin-right: 4px;
   line-height: 20px;
+  display: flex;
+  justify-content: center;
   ${SearchWrapper}:focus-within & {
     opacity: 0;
   }
@@ -230,9 +232,10 @@ const DropdownWrapper = styled.div`
 `;
 interface HeaderProps {
   className: string;
+  signInWithGithub(): Promise<void>;
 }
 // eslint-disable-next-line react/prop-types
-const Header = ({ className }: HeaderProps) => {
+const Header = ({ className, signInWithGithub }: HeaderProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPlusOpen, setIsPlusOpen] = useState(false);
   const profileRef = useRef(null);
@@ -259,8 +262,14 @@ const Header = ({ className }: HeaderProps) => {
         <Link>Marketplace</Link>
         <Link>Explore</Link>
       </ListSearchContainer>
-      <Bell size={16} />
-      <PlusWrapper hideOnMobile onClick={() => setIsPlusOpen((prev) => !prev)}>
+      <div onClick={signInWithGithub}>
+        <Bell size={16} />
+      </div>
+      <PlusWrapper
+        hideOnMobile
+        onClick={() => setIsPlusOpen((prev) => !prev)}
+        ref={plusRef}
+      >
         <PlusIcon size={16} />
         <TriangleDownIcon size={16} />
       </PlusWrapper>

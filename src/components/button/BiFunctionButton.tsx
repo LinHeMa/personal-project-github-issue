@@ -20,8 +20,11 @@ const Left = styled.div`
   line-height: 20px;
   border: 1px solid rgba(27, 31, 36, 0.15);
   border-radius: 6px 0 0 6px;
-  color: #24292f;
-  background-color: #f6f8fa;
+  /* color: #24292f; */
+  color: #f3f4f6;
+  /* background-color: #f6f8fa; */
+
+  background-color: #0969da;
   padding: 5px 16px;
   font-weight: 500;
   &:hover {
@@ -41,7 +44,7 @@ const Right = styled.div`
   border-radius: 0 6px 6px 0;
   border-left: none;
   color: #24292f;
-  background-color: #f6f8fa;
+  /* background-color: #f6f8fa; */
   padding: 3px 8px;
   &:hover {
     background-color: #f3f4f6;

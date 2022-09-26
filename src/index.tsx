@@ -9,7 +9,7 @@ import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
 import { labelApi } from './sevices/api/labelApi';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
@@ -23,9 +23,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* <ApiProvider api={labelApi}> */}
       <RouterProvider router={router} />
-      {/* </ApiProvider> */}
     </Provider>
   </React.StrictMode>
 );

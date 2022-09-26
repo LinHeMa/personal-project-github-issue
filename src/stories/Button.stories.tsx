@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import '../../.storybook/stories.css';
 import Button from '../components/button/Button';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

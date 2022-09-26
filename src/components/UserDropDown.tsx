@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const Hr = styled.hr`
   width: 110%;
   border: 0.5px solid #d0d7de;
+  pointer-events: none;
 `;
 
 export const dropDownMenu = [
@@ -34,6 +35,7 @@ const Container = styled.div`
   border-radius: 10px 10px 10px 10px;
   padding-bottom: 8px;
   position: relative;
+  z-index: 5;
   &:after {
     border-right: solid 10px transparent;
     border-left: solid 10px transparent;
@@ -61,6 +63,7 @@ const Item = styled.div`
   white-space: pre;
   line-height: 1.5;
   padding: 4px 8px 4px 16px;
+  cursor: pointer;
   &:hover {
     background-color: #0969da;
     color: #ffffff;

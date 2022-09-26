@@ -7,7 +7,7 @@ export const store = configureStore({
     [labelApi.reducerPath]: labelApi.reducer
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(labelApi.middleware);
+    return getDefaultMiddleware().concat([labelApi.middleware]);
   }
 });
 
