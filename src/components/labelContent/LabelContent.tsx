@@ -3,10 +3,8 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
-import { labelInfo } from './FakeLabelsInfo';
 import SortDropdown from './SortDropdown';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
-import { useNavigate } from 'react-router-dom';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 
 const Wrapper = styled.div`

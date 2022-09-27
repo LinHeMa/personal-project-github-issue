@@ -93,7 +93,7 @@ export const labelApi = createApi({
         url: `/${name}/${repo}/labels/${lableName}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['Labels']
+      invalidatesTags: ['Labels'],  
     })
   })
 });

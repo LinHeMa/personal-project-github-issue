@@ -1,17 +1,17 @@
-import { KebabHorizontalIcon } from "@primer/octicons-react";
-import { type } from "@testing-library/user-event/dist/type";
-import _ from "lodash";
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import { KebabHorizontalIcon } from '@primer/octicons-react';
+import { type } from '@testing-library/user-event/dist/type';
+import _ from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import {
   labelApi,
-  useDeleteLabelListMutation,
-} from "../../sevices/api/labelApi";
-import useOnClickOutside from "../../utils/hooks/useOnClidkOutside";
-import Label from "../label/Label";
-import EditLabel from "./EditLabel";
-import { checkLight } from "../../sevices/api/labelApi";
-import { useDispatch } from "react-redux";
+  useDeleteLabelListMutation
+} from '../../sevices/api/labelApi';
+import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
+import Label from '../label/Label';
+import EditLabel from './EditLabel';
+import { checkLight } from '../../sevices/api/labelApi';
+import { useDispatch } from 'react-redux';
 
 type FunctionButtonMobileWrapperProps = {
   isToggle: boolean;
@@ -30,9 +30,9 @@ const Wrapper = styled.div<WrapperProps>`
   justify-content: space-between;
   align-items: center;
   border: 1px solid #d0d7de;
-  border-top: ${(props) => (props.isCreating ? "" : 0)};
+  border-top: ${(props) => (props.isCreating ? '' : 0)};
   &:last-child {
-    border-radius: ${(props) => (props.isCreating ? "6px" : "0 0 6px 6px")};
+    border-radius: ${(props) => (props.isCreating ? '6px' : '0 0 6px 6px')};
   }
 `;
 
@@ -51,7 +51,7 @@ type DescritpionProps = {
   $isEdit: boolean;
 };
 const Description = styled.div<DescritpionProps>`
-  visibility: ${(props) => (props.$isEdit ? "hidden" : "visible")};
+  visibility: ${(props) => (props.$isEdit ? 'hidden' : 'visible')};
   color: #57606a;
   word-wrap: break-word;
   width: 239px;
@@ -61,7 +61,7 @@ type IssueCommonProps = {
   $isEdit: boolean;
 };
 const IssueCommon = styled.a<IssueCommonProps>`
-  visibility: ${(props) => (props.$isEdit ? "hidden" : "visible")};
+  visibility: ${(props) => (props.$isEdit ? 'hidden' : 'visible')};
   color: #57606a;
   word-wrap: break-word;
   width: 239px;
@@ -104,7 +104,7 @@ const FunctionBtn = styled.button`
 `;
 
 const FunctionBtnMobileWrapper = styled.div<FunctionButtonMobileWrapperProps>`
-  display: ${(props) => (props.isToggle ? "none" : "block")};
+  display: ${(props) => (props.isToggle ? 'none' : 'block')};
   position: absolute;
   z-index: 10;
   right: 0;
@@ -157,23 +157,24 @@ const ContentItem = ({
   description,
   isLight,
   isCreating,
-  setIsCreating,
+  setIsCreating
 }: ContentItemProps) => {
+  const dispatch = useDispatch();
   const [isToggle, setIsToggle] = useState(true);
   const toggleRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
   const [isWhite, setIsWhite] = useState(true);
   const [labelColor, setLabelColor] = useState<string>(`#${color}`);
-  const [newName, setNewName] = useState<string>(name ? name : "");
+  const [newName, setNewName] = useState<string>(name ? name : '');
   const [newDescription, setNewDescription] = useState<string>(
-    description ? description : ""
+    description ? description : ''
   );
   const [isRightFormat, setIsRightFormat] = useState(true);
   const [deleteLabelList] = useDeleteLabelListMutation();
   useOnClickOutside(toggleRef, () => setIsToggle(true));
   useEffect(() => {
-    const color = _.trimStart(labelColor, "#");
-    setIsWhite(checkLight(color ? color : ""));
+    const color = _.trimStart(labelColor, '#');
+    setIsWhite(checkLight(color ? color : ''));
   }, [labelColor]);
 
   return (
@@ -182,11 +183,11 @@ const ContentItem = ({
         <LabelContainer>
           <Label
             text={name}
-            bgColor={"#" + color}
-            color="#ffffff"
-            borderColor="transparent"
-            fontWeight="700"
-            fontSize="12px"
+            bgColor={'#' + color}
+            color='#ffffff'
+            borderColor='transparent'
+            fontWeight='700'
+            fontSize='12px'
             isLight={isLight}
             $labelColor={labelColor}
             $newName={newName}
@@ -216,14 +217,16 @@ const ContentItem = ({
               onClick={() => {
                 if (
                   confirm(
-                    "Are you sure? Deleting a label will remove it from all issues and pull requests."
+                    'Are you sure? Deleting a label will remove it from all issues and pull requests.'
                   )
                 )
                   deleteLabelList({
-                    name: "LinHeMa",
-                    repo: "TEST",
-                    lableName: name,
-                  });
+                    name: 'LinHeMa',
+                    repo: 'TEST',
+                    lableName: name
+                  }).then(() =>
+                    dispatch(labelApi.util.invalidateTags(['Labels']))
+                  );
               }}
             >
               Delete
@@ -245,13 +248,13 @@ const ContentItem = ({
               onClick={() => {
                 if (
                   confirm(
-                    "Are you sure? Deleting a label will remove it from all issues and pull requests."
+                    'Are you sure? Deleting a label will remove it from all issues and pull requests.'
                   )
                 ) {
                   deleteLabelList({
-                    name: "LinHeMa",
-                    repo: "TEST",
-                    lableName: name,
+                    name: 'LinHeMa',
+                    repo: 'TEST',
+                    lableName: name
                   });
                 }
               }}
