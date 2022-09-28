@@ -1,5 +1,5 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
-import React from 'react';
+import React, { Children } from 'react';
 import styled from 'styled-components';
 
 interface WrapperProps {
@@ -56,6 +56,7 @@ export interface ButtonProps {
   hoverColor?: string;
   fontSize?: string;
   onClick?: () => void;
+  popup?: React.ReactNode;
 }
 
 const Button = ({
@@ -66,7 +67,8 @@ const Button = ({
   bgColor,
   color,
   hoverColor,
-  fontSize
+  fontSize,
+  popup
 }: ButtonProps) => {
   return (
     <Wrapper
@@ -79,6 +81,7 @@ const Button = ({
       {text}
       {number ? <Notification>{number}</Notification> : null}
       {hasDropDown ? <TriangleDownIcon verticalAlign='middle' /> : null}
+      {popup}
     </Wrapper>
   );
 };

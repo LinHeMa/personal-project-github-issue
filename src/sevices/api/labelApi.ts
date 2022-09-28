@@ -65,7 +65,7 @@ export const labelApi = createApi({
       return headers;
     }
   }),
-  tagTypes: ['Labels'],
+  tagTypes: ['Labels','Issues'],
   endpoints: (build) => ({
     getLabelList: build.query<LabelsList[], QueryParams>({
       query: ({ name, repo }) => `/${name}/${repo}/labels`,
