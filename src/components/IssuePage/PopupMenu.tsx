@@ -1,7 +1,7 @@
 import { CheckIcon, TriangleDownIcon } from '@primer/octicons-react';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   addLabelCondition,
   resetLabelCondition,
@@ -18,16 +18,20 @@ type PopupMenuProps = {
 
 const sortList = [
   // TODO
-  { name: 'Newest', sort: 'created-dec' },
+  { name: 'Newest', sort: 'created-desc' },
   { name: 'Oldest', sort: 'created-asc' },
-  { name: 'Most commented', sort: 'comments-dec' },
-  { name: 'Least commented', sort: 'comments-dec' },
-  { name: 'Recently updated', sort: 'updated-dec' },
+  { name: 'Most commented', sort: 'comments-desc' },
+  { name: 'Least commented', sort: 'comments-desc' },
+  { name: 'Recently updated', sort: 'updated-desc' },
   { name: 'Least recently updated', sort: 'updated-asc' },
 ];
 
 const PopupMenu = ({ type, data }: PopupMenuProps) => {
   const dispatch = useAppDispatch();
+  const queryLabel = useAppSelector((state) => state.labelListAction.lables);
+  const queryAssignee = useAppSelector(
+    (state) => state.labelListAction.assignees,
+  );
   const [renderType, setRenderType] = useState<string>('');
   const [labelPop, setLabelPop] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -93,7 +97,13 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                 }}
                 className='flex items-center justify-start  border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]'
               >
-                <div className={` mr-3 ${isClicked ? 'visible' : 'invisible'}`}>
+                <div
+                  className={` mr-3 ${
+                    _.includes(queryLabel, 'Unlabeled')
+                      ? 'visible'
+                      : 'invisible'
+                  }`}
+                >
                   <CheckIcon />
                 </div>
                 {renderType === 'Label' ? 'Unlabeled' : 'Assigned to nobody'}
@@ -113,7 +123,9 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                     >
                       <div
                         className={` mr-3 ${
-                          isClicked ? 'visible' : 'invisible'
+                          _.includes(queryLabel, label.name)
+                            ? 'visible'
+                            : 'invisible'
                         }`}
                       >
                         <CheckIcon />
@@ -141,7 +153,9 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                     >
                       <div
                         className={` mr-3 ${
-                          isClicked ? 'visible' : 'invisible'
+                          _.includes(queryAssignee, assignee.login)
+                            ? 'visible'
+                            : 'invisible'
                         }`}
                       >
                         <CheckIcon />

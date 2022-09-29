@@ -15,7 +15,6 @@ const IssueListItem = () => {
     (state) => state.labelListAction.assignees,
   );
   const queryStringSort = useAppSelector((state) => state.labelListAction.sort);
-  console.log(queryStringSort);
 
   const { data, isSuccess } = useGetIssuesQuery({
     labels:
