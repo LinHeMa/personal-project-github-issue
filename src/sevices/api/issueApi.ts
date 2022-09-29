@@ -16,7 +16,7 @@ export interface Root {
   state: string;
   locked: boolean;
   assignee: null | string;
-  assignees: string[];
+  assignees: Assignee[];
   milestone: null | string;
   comments: number;
   created_at: string;
@@ -29,6 +29,27 @@ export interface Root {
   timeline_url: string;
   performed_via_github_app: string | null;
   state_reason: string;
+}
+
+export interface Assignee {
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  site_admin: boolean;
 }
 
 export interface User {
@@ -75,14 +96,18 @@ export interface Reactions {
   eyes: number;
 }
 
-const extendedApi = labelApi.injectEndpoints({
+const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
     getIssues: build.query<Root[], string>({
-      query: () => '/LinHeMa/TEST/issues',
+      query: (string) => `/LinHeMa/TEST/issues?labels=${string}`,
+      providesTags: ['Issues']
+    }),
+    getListAssignees: build.query<User[], string>({
+      query: () => '/LinHeMa/TEST/assignees',
       providesTags: ['Issues']
     })
   }),
   overrideExisting: false
 });
 
-export const { useGetIssuesQuery } = extendedApi;
+export const { useGetIssuesQuery, useGetListAssigneesQuery } = issueApi;

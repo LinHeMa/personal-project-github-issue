@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { supabase } from '../../supabase/client';
 
-type LabelsList = {
+export type LabelsList = {
   id: number;
   node_id: string;
   url: string;

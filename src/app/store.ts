@@ -3,7 +3,6 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { labelApi } from '../sevices/api/labelApi';
 export const store = configureStore({
   reducer: {
-    // label: labelSliceReducer,
     [labelApi.reducerPath]: labelApi.reducer
   },
   middleware: (getDefaultMiddleware) => {
