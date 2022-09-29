@@ -6,12 +6,14 @@ interface QueryState {
   lables: string[];
   assignees: string[];
   sort: string;
+  filter: string;
 }
 
 const initialState: QueryState = {
   lables: [],
   assignees: [],
   sort: '',
+  filter: '',
 };
 
 export const labelListActionSlice = createSlice({
@@ -32,6 +34,13 @@ export const labelListActionSlice = createSlice({
       if (action.payload === state.sort) state.sort = '';
       state.sort = action.payload;
     },
+    addFilterCondition: (state, action: PayloadAction<string>) => {
+      if (action.payload === state.filter) {
+        state.filter = '';
+        return;
+      }
+      state.filter = action.payload;
+    },
     resetLabelCondition: (state) => {
       state.lables = [];
     },
@@ -51,6 +60,7 @@ export const {
   resetLabelCondition,
   resetAssigneeCondition,
   resetSortCondition,
+  addFilterCondition,
 } = labelListActionSlice.actions;
 
 export default labelListActionSlice.reducer;

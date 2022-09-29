@@ -7,6 +7,7 @@ import {
   resetLabelCondition,
   addAssigneeCondition,
   addSortCondition,
+  addFilterCondition,
 } from '../../feature/Label/LabelListActionSlice';
 import { Root, useGetListAssigneesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
@@ -17,13 +18,18 @@ type PopupMenuProps = {
 };
 
 const sortList = [
-  // TODO
   { name: 'Newest', sort: 'created-desc' },
   { name: 'Oldest', sort: 'created-asc' },
   { name: 'Most commented', sort: 'comments-desc' },
   { name: 'Least commented', sort: 'comments-desc' },
   { name: 'Recently updated', sort: 'updated-desc' },
   { name: 'Least recently updated', sort: 'updated-asc' },
+];
+const filterList = [
+  // TODO
+  { name: 'Your issues', filter: '&creator=@me' },
+  { name: 'Everything assigned to you', filter: '&assignee=LinHeMa' },
+  { name: 'Everything mentioning you', filter: '&mentioned=@me' },
 ];
 
 const PopupMenu = ({ type, data }: PopupMenuProps) => {
@@ -32,6 +38,7 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
   const queryAssignee = useAppSelector(
     (state) => state.labelListAction.assignees,
   );
+  const queryFilter = useAppSelector((state) => state.labelListAction.filter);
   const [renderType, setRenderType] = useState<string>('');
   const [labelPop, setLabelPop] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -42,8 +49,8 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
   const { data: assignees } = useGetListAssigneesQuery('');
   useEffect(() => {
     setLabelPop(false);
-    console.log(labelPop);
   }, [isClicked]);
+
   return (
     <div
       onClick={() => {
@@ -66,7 +73,12 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
             }}
             className='fixed top-0 left-0 z-10 h-full w-full bg-black opacity-40 sm:bg-transparent'
           />
-          <div className='absolute left-[20px] right-[20px] top-8  z-20 mx-auto flex min-h-[800px] flex-col rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:min-h-fit sm:w-[300px] sm:border-stone-300 md:right-auto md:left-[5px] md:top-[25px]'>
+          <div
+            className={`top-8' absolute left-[20px] right-[20px]  z-20 mx-auto flex min-h-[800px] flex-col rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:min-h-fit sm:w-[300px] sm:border-stone-300 md:right-auto md:left-[5px] md:top-[25px]`}
+            style={
+              renderType === 'Filters' ? { left: '30px', top: '280px' } : {}
+            }
+          >
             <div className='flex h-[54px] items-center justify-between border-b-[1px] border-solid border-stone-300 p-[16px]'>
               <div className='text-[14px] font-semibold '>Filter by label</div>
               <div
@@ -185,6 +197,30 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                       <div
                         className={` mr-3 ${
                           isClicked ? 'visible' : 'invisible'
+                        }`}
+                      >
+                        <CheckIcon />
+                      </div>
+                      {item.name}
+                    </div>
+                  );
+                })}
+            </>
+            <>
+              {renderType === 'Filters' &&
+                filterList?.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className='flex items-center justify-start p-[16px] text-[14px] font-semibold leading-[21px]'
+                      onClick={() => {
+                        setIsClicked((prev) => !prev);
+                        dispatch(addFilterCondition(item.filter));
+                      }}
+                    >
+                      <div
+                        className={` mr-3 ${
+                          queryFilter === item.filter ? 'visible' : 'invisible'
                         }`}
                       >
                         <CheckIcon />

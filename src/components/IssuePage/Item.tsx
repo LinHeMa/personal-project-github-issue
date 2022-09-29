@@ -13,6 +13,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
     labels: '',
     assignee: '',
     sort: '',
+    filter: '',
   });
 
   return (

@@ -100,13 +100,14 @@ type query = {
   labels: string;
   assignee: string;
   sort: string;
+  filter: string;
 };
 
 const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
     getIssues: build.query<Root[], query>({
       query: (query) =>
-        `/LinHeMa/TEST/issues?${query.labels}${query.assignee}${query.sort}`,
+        `/LinHeMa/TEST/issues?${query.labels}${query.assignee}${query.sort}${query.filter}`,
       providesTags: ['Issues'],
     }),
     getListAssignees: build.query<User[], string>({

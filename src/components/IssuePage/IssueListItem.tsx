@@ -5,7 +5,7 @@ import Item from './Item';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import _ from 'lodash';
-const subtitleList: string[] = ['Label', 'Assignee', 'Sort'];
+const subtitleList: string[] = ['Label', 'Assignee', 'Sort', 'Filter'];
 
 const IssueListItem = () => {
   const queryStringLabels = useAppSelector(
@@ -15,8 +15,11 @@ const IssueListItem = () => {
     (state) => state.labelListAction.assignees,
   );
   const queryStringSort = useAppSelector((state) => state.labelListAction.sort);
-
-  const { data, isSuccess } = useGetIssuesQuery({
+  const queryStringFilter = useAppSelector(
+    (state) => state.labelListAction.filter,
+  );
+  console.log(queryStringFilter);
+  const { data } = useGetIssuesQuery({
     labels:
       queryStringLabels.length > 0 ? `labels=${_.join(queryStringLabels)}` : '',
     assignee:
@@ -24,6 +27,7 @@ const IssueListItem = () => {
         ? `&assignee=${_.join(queryStringAssignees)}`
         : '',
     sort: queryStringSort !== '' ? `&sort=${queryStringSort}` : '',
+    filter: queryStringFilter !== '' ? `&${queryStringFilter}` : '',
   });
 
   return (
