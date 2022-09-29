@@ -9,8 +9,12 @@ type ItemProps = {
 
 const Item: React.FC<ItemProps> = ({ data }) => {
   const { title, labels, state, number, comments, assignees } = data;
-  const { data: queryData, isSuccess } = useGetIssuesQuery('Cake');
-  if (isSuccess) console.log('內層', queryData);
+  const { data: queryData, isSuccess } = useGetIssuesQuery({
+    labels: '',
+    assignee: '',
+    sort: '',
+  });
+
   return (
     <div>
       <div className='flex h-[85px] border-b-[1px] border-solid border-stone-300 last:rounded-b-lg sm:border  sm:border-t-[0px] md:h-[62.31px]'>

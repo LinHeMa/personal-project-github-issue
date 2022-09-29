@@ -1,9 +1,15 @@
 import { CheckIcon, TriangleDownIcon } from '@primer/octicons-react';
 import _ from 'lodash';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import {
+  addLabelCondition,
+  resetLabelCondition,
+  addAssigneeCondition,
+  addSortCondition,
+} from '../../feature/Label/LabelListActionSlice';
 import { Root, useGetListAssigneesQuery } from '../../sevices/api/issueApi';
-import { LabelsList, useGetLabelListQuery } from '../../sevices/api/labelApi';
+import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 
 type PopupMenuProps = {
   type: string;
@@ -11,29 +17,29 @@ type PopupMenuProps = {
 };
 
 const sortList = [
-  'Newest',
-  'Oldest',
-  'Most commented',
-  'Least commented',
-  'Recently updated',
-  'Least recently updated'
+  // TODO
+  { name: 'Newest', sort: 'created-dec' },
+  { name: 'Oldest', sort: 'created-asc' },
+  { name: 'Most commented', sort: 'comments-dec' },
+  { name: 'Least commented', sort: 'comments-dec' },
+  { name: 'Recently updated', sort: 'updated-dec' },
+  { name: 'Least recently updated', sort: 'updated-asc' },
 ];
 
 const PopupMenu = ({ type, data }: PopupMenuProps) => {
+  const dispatch = useAppDispatch();
   const [renderType, setRenderType] = useState<string>('');
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const [labelPop, setLabelPop] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const { data: labels, isSuccess: isLableFetchSuccess } = useGetLabelListQuery(
-    {
-      name: 'LinHeMa',
-      repo: 'TEST'
-    }
-  );
-  const { data: assignees, isSuccess: isAssigneesFetchSuccess } =
-    useGetListAssigneesQuery('');
-
+  const { data: labels } = useGetLabelListQuery({
+    name: 'LinHeMa',
+    repo: 'TEST',
+  });
+  const { data: assignees } = useGetListAssigneesQuery('');
+  useEffect(() => {
+    setLabelPop(false);
+    console.log(labelPop);
+  }, [isClicked]);
   return (
     <div
       onClick={() => {
@@ -60,9 +66,8 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
             <div className='flex h-[54px] items-center justify-between border-b-[1px] border-solid border-stone-300 p-[16px]'>
               <div className='text-[14px] font-semibold '>Filter by label</div>
               <div
-                onClick={(e) => {
+                onClick={() => {
                   setLabelPop(false);
-                  e.stopPropagation();
                 }}
                 className='text-primary-icon-gray'
               >
@@ -78,24 +83,32 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                 />
               </div>
             )}
-            {renderType === 'Label' && (
-              <div className='flex items-center justify-start  border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]'>
+            {_.includes(['Label', 'Assignee'], renderType) && (
+              <div
+                onClick={() => {
+                  renderType === 'Label'
+                    ? dispatch(resetLabelCondition())
+                    : dispatch(addAssigneeCondition('none'));
+                  setIsClicked((prev) => !prev);
+                }}
+                className='flex items-center justify-start  border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]'
+              >
                 <div className={` mr-3 ${isClicked ? 'visible' : 'invisible'}`}>
                   <CheckIcon />
                 </div>
-                Unlabeled
+                {renderType === 'Label' ? 'Unlabeled' : 'Assigned to nobody'}
               </div>
             )}
             <>
               {renderType === 'Label' &&
-                labels?.map((label, index) => {
+                labels?.map((label) => {
                   return (
                     <div
                       key={label.id}
                       className='flex items-center justify-start border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]'
                       onClick={() => {
+                        dispatch(addLabelCondition(label.name));
                         setIsClicked((prev) => !prev);
-                        navigate('/issuelist?labels=' + label.name);
                       }}
                     >
                       <div
@@ -116,11 +129,15 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
             </>
             <>
               {renderType === 'Assignee' &&
-                assignees?.map((assignee, index) => {
+                assignees?.map((assignee) => {
                   return (
                     <div
                       key={assignee.id}
                       className='flex items-center justify-start p-[16px] text-[14px] font-semibold leading-[21px]'
+                      onClick={() => {
+                        dispatch(addAssigneeCondition(assignee.login));
+                        setIsClicked((prev) => !prev);
+                      }}
                     >
                       <div
                         className={` mr-3 ${
@@ -146,6 +163,10 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                     <div
                       key={index}
                       className='flex items-center justify-start p-[16px] text-[14px] font-semibold leading-[21px]'
+                      onClick={() => {
+                        setIsClicked((prev) => !prev);
+                        dispatch(addSortCondition(item.sort));
+                      }}
                     >
                       <div
                         className={` mr-3 ${
@@ -154,7 +175,7 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                       >
                         <CheckIcon />
                       </div>
-                      {item}
+                      {item.name}
                     </div>
                   );
                 })}

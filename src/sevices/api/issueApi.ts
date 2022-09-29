@@ -96,18 +96,25 @@ export interface Reactions {
   eyes: number;
 }
 
+type query = {
+  labels: string;
+  assignee: string;
+  sort: string;
+};
+
 const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
-    getIssues: build.query<Root[], string>({
-      query: (string) => `/LinHeMa/TEST/issues?labels=${string}`,
-      providesTags: ['Issues']
+    getIssues: build.query<Root[], query>({
+      query: (query) =>
+        `/LinHeMa/TEST/issues?${query.labels}${query.assignee}${query.sort}`,
+      providesTags: ['Issues'],
     }),
     getListAssignees: build.query<User[], string>({
       query: () => '/LinHeMa/TEST/assignees',
-      providesTags: ['Issues']
-    })
+      providesTags: ['Issues'],
+    }),
   }),
-  overrideExisting: false
+  overrideExisting: false,
 });
 
 export const { useGetIssuesQuery, useGetListAssigneesQuery } = issueApi;
