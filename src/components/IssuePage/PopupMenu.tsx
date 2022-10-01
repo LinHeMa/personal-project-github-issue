@@ -47,7 +47,6 @@ const PopupMenu = ({ type }: PopupMenuProps) => {
     name: 'LinHeMa',
     repo: 'TEST',
   });
-  console.log(type);
 
   const { data: assignees } = useGetListAssigneesQuery('');
   useEffect(() => {

@@ -131,7 +131,6 @@ const IssueListItem: React.FC<issueListItemProps> = ({
           className=' cursor-pointer text-[14px]'
           onClick={() => {
             if (queryStringPage === 0) return;
-            console.log(queryStringPage);
             dispatch(previousPage());
           }}
         >
@@ -141,7 +140,6 @@ const IssueListItem: React.FC<issueListItemProps> = ({
           className=' cursor-pointer text-[14px]'
           onClick={() => {
             if (data?.length === 0) return;
-            console.log(queryStringPage);
             dispatch(nextPage());
           }}
         >

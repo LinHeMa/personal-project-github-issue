@@ -288,7 +288,6 @@ const Header = ({
         <ProfileWrapper
           hideOnMobile
           onClick={() => {
-            console.log(isProfileOpen);
             setIsProfileOpen((prev) => !prev);
           }}
         >

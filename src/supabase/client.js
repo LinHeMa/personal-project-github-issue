@@ -9,7 +9,6 @@ const url =
   process.env.NODE_ENV === 'production'
     ? process.env.REACT_APP_SUPABASE_OFFICIAL_URL
     : process.env.REACT_APP_SUPABASE_DEV_URL;
-console.log(url);
 const supabase = createClient(url, key);
 
 export { supabase };

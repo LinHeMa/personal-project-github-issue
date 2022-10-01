@@ -25,8 +25,6 @@ function App() {
   }, []);
   async function checkUser() {
     const user = supabase.auth.user();
-    console.log(user);
-    console.log(session?.provider_token);
     setUser(user);
   }
 
@@ -39,7 +37,6 @@ function App() {
         scopes: 'repo gist notifications',
       },
     );
-    console.log(response);
   }
 
   async function signOut() {
