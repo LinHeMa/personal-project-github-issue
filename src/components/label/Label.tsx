@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 interface WrapperProps {
@@ -56,7 +55,7 @@ const Label = ({
   isLight,
   $labelColor,
   $newName,
-  $isWhite
+  $isWhite,
 }: LabelProps) => {
   return (
     <Wrapper

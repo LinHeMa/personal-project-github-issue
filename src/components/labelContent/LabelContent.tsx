@@ -1,5 +1,5 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';

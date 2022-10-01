@@ -14,7 +14,6 @@ import {
   StarIcon,
   TabIcon,
 } from '@primer/octicons-react';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';

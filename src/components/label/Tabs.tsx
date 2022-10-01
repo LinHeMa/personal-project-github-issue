@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Notification } from '../button/BiFunctionButton';
 
@@ -40,7 +40,6 @@ const Notify = styled(Notification)`
 interface TabsProps {
   icon: ReactNode;
   text: string;
-  // TODO
   number?: number;
   onClick?: () => void;
 }

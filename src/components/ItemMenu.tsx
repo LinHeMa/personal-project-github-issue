@@ -1,5 +1,4 @@
 import { SignOutIcon } from '@primer/octicons-react';
-import React from 'react';
 import styled from 'styled-components';
 import profileImg from '../images/github_avatar.png';
 import SearchBar from './SearchBar';
@@ -12,7 +11,7 @@ const itemList = [
   'Marketplace',
   'Explore',
   'Sponsors',
-  'Settings'
+  'Settings',
 ];
 interface ContainerProps {
   hideOnDesktop: boolean;

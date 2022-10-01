@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Button from "../button/Button";
 import _ from "lodash";
 import ColorPicker from "./ColorPicker";
-import { checkLight } from "../../sevices/api/labelApi";
 import {
   useAddLabelListMutation,
   useUpdateLabelListMutation,

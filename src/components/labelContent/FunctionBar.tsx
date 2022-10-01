@@ -1,5 +1,5 @@
 import { MilestoneIcon, SearchIcon, TagIcon } from '@primer/octicons-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import BiFunctionButton from '../button/BiFunctionButton';
 import Button from '../button/Button';

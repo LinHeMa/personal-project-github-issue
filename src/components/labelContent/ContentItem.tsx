@@ -1,11 +1,10 @@
 import { KebabHorizontalIcon } from '@primer/octicons-react';
-import { type } from '@testing-library/user-event/dist/type';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {
   labelApi,
-  useDeleteLabelListMutation
+  useDeleteLabelListMutation,
 } from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import Label from '../label/Label';
@@ -139,7 +138,7 @@ const EditWrapper = styled.div`
 `;
 
 interface ContentItemProps {
-  id: number;
+  id?: number;
   url: string;
   name: string;
   color: string;
@@ -150,14 +149,13 @@ interface ContentItemProps {
 }
 
 const ContentItem = ({
-  id,
   url,
   name,
   color,
   description,
   isLight,
   isCreating,
-  setIsCreating
+  setIsCreating,
 }: ContentItemProps) => {
   const dispatch = useDispatch();
   const [isToggle, setIsToggle] = useState(true);
@@ -167,7 +165,7 @@ const ContentItem = ({
   const [labelColor, setLabelColor] = useState<string>(`#${color}`);
   const [newName, setNewName] = useState<string>(name ? name : '');
   const [newDescription, setNewDescription] = useState<string>(
-    description ? description : ''
+    description ? description : '',
   );
   const [isRightFormat, setIsRightFormat] = useState(true);
   const [deleteLabelList] = useDeleteLabelListMutation();
@@ -217,15 +215,15 @@ const ContentItem = ({
               onClick={() => {
                 if (
                   confirm(
-                    'Are you sure? Deleting a label will remove it from all issues and pull requests.'
+                    'Are you sure? Deleting a label will remove it from all issues and pull requests.',
                   )
                 )
                   deleteLabelList({
                     name: 'LinHeMa',
                     repo: 'TEST',
-                    lableName: name
+                    lableName: name,
                   }).then(() =>
-                    dispatch(labelApi.util.invalidateTags(['Labels']))
+                    dispatch(labelApi.util.invalidateTags(['Labels'])),
                   );
               }}
             >
@@ -248,13 +246,13 @@ const ContentItem = ({
               onClick={() => {
                 if (
                   confirm(
-                    'Are you sure? Deleting a label will remove it from all issues and pull requests.'
+                    'Are you sure? Deleting a label will remove it from all issues and pull requests.',
                   )
                 ) {
                   deleteLabelList({
                     name: 'LinHeMa',
                     repo: 'TEST',
-                    lableName: name
+                    lableName: name,
                   });
                 }
               }}

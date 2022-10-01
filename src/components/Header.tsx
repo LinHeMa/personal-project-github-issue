@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import {
   BellIcon,
@@ -11,7 +11,6 @@ import profileImg from '../images/github_avatar.png';
 import UserDropDown from './UserDropDown';
 import DropDown from './labelContent/DropDown';
 import useOnClickOutside from '../utils/hooks/useOnClidkOutside';
-import Button from './button/Button';
 
 const ListOfCreate = [
   'New repository',

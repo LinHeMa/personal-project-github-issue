@@ -1,6 +1,5 @@
 import { CheckIcon, TriangleDownIcon } from '@primer/octicons-react';
-import { render } from '@testing-library/react';
-import _, { filter } from 'lodash';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -31,7 +30,7 @@ const filterList = [
   { name: 'Everything mentioning you', filter: '&mentioned=@me' },
 ];
 
-const PopupMenu = ({ type, data }: PopupMenuProps) => {
+const PopupMenu = ({ type }: PopupMenuProps) => {
   const dispatch = useAppDispatch();
   const queryLabel = useAppSelector((state) => state.labelListAction.lables);
   const queryAssignee = useAppSelector(
