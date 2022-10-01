@@ -16,11 +16,15 @@ const subtitleList: string[] = ['Label', 'Assignee', 'Sort'];
 type issueListItemProps = {
   setIssueState: React.Dispatch<React.SetStateAction<issueStateType>>;
   issueState: issueStateType;
+  openIssueQty: number;
+  closedIssueQty: number;
 };
 
 const IssueListItem: React.FC<issueListItemProps> = ({
   setIssueState,
   issueState,
+  openIssueQty,
+  closedIssueQty,
 }) => {
   const dispatch = useAppDispatch();
   const queryStringLabels = useAppSelector(
@@ -74,7 +78,7 @@ const IssueListItem: React.FC<issueListItemProps> = ({
             onClick={() => dispatch(addStateCondition('open'))}
           >
             <IssueOpenedIcon />
-            <p className='ml-1 '>{issueState.open} Open</p>
+            <p className='ml-1 '>{openIssueQty} Open</p>
           </a>
           <a
             href='#'
@@ -82,7 +86,7 @@ const IssueListItem: React.FC<issueListItemProps> = ({
             onClick={() => dispatch(addStateCondition('closed'))}
           >
             <CheckIcon />
-            <p className='ml-1'>{issueState.closed} Closed</p>
+            <p className='ml-1'>{closedIssueQty} Closed</p>
           </a>
         </div>
         {subtitleList.map((item, index) => (
@@ -116,7 +120,6 @@ const IssueListItem: React.FC<issueListItemProps> = ({
                 href='https://github.com/search/advanced'
                 className=' text-blue-600'
               >
-                {' '}
                 advanced search.
               </a>
             </h3>

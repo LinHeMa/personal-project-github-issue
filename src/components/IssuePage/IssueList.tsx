@@ -15,6 +15,8 @@ import {
   addStateCondition,
   resetAll,
 } from '../../feature/Label/LabelListActionSlice';
+import { useGetIssuesQuery } from '../../sevices/api/issueApi';
+import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import BiFunctionButton from '../button/BiFunctionButton';
 import IssueListItem from './IssueListItem';
 import PopupMenu from './PopupMenu';
@@ -27,6 +29,19 @@ export type issueStateType = {
 export default function IssueList() {
   const navigate = useNavigate();
   const data = useAppSelector((state) => state.labelListAction);
+  const { data: allIssueData } = useGetIssuesQuery({
+    labels: '',
+    assignee: '',
+    sort: '',
+    filter: '',
+    state: '&state=all',
+    page: '',
+  });
+  const openIssueQty = _.filter(
+    allIssueData,
+    (item) => item.state === 'open',
+  )?.length;
+  const closedIssueQty = allIssueData ? allIssueData?.length - openIssueQty : 0;
   const hasCondition = () => {
     if (data.lables.length > 0) return true;
     if (data.assignees.length > 0) return true;
@@ -68,6 +83,10 @@ export default function IssueList() {
     closed: 0,
   });
   const dispatch = useAppDispatch();
+  const { data: lableData } = useGetLabelListQuery({
+    name: 'LinHeMa',
+    repo: 'TEST',
+  });
   return (
     <>
       <div className='container mx-auto flex flex-wrap justify-center px-4 md:px-6  lg:px-8 '>
@@ -83,10 +102,10 @@ export default function IssueList() {
             <BiFunctionButton
               icon={<TagIcon />}
               text='Labels'
-              number={1}
+              number={lableData?.length}
               iconRight={<MilestoneIcon />}
               textRight='Milestones'
-              numberRight={2}
+              numberRight={3}
             />
           </div>
         </div>
@@ -119,7 +138,7 @@ export default function IssueList() {
             onClick={() => dispatch(addStateCondition('open'))}
           >
             <IssueOpenedIcon />
-            <p className='ml-1 '>{issueState.open} Open</p>
+            <p className='ml-1 '>{openIssueQty} Open</p>
           </a>
           <a
             href='#'
@@ -127,7 +146,7 @@ export default function IssueList() {
             onClick={() => dispatch(addStateCondition('closed'))}
           >
             <CheckIcon />
-            <p className='ml-1'>{issueState.closed} Closed</p>
+            <p className='ml-1'>{closedIssueQty} Closed</p>
           </a>
         </div>
         <div
@@ -146,8 +165,12 @@ export default function IssueList() {
           Clear current search query, filters, and sorts
         </div>
       </div>
-      <IssueListItem setIssueState={setIssueState} issueState={issueState}/>
-      
+      <IssueListItem
+        setIssueState={setIssueState}
+        issueState={issueState}
+        openIssueQty={openIssueQty}
+        closedIssueQty={closedIssueQty}
+      />
     </>
   );
 }

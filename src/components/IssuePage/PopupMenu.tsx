@@ -1,4 +1,5 @@
 import { CheckIcon, TriangleDownIcon } from '@primer/octicons-react';
+import { render } from '@testing-library/react';
 import _, { filter } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -16,7 +17,6 @@ type PopupMenuProps = {
   type: string;
   data?: Root[];
 };
-
 const sortList = [
   { name: 'Newest', sort: 'created-desc' },
   { name: 'Oldest', sort: 'created-asc' },
@@ -48,6 +48,8 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
     name: 'LinHeMa',
     repo: 'TEST',
   });
+  console.log(type);
+
   const { data: assignees } = useGetListAssigneesQuery('');
   useEffect(() => {
     setLabelPop(false);
@@ -75,13 +77,16 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
             className='fixed top-0 left-0 z-10 h-full w-full bg-black opacity-40 sm:bg-transparent'
           />
           <div
-            className={`top-8' absolute left-[20px] right-[20px]  z-20 mx-auto flex min-h-[800px] flex-col rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:min-h-fit sm:w-[300px] sm:border-stone-300 md:right-auto md:left-[5px] md:top-[25px]`}
-            style={
-              renderType === 'Filters' ? { left: '30px', top: '280px' } : {}
+            className={
+              renderType !== 'Filters'
+                ? `top-8' absolute left-[20px] right-[20px]  z-20 mx-auto flex min-h-[400px] max-h-[400px] flex-col rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:min-h-fit sm:w-[300px] sm:border-stone-300 md:right-auto md:left-[5px] md:top-[25px] lg:right-[0px] lg:left-auto overflow-y-auto`
+                : `top-8' absolute left-[20px] right-[20px]  z-20 mx-auto flex min-h-[800px] flex-col rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:left-[-33%] sm:top-[23%] sm:min-h-fit sm:w-[300px]  sm:border-stone-300 md:right-auto md:left-[10%] md:top-[25%]  lg:left-[10%] lg:top-[22%]`
             }
           >
             <div className='flex h-[54px] items-center justify-between border-b-[1px] border-solid border-stone-300 p-[16px]'>
-              <div className='text-[14px] font-semibold '>Filter by label</div>
+              <div className='text-[14px] font-semibold '>
+                Filter by {renderType}
+              </div>
               <div
                 onClick={() => {
                   setIsClicked((prev) => !prev);
@@ -91,7 +96,7 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                 X
               </div>
             </div>
-            {type !== 'Sort' && (
+            {!_.includes(['Sort', 'Filters'], type) && (
               <div className='border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold'>
                 <input
                   value={filterInput}
@@ -100,7 +105,7 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                   }}
                   type='text'
                   className='h-[32px] w-full rounded-lg border border-solid border-stone-300 px-[12px] py-[5px] font-medium'
-                  placeholder='Filter labels'
+                  placeholder={`Filter ${renderType}`}
                 />
               </div>
             )}
@@ -132,7 +137,7 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                   return (
                     <div key={label.id}>
                       <div
-                        className={`flex flex-wrap items-center  justify-start overflow-y-auto border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]  ${
+                        className={`flex flex-wrap items-center  justify-start  border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]  ${
                           _.includes(
                             label.name.toLowerCase(),
                             _.trim(filterInput.toLowerCase(), ' '),

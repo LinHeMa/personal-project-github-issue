@@ -97,12 +97,12 @@ export interface Reactions {
 }
 
 type query = {
-  labels: string;
-  assignee: string;
-  sort: string;
-  filter: string;
-  state: string;
-  page: string;
+  labels?: string;
+  assignee?: string;
+  sort?: string;
+  filter?: string;
+  state?: string;
+  page?: string;
 };
 
 const issueApi = labelApi.injectEndpoints({

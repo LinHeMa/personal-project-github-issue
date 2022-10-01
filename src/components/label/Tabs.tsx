@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import { Notification } from '../button/BiFunctionButton';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,19 +31,27 @@ const TabWrapper = styled.div`
   }
 `;
 
+const Notify = styled(Notification)`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+`;
+
 interface TabsProps {
   icon: ReactNode;
   text: string;
   // TODO
-  // number: number;
+  number?: number;
+  onClick?: () => void;
 }
 
-const Tabs = ({ icon, text }: TabsProps) => {
+const Tabs = ({ icon, number, text, onClick }: TabsProps) => {
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       <TabWrapper>
         {icon}
         {text}
+        {number && number > 0 && <Notify>{number}</Notify>}
       </TabWrapper>
     </Wrapper>
   );

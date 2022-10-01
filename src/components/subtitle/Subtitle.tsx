@@ -12,10 +12,12 @@ import {
   RepoIcon,
   ShieldIcon,
   StarIcon,
-  TabIcon
+  TabIcon,
 } from '@primer/octicons-react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import Button from '../button/Button';
 import DoubleButton from '../button/DoubleButton';
 import Label from '../label/Label';
@@ -145,6 +147,8 @@ const TabsWrapper = styled.div`
 `;
 
 const Subtitle = () => {
+  const navigate = useNavigate();
+  const { data } = useGetIssuesQuery({});
   return (
     <Wrapper>
       <TitleWrapper>
@@ -182,7 +186,14 @@ const Subtitle = () => {
         </BreadCrumbWrapper>
         <TabsWrapper>
           <Tabs icon={<Code size={16} />} text='Code' />
-          <Tabs icon={<Issue size={16} />} text='Issue' />
+          <Tabs
+            icon={<Issue size={16} />}
+            text='Issues'
+            onClick={() => {
+              navigate('/issuelist');
+            }}
+            number={data?.length}
+          />
           <Tabs icon={<PullRequest size={16} />} text='Pull requests' />
           <Tabs icon={<Actions size={16} />} text='Actions' />
           <Tabs icon={<Projects size={16} />} text='Projects' />

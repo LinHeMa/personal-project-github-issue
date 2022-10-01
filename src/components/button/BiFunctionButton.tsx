@@ -21,11 +21,11 @@ const Left = styled.div`
   line-height: 20px;
   border: 1px solid rgba(27, 31, 36, 0.15);
   border-radius: 6px 0 0 6px;
-  /* color: #24292f; */
-  color: #f3f4f6;
-  /* background-color: #f6f8fa; */
+  color: #24292f;
+  /* color: #f3f4f6; */
+  background-color: #f6f8fa;
 
-  background-color: #0969da;
+  /* background-color: #0969da; */
   padding: 5px 16px;
   font-weight: 500;
   &:hover {
@@ -51,7 +51,7 @@ const Right = styled.div`
     background-color: #f3f4f6;
   }
 `;
-const Notification = styled.div`
+export const Notification = styled.div`
   width: 20px;
   height: 20px;
   padding: 0 6px;
@@ -93,7 +93,7 @@ const BiFunctionButton = ({
         {iconRight}
         {textRight}
         {numberRight !== undefined ? (
-          <Notification>{number}</Notification>
+          <Notification>{numberRight}</Notification>
         ) : null}
       </Right>
     </Wrapper>
