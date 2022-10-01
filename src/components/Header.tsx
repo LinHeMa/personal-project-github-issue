@@ -1,22 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {
   BellIcon,
   MarkGithubIcon,
   PlusIcon,
   ThreeBarsIcon,
-  TriangleDownIcon
+  TriangleDownIcon,
 } from '@primer/octicons-react';
 import profileImg from '../images/github_avatar.png';
 import UserDropDown from './UserDropDown';
 import DropDown from './labelContent/DropDown';
 import useOnClickOutside from '../utils/hooks/useOnClidkOutside';
+import Button from './button/Button';
 
 const ListOfCreate = [
   'New repository',
   'Import repository',
   'New gist',
-  'New organization'
+  'New organization',
 ];
 
 const Hr = styled.hr`
@@ -35,7 +36,7 @@ const dropDownMenu = [
   'Upgrade',
   'Feature preview',
   'Help',
-  'Settings'
+  'Settings',
 ];
 interface WrapperProps {
   showOnMobile: boolean;
@@ -230,19 +231,30 @@ const DropdownWrapper = styled.div`
   right: 26px;
   top: 49px;
 `;
+type User = {
+  aud: string;
+};
 interface HeaderProps {
   className: string;
   signInWithGithub(): Promise<void>;
+  signOut(): Promise<void>;
+  user?: User | null;
 }
+
 // eslint-disable-next-line react/prop-types
-const Header = ({ className, signInWithGithub }: HeaderProps) => {
+const Header = ({
+  className,
+  signInWithGithub,
+  signOut,
+  user,
+}: HeaderProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPlusOpen, setIsPlusOpen] = useState(false);
   const profileRef = useRef(null);
   const plusRef = useRef(null);
   useOnClickOutside(profileRef, () => setIsProfileOpen(false));
   useOnClickOutside(plusRef, () => setIsPlusOpen(false));
-  console.log(isProfileOpen);
+
 
   return (
     <Wrapper className={className} showOnMobile>
@@ -273,18 +285,31 @@ const Header = ({ className, signInWithGithub }: HeaderProps) => {
         <PlusIcon size={16} />
         <TriangleDownIcon size={16} />
       </PlusWrapper>
-      <ProfileWrapper
-        hideOnMobile
-        onClick={() => setIsProfileOpen((prev) => !prev)}
-      >
-        <ProfileImage className='profile-img' bg={profileImg} />
-        <ProfileDown size={16} />
-      </ProfileWrapper>
-      {isProfileOpen && (
-        <DropdownWrapper ref={profileRef}>
-          <UserDropDown dropDownMenu={dropDownMenu} />
-        </DropdownWrapper>
+      {user?.aud === 'authenticated' ? (
+        <ProfileWrapper
+          hideOnMobile
+          onClick={() => {
+            console.log(isProfileOpen);
+            setIsProfileOpen((prev) => !prev);
+          }}
+        >
+          <ProfileImage className='profile-img' bg={profileImg} />
+          <ProfileDown size={16} />
+        </ProfileWrapper>
+      ) : (
+        <div
+          onClick={() => {
+            signInWithGithub();
+          }}
+        >
+          Sign in
+        </div>
       )}
+      {isProfileOpen ? (
+        <DropdownWrapper ref={profileRef}>
+          <UserDropDown dropDownMenu={dropDownMenu} signOut={signOut} />
+        </DropdownWrapper>
+      ) : null}
       {isPlusOpen && <DropDown list={ListOfCreate} ref={plusRef} />}
     </Wrapper>
   );

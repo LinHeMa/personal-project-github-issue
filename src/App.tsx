@@ -31,7 +31,7 @@ function App() {
   }
 
   async function signInWithGithub() {
-    await supabase.auth.signIn(
+    const response = await supabase.auth.signIn(
       {
         provider: 'github',
       },
@@ -39,6 +39,7 @@ function App() {
         scopes: 'repo gist notifications',
       },
     );
+    console.log(response);
   }
 
   async function signOut() {
@@ -51,7 +52,12 @@ function App() {
       <div className='App'>
         <ResetStyle />
         <GlobalStyle />
-        <Header className='Header' signInWithGithub={signInWithGithub} />
+        <Header
+          className='Header'
+          signInWithGithub={signInWithGithub}
+          signOut={signOut}
+          user={user}
+        />
         <Subtitle />
         <Outlet />
         <Footer />
@@ -63,7 +69,12 @@ function App() {
     <div className='App'>
       <ResetStyle />
       <GlobalStyle />
-      <Header className='Header' signInWithGithub={signInWithGithub} />
+      <Header
+        className='Header'
+        signInWithGithub={signInWithGithub}
+        signOut={signOut}
+        user={user}
+      />
       <>請先登入</>
       <Footer />
     </div>

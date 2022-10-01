@@ -20,7 +20,7 @@ export const dropDownMenu = [
   'Upgrade',
   'Feature preview',
   'Help',
-  'Settings'
+  'Settings',
 ];
 
 const Container = styled.div`
@@ -105,13 +105,14 @@ const Status = styled.div`
 
 const SmileIcon = styled(SmileyIcon)`
   margin-right: 4px;
-`
+`;
 
 interface UserDropDonw {
   dropDownMenu: (string | JSX.Element)[];
+  signOut: () => Promise<void>;
 }
 
-const UserDropDown = ({ dropDownMenu }: UserDropDonw) => {
+const UserDropDown = ({ dropDownMenu, signOut }: UserDropDonw) => {
   return (
     <Container>
       <Item>
@@ -125,7 +126,7 @@ const UserDropDown = ({ dropDownMenu }: UserDropDonw) => {
       {dropDownMenu.map((item, index) => (
         <Item key={index}>{item}</Item>
       ))}
-      <Item>Sign out</Item>
+      <Item onClick={signOut}>Sign out</Item>
     </Container>
   );
 };
