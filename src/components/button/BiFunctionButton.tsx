@@ -1,5 +1,6 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ButtonProps } from './Button';
 
@@ -79,7 +80,7 @@ const BiFunctionButton = ({
   hasDropDown = false,
   iconRight,
   textRight,
-  numberRight
+  numberRight,
 }: BifunctionButtonProps) => {
   return (
     <Wrapper>

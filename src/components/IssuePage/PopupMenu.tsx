@@ -1,5 +1,5 @@
 import { CheckIcon, TriangleDownIcon } from '@primer/octicons-react';
-import _ from 'lodash';
+import _, { filter } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -26,7 +26,6 @@ const sortList = [
   { name: 'Least recently updated', sort: 'updated-asc' },
 ];
 const filterList = [
-  // TODO
   { name: 'Your issues', filter: '&creator=@me' },
   { name: 'Everything assigned to you', filter: '&assignee=LinHeMa' },
   { name: 'Everything mentioning you', filter: '&mentioned=@me' },
@@ -39,6 +38,9 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
     (state) => state.labelListAction.assignees,
   );
   const queryFilter = useAppSelector((state) => state.labelListAction.filter);
+  const querySort = useAppSelector((state) => state.labelListAction.sort);
+  const [filterInput, setFilterInput] = useState<string>('');
+
   const [renderType, setRenderType] = useState<string>('');
   const [labelPop, setLabelPop] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -50,7 +52,6 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
   useEffect(() => {
     setLabelPop(false);
   }, [isClicked]);
-
   return (
     <div
       onClick={() => {
@@ -83,7 +84,7 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
               <div className='text-[14px] font-semibold '>Filter by label</div>
               <div
                 onClick={() => {
-                  setLabelPop(false);
+                  setIsClicked((prev) => !prev);
                 }}
                 className='text-primary-icon-gray'
               >
@@ -93,6 +94,10 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
             {type !== 'Sort' && (
               <div className='border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold'>
                 <input
+                  value={filterInput}
+                  onChange={(e) => {
+                    setFilterInput(e.target.value);
+                  }}
                   type='text'
                   className='h-[32px] w-full rounded-lg border border-solid border-stone-300 px-[12px] py-[5px] font-medium'
                   placeholder='Filter labels'
@@ -125,28 +130,46 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
               {renderType === 'Label' &&
                 labels?.map((label) => {
                   return (
-                    <div
-                      key={label.id}
-                      className='flex items-center justify-start border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]'
-                      onClick={() => {
-                        dispatch(addLabelCondition(label.name));
-                        setIsClicked((prev) => !prev);
-                      }}
-                    >
+                    <div key={label.id}>
                       <div
-                        className={` mr-3 ${
-                          _.includes(queryLabel, label.name)
-                            ? 'visible'
-                            : 'invisible'
+                        className={`flex flex-wrap items-center  justify-start overflow-y-auto border-b-[1px] border-solid border-stone-300 p-[16px] text-[14px] font-semibold leading-[21px]  ${
+                          _.includes(
+                            label.name.toLowerCase(),
+                            _.trim(filterInput.toLowerCase(), ' '),
+                          )
+                            ? ''
+                            : _.includes(
+                                label.description.toLowerCase(),
+                                _.trim(filterInput.toLowerCase(), ' '),
+                              )
+                            ? ''
+                            : 'hidden'
                         }`}
+                        onClick={() => {
+                          dispatch(addLabelCondition(label.name));
+                          setIsClicked((prev) => !prev);
+                        }}
                       >
-                        <CheckIcon />
+                        <div
+                          className={` mr-3 ${
+                            _.includes(queryLabel, label.name)
+                              ? 'visible'
+                              : 'invisible'
+                          }`}
+                        >
+                          <CheckIcon />
+                        </div>
+                        <div
+                          style={{ backgroundColor: '#' + label.color }}
+                          className={`mr-3 mt-2 flex h-[14px] w-[14px] self-start rounded-full`}
+                        />
+                        <div className='flex flex-col items-start justify-start'>
+                          {label.name}
+                          <div className='flex w-full self-end font-light'>
+                            {label.description}
+                          </div>
+                        </div>
                       </div>
-                      <div
-                        style={{ backgroundColor: '#' + label.color }}
-                        className={` mr-3 h-[14px] w-[14px] rounded-full `}
-                      />
-                      {label.name}
                     </div>
                   );
                 })}
@@ -157,7 +180,15 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                   return (
                     <div
                       key={assignee.id}
-                      className='flex items-center justify-start p-[16px] text-[14px] font-semibold leading-[21px]'
+                      className={`flex items-center justify-start p-[16px] text-[14px] font-semibold leading-[21px]  
+                      ${
+                        _.includes(
+                          _.trim(assignee.login.toLowerCase(), ' '),
+                          _.trim(filterInput.toLowerCase(), ' '),
+                        )
+                          ? ''
+                          : 'hidden'
+                      }`}
                       onClick={() => {
                         dispatch(addAssigneeCondition(assignee.login));
                         setIsClicked((prev) => !prev);
@@ -196,7 +227,7 @@ const PopupMenu = ({ type, data }: PopupMenuProps) => {
                     >
                       <div
                         className={` mr-3 ${
-                          isClicked ? 'visible' : 'invisible'
+                          querySort === item.sort ? 'visible' : 'invisible'
                         }`}
                       >
                         <CheckIcon />

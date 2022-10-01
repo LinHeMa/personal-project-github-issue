@@ -3,32 +3,97 @@ import {
   IssueOpenedIcon,
   MilestoneIcon,
   SearchIcon,
-  TagIcon
+  TagIcon,
+  XIcon,
 } from '@primer/octicons-react';
-import React from 'react';
+import _ from 'lodash';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Button from '../../components/button/Button';
+import {
+  addStateCondition,
+  resetAll,
+} from '../../feature/Label/LabelListActionSlice';
 import BiFunctionButton from '../button/BiFunctionButton';
 import IssueListItem from './IssueListItem';
 import PopupMenu from './PopupMenu';
 
+export type issueStateType = {
+  open: number;
+  closed: number;
+};
+
 export default function IssueList() {
+  const navigate = useNavigate();
+  const data = useAppSelector((state) => state.labelListAction);
+  const hasCondition = () => {
+    if (data.lables.length > 0) return true;
+    if (data.assignees.length > 0) return true;
+    if (data.sort !== '') return true;
+    if (data.state !== 'open') return true;
+    if (data.filter !== '') return true;
+    return false;
+  };
+  const inputValue = useAppSelector((state) => state.labelListAction);
+  const [valueString, setValueString] = useState<string>('');
+  const inputValueString = () => {
+    let result = '';
+    if (inputValue.state !== '') result += `is:${inputValue.state} `;
+    if (inputValue.issue) result += `is:issue `;
+    if (inputValue.lables.length !== 0) {
+      const labelString = inputValue.lables.reduce((acc, cur) => {
+        acc += `label:${cur} `;
+        return acc;
+      }, '');
+      result += labelString;
+    }
+    if (inputValue.assignees.length !== 0)
+      result += `assignee:${inputValue.assignees[0]} `;
+    if (inputValue.sort !== '') result += `sort:${inputValue.sort} `;
+    if (inputValue.filter === '&creator=@me') result += `author:@me `;
+    if (inputValue.filter === '&assignee=LinHeMa') result += `assignee:@me `;
+    if (inputValue.filter === '&mentioned=@me') result += `metions:@me `;
+
+    if (_.includes(inputValue.assignees, 'LinHeMa')) {
+      result = _.join(_.without(_.split(result, ' '), 'author:@me'), ' ');
+    }
+    return result;
+  };
+
+  useEffect(() => setValueString(inputValueString()), [inputValue]);
+
+  const [issueState, setIssueState] = useState<issueStateType>({
+    open: 0,
+    closed: 0,
+  });
+  const dispatch = useAppDispatch();
   return (
     <>
-      <div className='container mx-auto flex flex-wrap justify-center px-4 md:px-6 lg:flex-nowrap  lg:px-8 '>
+      <div className='container mx-auto flex flex-wrap justify-center px-4 md:px-6  lg:px-8 '>
         <div className='md:order-2  md:ml-auto'>
-          <BiFunctionButton
-            icon={<TagIcon />}
-            text='Labels'
-            number={1}
-            iconRight={<MilestoneIcon />}
-            textRight='Milestones'
-            numberRight={2}
-          />
+          <div
+            onClick={(e) => {
+              const target = e.target as HTMLDivElement;
+              if (target.outerText.includes('Labels')) {
+                navigate('/');
+              }
+            }}
+          >
+            <BiFunctionButton
+              icon={<TagIcon />}
+              text='Labels'
+              number={1}
+              iconRight={<MilestoneIcon />}
+              textRight='Milestones'
+              numberRight={2}
+            />
+          </div>
         </div>
         <button className='ml-auto  flex w-fit items-center whitespace-pre   rounded-md bg-primary-green px-4	py-[5x] text-sm font-medium text-[#ffffff] md:order-3 md:ml-4'>
           New<div className='hidden md:block'> issue</div>
         </button>
-        <div className='my-6  flex w-full  rounded-md border border-solid border-gray-300 bg-primary-bg-gray md:my-0 md:w-6/12 lg:mr-4 lg:w-full '>
+        <div className='my-6  flex w-full  rounded-md border border-solid border-gray-300 bg-primary-bg-gray md:my-0 md:w-6/12 lg:mr-4 lg:w-7/12 '>
           <Button
             text=''
             hasDropDown={false}
@@ -41,23 +106,48 @@ export default function IssueList() {
             </div>
             <input
               type='text'
-              placeholder='is:issue is:open'
-              className=' bg-primary-bg-gray'
+              className=' h-full w-full border-0 bg-primary-bg-gray outline-none'
+              value={valueString}
             />
           </div>
         </div>
-        <div className='mr-auto flex items-center md:order-4 md:mt-4 lg:hidden'>
-          <a href='#' className='flex items-center'>
+
+        <div className='mr-auto flex items-center md:order-5 md:mt-4 lg:hidden'>
+          <a
+            href='#'
+            className='flex items-center'
+            onClick={() => dispatch(addStateCondition('open'))}
+          >
             <IssueOpenedIcon />
-            <p className='ml-1 '>4 Open</p>
+            <p className='ml-1 '>{issueState.open} Open</p>
           </a>
-          <a href='#' className='flex items-center'>
+          <a
+            href='#'
+            className='flex items-center'
+            onClick={() => dispatch(addStateCondition('closed'))}
+          >
             <CheckIcon />
-            <p className='ml-1'>1 Closed</p>
+            <p className='ml-1'>{issueState.closed} Closed</p>
           </a>
         </div>
+        <div
+          className={`mt-8 mb-4 flex w-full cursor-pointer items-center  justify-start md:order-4 ${
+            hasCondition() ? '' : 'hidden'
+          }`}
+          onClick={() => {
+            dispatch(resetAll());
+          }}
+        >
+          <XIcon
+            size={16}
+            fill='white'
+            className=' mr-2 rounded-md bg-stone-500 '
+          />
+          Clear current search query, filters, and sorts
+        </div>
       </div>
-      <IssueListItem />
+      <IssueListItem setIssueState={setIssueState} issueState={issueState}/>
+      
     </>
   );
 }

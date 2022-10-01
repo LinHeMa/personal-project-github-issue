@@ -63,44 +63,44 @@ export const labelApi = createApi({
     prepareHeaders: (headers) => {
       headers.set('Authorization', `Bearer ${session?.provider_token}`);
       return headers;
-    }
+    },
   }),
-  tagTypes: ['Labels','Issues'],
+  tagTypes: ['Labels', 'Issues'],
   endpoints: (build) => ({
     getLabelList: build.query<LabelsList[], QueryParams>({
       query: ({ name, repo }) => `/${name}/${repo}/labels`,
       providesTags: ['Labels'],
-      transformResponse: (response: LabelsList[]) => addLightOrDark(response)
+      transformResponse: (response: LabelsList[]) => addLightOrDark(response),
     }),
     addLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, postBody }) => ({
         url: `/${name}/${repo}/labels`,
         method: 'POST',
-        body: postBody
+        body: postBody,
       }),
-      invalidatesTags: ['Labels']
+      invalidatesTags: ['Labels'],
     }),
     updateLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName, updateBody }) => ({
         url: `/${name}/${repo}/labels/${lableName}`,
         method: 'PATCH',
-        body: updateBody
+        body: updateBody,
       }),
-      invalidatesTags: ['Labels']
+      invalidatesTags: ['Labels'],
     }),
     deleteLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName }) => ({
         url: `/${name}/${repo}/labels/${lableName}`,
-        method: 'DELETE'
+        method: 'DELETE',
       }),
-      invalidatesTags: ['Labels'],  
-    })
-  })
+      invalidatesTags: ['Labels'],
+    }),
+  }),
 });
 
 export const {
   useGetLabelListQuery,
   useAddLabelListMutation,
   useUpdateLabelListMutation,
-  useDeleteLabelListMutation
+  useDeleteLabelListMutation,
 } = labelApi;

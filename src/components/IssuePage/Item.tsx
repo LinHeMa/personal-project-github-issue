@@ -1,7 +1,11 @@
-import { CommentIcon, IssueOpenedIcon } from '@primer/octicons-react';
-import React, { useState } from 'react';
+import {
+  CommentIcon,
+  IssueClosedIcon,
+  IssueOpenedIcon,
+} from '@primer/octicons-react';
+import React from 'react';
 import Label from '../label/Label';
-import { Root, useGetIssuesQuery } from '../../sevices/api/issueApi';
+import { Root } from '../../sevices/api/issueApi';
 
 type ItemProps = {
   data: Root;
@@ -9,13 +13,6 @@ type ItemProps = {
 
 const Item: React.FC<ItemProps> = ({ data }) => {
   const { title, labels, state, number, comments, assignees } = data;
-  const { data: queryData, isSuccess } = useGetIssuesQuery({
-    labels: '',
-    assignee: '',
-    sort: '',
-    filter: '',
-  });
-
   return (
     <div>
       <div className='flex h-[85px] border-b-[1px] border-solid border-stone-300 last:rounded-b-lg sm:border  sm:border-t-[0px] md:h-[62.31px]'>
@@ -23,7 +20,11 @@ const Item: React.FC<ItemProps> = ({ data }) => {
           <input type='checkbox' className='mr-4 hidden lg:block' />
         </div>
         <div className='self-start pl-4  pt-5'>
-          {state === 'open' ? <IssueOpenedIcon fill='#1a7f37' /> : null}
+          {state === 'open' ? (
+            <IssueOpenedIcon fill='#1a7f37' />
+          ) : (
+            <IssueClosedIcon fill='#8250df' />
+          )}
         </div>
         <div className='flex flex-col items-start p-5  pl-3 pr-4 md:flex-row md:flex-wrap md:justify-start  '>
           <h1 className='text-[16px] font-semibold leading-5'>{title}</h1>

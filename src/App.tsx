@@ -15,6 +15,8 @@ import { Outlet } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState<User | null>();
+
+  const session = supabase.auth.session();
   useEffect(() => {
     checkUser();
     window.addEventListener('hashchange', () => {
@@ -23,7 +25,6 @@ function App() {
   }, []);
   async function checkUser() {
     const user = supabase.auth.user();
-    const session = supabase.auth.session();
     console.log(user);
     console.log(session?.provider_token);
     setUser(user);
@@ -32,11 +33,11 @@ function App() {
   async function signInWithGithub() {
     await supabase.auth.signIn(
       {
-        provider: 'github'
+        provider: 'github',
       },
       {
-        scopes: 'repo gist notifications'
-      }
+        scopes: 'repo gist notifications',
+      },
     );
   }
 
@@ -45,24 +46,25 @@ function App() {
     setUser(null);
   }
 
-  // if (user) {
-  //   return (
-  //     <div className='App'>
-  //       <ResetStyle />
-  //       <GlobalStyle />
-  //       <h1>hello, {user.email}</h1>
-  //       <button onClick={signOut}>sign out</button>
-  //     </div>
-  //   );
-  // }
+  if (session?.provider_token) {
+    return (
+      <div className='App'>
+        <ResetStyle />
+        <GlobalStyle />
+        <Header className='Header' signInWithGithub={signInWithGithub} />
+        <Subtitle />
+        <Outlet />
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className='App'>
       <ResetStyle />
       <GlobalStyle />
       <Header className='Header' signInWithGithub={signInWithGithub} />
-      <Subtitle />
-      <Outlet/>
+      <>請先登入</>
       <Footer />
     </div>
   );
