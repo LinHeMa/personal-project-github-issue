@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from 'react';
-// import api from './utils/api';
-import { supabase } from './supabase/client';
-import { User } from '@supabase/supabase-js';
-import { ResetStyle, GlobalStyle } from './components/globalStyle';
-// import _ from 'lodash';
-import './App.css';
-import Header from './components/Header';
-import ItemMenu from './components/ItemMenu';
-import UserDropDown from './components/UserDropDown';
-import Footer from './components/Footer/Footer';
-import Subtitle from './components/subtitle/Subtitle';
-import LabelContent from './components/labelContent/LabelContent';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { supabase } from "./supabase/client";
+import { User } from "@supabase/supabase-js";
+import { ResetStyle, GlobalStyle } from "./components/globalStyle";
+import "./App.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer/Footer";
+import Subtitle from "./components/subtitle/Subtitle";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState<User | null>();
@@ -19,7 +14,7 @@ function App() {
   const session = supabase.auth.session();
   useEffect(() => {
     checkUser();
-    window.addEventListener('hashchange', () => {
+    window.addEventListener("hashchange", () => {
       checkUser();
     });
   }, []);
@@ -29,13 +24,13 @@ function App() {
   }
 
   async function signInWithGithub() {
-    const response = await supabase.auth.signIn(
+    await supabase.auth.signIn(
       {
-        provider: 'github',
+        provider: "github",
       },
       {
-        scopes: 'repo gist notifications',
-      },
+        scopes: "repo gist notifications",
+      }
     );
   }
 
@@ -46,11 +41,11 @@ function App() {
 
   if (session?.provider_token) {
     return (
-      <div className='App'>
+      <div className="App">
         <ResetStyle />
         <GlobalStyle />
         <Header
-          className='Header'
+          className="Header"
           signInWithGithub={signInWithGithub}
           signOut={signOut}
           user={user}
@@ -63,11 +58,11 @@ function App() {
   }
 
   return (
-    <div className='App'>
+    <div className="App">
       <ResetStyle />
       <GlobalStyle />
       <Header
-        className='Header'
+        className="Header"
         signInWithGithub={signInWithGithub}
         signOut={signOut}
         user={user}

@@ -22,7 +22,6 @@ type issueListItemProps = {
 
 const IssueListItem: React.FC<issueListItemProps> = ({
   setIssueState,
-  issueState,
   openIssueQty,
   closedIssueQty,
 }) => {
