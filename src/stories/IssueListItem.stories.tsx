@@ -1,9 +1,15 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import IssueItem from './IssueItem';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import IssueItem from "./IssueItem";
 
 export default {
-  title: 'GithubIssue/IssueListItem',
+  title: "GithubIssue/IssueListItem",
   component: IssueItem,
+  argTypes: {
+    status: {
+      options: ["open", "closed", "notPlaned"],
+      control: { type: "radio" },
+    },
+  },
 } as ComponentMeta<typeof IssueItem>;
 
 const Template: ComponentStory<typeof IssueItem> = (args) => (
@@ -12,9 +18,9 @@ const Template: ComponentStory<typeof IssueItem> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  status: 'open',
+  status: "open",
 };
-export const Closed = Template.bind({});
-Default.args = {
-  status: 'closed',
-};
+// export const Closed = Template.bind({});
+// Default.args = {
+//   status: "closed",
+// };
