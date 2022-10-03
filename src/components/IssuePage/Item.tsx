@@ -47,11 +47,19 @@ export function timeCalc(time: string) {
   }
 }
 const Item: React.FC<ItemProps> = ({ data }) => {
-  const { title, labels, state, number, comments, assignees, created_at } =
-    data;
+  const {
+    title,
+    labels,
+    state,
+    number,
+    comments,
+    assignees,
+    created_at,
+    user,
+  } = data;
   return (
-    <div>
-      <div className="flex h-[85px] border-b-[1px] border-solid border-stone-300 last:rounded-b-lg sm:border  sm:border-t-[0px] md:h-[62.31px]">
+    <div className="last:rounded-b-lg">
+      <div className="flex h-[85px] border-b-[1px] border-solid border-stone-300   sm:border  sm:border-t-[0px] md:h-[62.31px]">
         <div className="flex items-start justify-center py-[12.5px] pl-[10px]">
           <input type="checkbox" className="mr-4 hidden lg:block" />
         </div>
@@ -78,7 +86,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
             })}
           </div>
           <a className="mt-3 whitespace-pre text-start text-primary-icon-gray md:w-full">
-            #{number} opened {timeCalc(created_at)} by LinHeMa
+            #{number} opened {timeCalc(created_at)} by {user.login}
           </a>
         </div>
         <div className="ml-auto hidden items-start  pt-5 pr-4 sm:flex ">
@@ -89,7 +97,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
                     <img
                       key={assignee.id}
                       src={assignee.avatar_url}
-                      className={`h-[20px] w-[20px] rounded-full ${
+                      className={`h-[20px] w-[20px] rounded-full transition-all duration-300 ease-in-out ${
                         index === assignees.length - 1 ? "" : "mr-[-12px]"
                       }  ${assignees.length !== 1 && "group-hover:mr-2"}`}
                     />

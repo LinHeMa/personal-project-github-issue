@@ -1,12 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { labelApi } from '../sevices/api/labelApi';
-import labelListActionReducer from '../feature/Label/LabelListActionSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { labelApi } from "../sevices/api/labelApi";
+import labelListActionReducer from "../feature/Label/LabelListActionSlice";
+import userInfoReducer from "../feature/user/userSlice";
 
 export const store = configureStore({
   reducer: {
     // local action
     labelListAction: labelListActionReducer,
+    userInfoAction: userInfoReducer,
+
     // Api
     [labelApi.reducerPath]: labelApi.reducer,
   },

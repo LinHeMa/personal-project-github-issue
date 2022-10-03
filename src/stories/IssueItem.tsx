@@ -2,9 +2,10 @@ import {
   CommentIcon,
   IssueClosedIcon,
   IssueOpenedIcon,
-} from '@primer/octicons-react';
-import styled from 'styled-components';
-import avatar from '../images/github_avatar.png';
+  SkipIcon,
+} from "@primer/octicons-react";
+import styled from "styled-components";
+import avatar from "../images/github_avatar.png";
 
 const Wrapper = styled.div`
   display: flex;
@@ -90,14 +91,16 @@ const IssueItem = ({ status }: IssueItemProps) => {
   return (
     <Wrapper>
       <CheckBox>
-        <input type='checkbox' name='' id='' />
+        <input type="checkbox" name="" id="" />
       </CheckBox>
       <Main>
         <Icon>
-          {status === 'open' ? (
-            <IssueOpenedIcon fill='green' />
+          {status === "open" ? (
+            <IssueOpenedIcon fill="green" />
+          ) : status === "closed" ? (
+            <IssueClosedIcon fill="purple" />
           ) : (
-            <IssueClosedIcon fill='purple' />
+            <SkipIcon fill="#57606a" />
           )}
         </Icon>
         <Context>

@@ -7,19 +7,23 @@ import Header from "./components/Header";
 import Footer from "./components/Footer/Footer";
 import Subtitle from "./components/subtitle/Subtitle";
 import { Outlet } from "react-router-dom";
+import { useAppDispatch } from "./app/hooks";
+import { addUser } from "./feature/user/userSlice";
 
 function App() {
   const [user, setUser] = useState<User | null>();
-
+  const dispatch = useAppDispatch();
   const session = supabase.auth.session();
   useEffect(() => {
     checkUser();
     window.addEventListener("hashchange", () => {
       checkUser();
     });
-  }, []);
+    if (user && session) dispatch(addUser(session.provider_token as string));
+  }, [user]);
   async function checkUser() {
     const user = supabase.auth.user();
+    if (session) dispatch(addUser(session.provider_token as string));
     setUser(user);
   }
 

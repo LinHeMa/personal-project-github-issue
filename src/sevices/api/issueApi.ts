@@ -1,4 +1,4 @@
-import { labelApi } from './labelApi';
+import { labelApi } from "./labelApi";
 
 export interface Root {
   url: string;
@@ -86,8 +86,8 @@ export interface Label {
 export interface Reactions {
   url: string;
   total_count: number;
-  '+1': number;
-  '-1': number;
+  "+1": number;
+  "-1": number;
   laugh: number;
   hooray: number;
   confused: number;
@@ -109,12 +109,12 @@ const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
     getIssues: build.query<Root[], query>({
       query: (query) =>
-        `/LinHeMa/TEST/issues?${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
-      providesTags: ['Issues'],
+        `/LinHeMa/TEST/issues?&per_page=4${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
+      providesTags: ["Issues"],
     }),
     getListAssignees: build.query<User[], string>({
-      query: () => '/LinHeMa/TEST/assignees',
-      providesTags: ['Issues'],
+      query: () => "/LinHeMa/TEST/assignees",
+      providesTags: ["Issues"],
     }),
   }),
   overrideExisting: false,
