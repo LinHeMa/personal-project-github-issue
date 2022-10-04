@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import _ from 'lodash';
+import styled from "styled-components";
+import _ from "lodash";
 interface WrapperProps {
   borderColor?: string;
   color?: string;
@@ -15,20 +15,22 @@ const Wrapper = styled.div<WrapperProps>`
   display: flex;
   width: fit-content;
   align-items: center;
-  font-size: ${(props) => (props.fontSize ? props.fontSize : '12px')};
-  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '500')};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "12px")};
+  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : "500")};
   padding: 0 7px;
   line-height: normal;
+  height: 25px;
+  margin-right: 4px;
   white-space: nowrap;
   color: ${(props) =>
-    props.isLight || props.$isWhite ? props.color : '#000000'};
+    props.isLight || props.$isWhite ? props.color : "#000000"};
   background-color: ${(props) => props.bgColor};
-  background-color: ${(props) => (props.$labelColor ? props.$labelColor : '')};
+  background-color: ${(props) => (props.$labelColor ? props.$labelColor : "")};
   border-radius: 2em;
   border-width: 1px;
   border-style: solid;
   border-color: ${(props) =>
-    _.lowerCase(props.bgColor) === 'ffffff' ? '#d0d7de' : props.borderColor};
+    _.lowerCase(props.bgColor) === "ffffff" ? "#d0d7de" : props.borderColor};
 `;
 
 interface LabelProps {

@@ -59,7 +59,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
   } = data;
   return (
     <div className="last:rounded-b-lg">
-      <div className="flex h-[85px] border-b-[1px] border-solid border-stone-300   sm:border  sm:border-t-[0px] md:h-[62.31px]">
+      <div className="flex min-h-[85px] border-b-[1px] border-solid border-stone-300   sm:border  sm:border-t-[0px] md:h-[62.31px]">
         <div className="flex items-start justify-center py-[12.5px] pl-[10px]">
           <input type="checkbox" className="mr-4 hidden lg:block" />
         </div>
@@ -72,7 +72,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         </div>
         <div className="flex flex-col items-start p-5  pl-3 pr-4 md:flex-row md:flex-wrap md:justify-start  ">
           <h1 className="text-[16px] font-semibold leading-5">{title}</h1>
-          <div className="mt-3 flex  items-start leading-5 md:mt-0 md:ml-2 ">
+          <div className="mt-3 flex  flex-wrap items-start leading-5 md:mt-0 md:ml-2 ">
             {labels.map((label) => {
               return (
                 <Label

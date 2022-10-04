@@ -109,7 +109,7 @@ const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
     getIssues: build.query<Root[], query>({
       query: (query) =>
-        `/LinHeMa/TEST/issues?&per_page=4${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
+        `/LinHeMa/TEST/issues?&per_page=5${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
       providesTags: ["Issues"],
     }),
     getListAssignees: build.query<User[], string>({

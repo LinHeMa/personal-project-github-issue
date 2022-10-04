@@ -20,7 +20,3 @@ export const Default = Template.bind({});
 Default.args = {
   status: "open",
 };
-// export const Closed = Template.bind({});
-// Default.args = {
-//   status: "closed",
-// };
