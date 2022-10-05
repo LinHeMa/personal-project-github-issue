@@ -1,3 +1,5 @@
+import { User } from '../../sevices/api/issueApi';
+import { LabelsList } from '../../sevices/api/labelApi';
 import MenuItem from './MenuItem';
 
 const sideBarList = [
@@ -19,6 +21,9 @@ interface source {
 
 interface Menu {
   source: source;
+  hasSearchBar: boolean;
+  assignees?: User[];
+  labeles?: LabelsList[];
 }
 
 export function Menu({ source }: Menu) {
@@ -34,8 +39,6 @@ export function Menu({ source }: Menu) {
               </MenuItem.ListTitle>
               <MenuItem.SearchBar />
               <MenuItem.Subtitle>Suggestions</MenuItem.Subtitle>
-              <MenuItem.Item>LinHeMa</MenuItem.Item>
-              <MenuItem.Item>athenacheng15</MenuItem.Item>
             </MenuItem.List>
           </MenuItem.Toggle>
         </div>
@@ -43,13 +46,62 @@ export function Menu({ source }: Menu) {
     </div>
   );
 }
+interface CreateIssueView {
+  assignees?: User[];
+  labels?: LabelsList[];
+}
 
-const CreateIssueView = () => {
+const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
   return (
-    <div className='flex flex-col'>
-      {sideBarList.map((item, index) => (
-        <Menu source={item} key={index} />
-      ))}
+    <div className='flex w-full flex-col md:w-[240px] lg:w-[256px]'>
+      <div>
+        <MenuItem>
+          <MenuItem.Title source={{ title: 'Assignees', default: 'No one' }} />
+          <MenuItem.Toggle>
+            <MenuItem.List>
+              <MenuItem.ListTitle>
+                Assign up to 10 people to this issue
+              </MenuItem.ListTitle>
+              <MenuItem.SearchBar />
+              <MenuItem.Subtitle>Suggestions</MenuItem.Subtitle>
+              <div className=''>
+                {assignees?.map(({ login }, index) => {
+                  return (
+                    <MenuItem.Item key={index} hasColor={false} hasImg={true}>
+                      {login}
+                    </MenuItem.Item>
+                  );
+                })}
+              </div>
+            </MenuItem.List>
+          </MenuItem.Toggle>
+        </MenuItem>
+      </div>
+      <div>
+        <MenuItem>
+          <MenuItem.Title source={{ title: 'Labels', default: 'None yet' }} />
+          <MenuItem.Toggle>
+            <MenuItem.List>
+              <MenuItem.ListTitle>Apply labels to this page</MenuItem.ListTitle>
+              <MenuItem.SearchBar />
+              <div className=' '>
+                {labels?.map(({ name, color }, index) => {
+                  return (
+                    <MenuItem.Item
+                      key={index}
+                      color={color}
+                      hasColor={true}
+                      hasImg={false}
+                    >
+                      {name}
+                    </MenuItem.Item>
+                  );
+                })}
+              </div>
+            </MenuItem.List>
+          </MenuItem.Toggle>
+        </MenuItem>
+      </div>
     </div>
   );
 };

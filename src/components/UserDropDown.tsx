@@ -1,4 +1,5 @@
 import { SmileyIcon } from '@primer/octicons-react';
+import { User } from '@supabase/supabase-js';
 import styled from 'styled-components';
 
 const Hr = styled.hr`
@@ -109,13 +110,14 @@ const SmileIcon = styled(SmileyIcon)`
 interface UserDropDonw {
   dropDownMenu: (string | JSX.Element)[];
   signOut: () => Promise<void>;
+  user?: User | null;
 }
 
-const UserDropDown = ({ dropDownMenu, signOut }: UserDropDonw) => {
+const UserDropDown = ({ dropDownMenu, signOut, user }: UserDropDonw) => {
   return (
     <Container>
       <Item>
-        Signed in as <Strong>LinHeMa</Strong>
+        Signed in as <Strong>{user?.user_metadata.user_name}</Strong>
       </Item>
       <Item>
         <Status>

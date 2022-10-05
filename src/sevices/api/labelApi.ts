@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { supabase } from "../../supabase/client";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { supabase } from '../../supabase/client';
 
 export type LabelsList = {
   id: number;
@@ -57,43 +57,48 @@ export function addLightOrDark(data: LabelsList[]) {
 const session = supabase.auth.session();
 
 export const labelApi = createApi({
-  reducerPath: "labelApi",
+  reducerPath: 'labelApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.github.com/repos",
+    baseUrl: 'https://api.github.com/repos',
     prepareHeaders: (headers) => {
-      headers.set("Authorization", `Bearer ${session?.provider_token}`);
+      headers.set('Authorization', `Bearer ${session?.provider_token}`);
       return headers;
     },
   }),
-  tagTypes: ["Labels", "Issues"],
+  tagTypes: ['Labels', 'Issues'],
   endpoints: (build) => ({
     getLabelList: build.query<LabelsList[], QueryParams>({
-      query: ({ name, repo }) => `/${name}/${repo}/labels`,
-      providesTags: ["Labels"],
+      query: ({ name, repo }) => ({
+        url: `/${name}/${repo}/labels`,
+        headers: {
+          Authorization: `Bearer ${session?.provider_token}`,
+        },
+      }),
+      providesTags: ['Labels'],
       transformResponse: (response: LabelsList[]) => addLightOrDark(response),
     }),
     addLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, postBody }) => ({
         url: `/${name}/${repo}/labels`,
-        method: "POST",
+        method: 'POST',
         body: postBody,
       }),
-      invalidatesTags: ["Labels"],
+      invalidatesTags: ['Labels'],
     }),
     updateLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName, updateBody }) => ({
         url: `/${name}/${repo}/labels/${lableName}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: updateBody,
       }),
-      invalidatesTags: ["Labels"],
+      invalidatesTags: ['Labels'],
     }),
     deleteLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName }) => ({
         url: `/${name}/${repo}/labels/${lableName}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
-      invalidatesTags: ["Labels"],
+      invalidatesTags: ['Labels'],
     }),
   }),
 });

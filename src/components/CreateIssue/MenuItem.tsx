@@ -1,7 +1,8 @@
 import { CheckIcon, GearIcon, XIcon } from '@primer/octicons-react';
 import React, { createContext, Dispatch, useContext, useState } from 'react';
 import avatar from '../../images/github_avatar.png';
-
+import clsx from 'clsx';
+import { useBoolean } from 'usehooks-ts';
 
 interface MenuItemContext {
   isOpen: boolean;
@@ -15,7 +16,7 @@ const MenuItemContext = createContext<MenuItemContext>({
 });
 
 type MenuItemProps = {
-  children: React.ReactElement;
+  children: JSX.Element[] | JSX.Element;
 };
 
 const MenuItem = (props: MenuItemProps) => {
@@ -24,7 +25,7 @@ const MenuItem = (props: MenuItemProps) => {
   const providerValue: MenuItemContext = { isOpen, setIsOpen };
   return (
     <MenuItemContext.Provider value={providerValue}>
-      <div className=''>
+      <div className=' flex w-full justify-between border-b border-solid border-stone-300 py-8 px-6 md:relative '>
         {React.Children.map(props.children, (child) =>
           React.cloneElement(child, { isOpen, setIsOpen }),
         )}
@@ -66,7 +67,7 @@ const Title = ({ source }: Title) => {
 };
 
 interface List {
-  children: JSX.Element[];
+  children?: JSX.Element[] | JSX.Element;
 }
 
 const List = ({ children }: List) => {
@@ -79,7 +80,7 @@ const List = ({ children }: List) => {
           setIsOpen(!isOpen);
         }}
       />
-      <ul className=' absolute right-[10px] left-[10px] -top-28 z-20 flex min-h-[600px] w-auto flex-col rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:min-h-0 md:w-[298px]'>
+      <ul className=' absolute right-[10px] left-[10px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[200px] md:min-h-0 md:w-[298px]'>
         {children}
       </ul>
     </div>
@@ -90,18 +91,35 @@ const List = ({ children }: List) => {
 
 interface Item {
   children: string;
+  color?: string;
+  hasColor: boolean;
+  hasImg: boolean;
 }
 
-const Item = ({ children }: Item) => {
+const Item = ({ children, color, hasColor, hasImg }: Item) => {
+  const { value, toggle } = useBoolean(false);
   return (
     <li
       className='flex items-end  justify-start border-b border-solid border-stone-300 p-4 '
       onClick={(e) => {
         e.stopPropagation();
+        toggle();
       }}
     >
-      <CheckIcon className='mr-2' />
-      <img src={avatar} className='mr-2 h-[16px] w-[16px] rounded-full' />
+      <CheckIcon className={`mr-2 ${clsx({ invisible: !value })}`} />
+      <img
+        src={avatar}
+        className={`mr-2 h-[16px] w-[16px] rounded-full ${clsx({
+          hidden: !hasImg,
+        })}`}
+      />
+      <div
+        style={{ backgroundColor: `#${color}` }}
+        className={`${clsx({
+          'mr-2 h-[16px] w-[16px] rounded-full': true,
+          hidden: !hasColor,
+        })}`}
+      />
       {children}
     </li>
   );
@@ -115,7 +133,7 @@ const ListTitle = ({ children }: ListTitle) => {
   const { isOpen, setIsOpen } = useContext(MenuItemContext);
   return (
     <li
-      className=' flex items-center justify-between border-b border-solid border-stone-300 p-4 font-bold'
+      className='sticky -top-[1px] z-30 flex items-center justify-between border-b border-solid border-stone-300 bg-white p-4 font-bold'
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -130,7 +148,9 @@ const ListTitle = ({ children }: ListTitle) => {
 
 const SearchBar = () => {
   return (
-    <div className='border-b border-solid border-stone-300 p-4'>
+    <div
+      className={`sticky top-[36px] border-b border-solid border-stone-300 bg-white p-4`}
+    >
       <input
         className='w-full rounded-md border border-solid border-stone-300 p-2'
         type='text'

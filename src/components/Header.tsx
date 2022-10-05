@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { User } from '@supabase/supabase-js';
 import {
   BellIcon,
   MarkGithubIcon,
@@ -230,9 +231,7 @@ const DropdownWrapper = styled.div`
   right: 26px;
   top: 49px;
 `;
-type User = {
-  aud: string;
-};
+
 interface HeaderProps {
   className: string;
   signInWithGithub(): Promise<void>;
@@ -253,7 +252,6 @@ const Header = ({
   const plusRef = useRef(null);
   useOnClickOutside(profileRef, () => setIsProfileOpen(false));
   useOnClickOutside(plusRef, () => setIsPlusOpen(false));
-
 
   return (
     <Wrapper className={className} showOnMobile>
@@ -291,7 +289,10 @@ const Header = ({
             setIsProfileOpen((prev) => !prev);
           }}
         >
-          <ProfileImage className='profile-img' bg={profileImg} />
+          <ProfileImage
+            className='profile-img'
+            bg={user.user_metadata.avatar_url}
+          />
           <ProfileDown size={16} />
         </ProfileWrapper>
       ) : (
@@ -305,7 +306,11 @@ const Header = ({
       )}
       {isProfileOpen ? (
         <DropdownWrapper ref={profileRef}>
-          <UserDropDown dropDownMenu={dropDownMenu} signOut={signOut} />
+          <UserDropDown
+            dropDownMenu={dropDownMenu}
+            signOut={signOut}
+            user={user}
+          />
         </DropdownWrapper>
       ) : null}
       {isPlusOpen && <DropDown list={ListOfCreate} ref={plusRef} />}
