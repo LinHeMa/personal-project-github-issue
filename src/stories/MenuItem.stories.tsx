@@ -14,4 +14,4 @@ export default {
 const Template: ComponentStory<typeof Menu> = (args) => <Menu {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = { source: { title: 'title', default: '0' } };
+Primary.args = { source: { title: 'title', default: 'No one yet' } };

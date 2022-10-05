@@ -13,6 +13,7 @@ import {
   ReplyIcon,
   TasklistIcon,
 } from '@primer/octicons-react';
+import clsx from 'clsx';
 import _ from 'lodash';
 import avatar from '../../images/github_avatar.png';
 import MarkdownItem from './MarkdownItem';
@@ -45,8 +46,12 @@ const typesettingIcon: JSX.Element[] = [
 const MarkdownView = () => {
   return (
     <>
-      <img src={avatar} alt='profile picture' className=' w-[40px] h-[40px] rounded-full mt-4 mx-4'/>
-      <div className='m-4 w-full rounded-xl border border-solid border-stone-300 p-8'>
+      <img
+        src={avatar}
+        alt='profile picture'
+        className=' mx-4 mt-4 hidden h-[40px] w-[40px] rounded-full md:block'
+      />
+      <div className='h-fit w-full rounded-xl border-solid border-stone-300 p-4 md:m-4 md:border md:p-8'>
         <MarkdownItem>
           <MarkdownItem.Input />
           <MarkdownItem.TabContainer>
@@ -59,13 +64,14 @@ const MarkdownView = () => {
               {typesettingIcon.map((icon, index) => (
                 <div
                   key={index}
-                  className={
-                    _.includes([0, 1, 2, 6, 7, 8], index)
-                      ? 'mr-8 hidden last:mr-0 md:block'
-                      : index === 10
-                      ? 'mr-8 md:hidden'
-                      : 'mr-8 last:mr-0'
-                  }
+                  className={clsx({
+                    'hidden last:mr-0 md:block': _.includes(
+                      [0, 1, 2, 6, 7, 8],
+                      index,
+                    ),
+                    'md:hidden': index === 10,
+                    'mr-8 last:mr-0': true,
+                  })}
                 >
                   <MarkdownItem.FunctionItem key={index}>
                     {icon}
@@ -81,6 +87,10 @@ const MarkdownView = () => {
               ))}
             </MarkdownItem.FunctionMobileToggleBar>
           </MarkdownItem.FunctionBar>
+          <MarkdownItem.TextArea />
+          <div className=' mt-4 flex justify-end'>
+            <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
+          </div>
         </MarkdownItem>
       </div>
     </>

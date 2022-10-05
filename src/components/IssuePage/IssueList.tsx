@@ -6,6 +6,7 @@ import {
   TagIcon,
   XIcon,
 } from '@primer/octicons-react';
+import clsx from 'clsx';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -150,9 +151,9 @@ export default function IssueList() {
           </a>
         </div>
         <div
-          className={`mt-8 mb-4 flex w-full cursor-pointer items-center  justify-start md:order-4 ${
-            hasCondition() ? '' : 'hidden'
-          }`}
+          className={`mt-8 mb-4 flex w-full cursor-pointer items-center  justify-start md:order-4 ${clsx(
+            { hidden: !hasCondition() },
+          )}`}
           onClick={() => {
             dispatch(resetAll());
           }}

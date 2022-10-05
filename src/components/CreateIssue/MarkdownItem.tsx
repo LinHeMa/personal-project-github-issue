@@ -3,6 +3,7 @@ import {
   ChevronUpIcon,
   TypographyIcon,
 } from '@primer/octicons-react';
+import clsx from 'clsx';
 import _ from 'lodash';
 import React, { createContext, Dispatch, useContext, useState } from 'react';
 
@@ -67,18 +68,18 @@ interface TabContainer {
 }
 
 const TabContainer = ({ children }: TabContainer) => {
-  return <div className='my-8 flex justify-between md:justify-start'>{children}</div>;
+  return (
+    <div className='my-8 flex justify-between md:justify-start'>{children}</div>
+  );
 };
 
 const Tab = ({ children }: Tab) => {
   const { isPreview, setIsPreview } = useContext(MarkdownContext);
   return (
     <div
-      className={`flex flex-1 md:flex-none items-center justify-center border border-solid border-stone-300 p-8 md:p-6 md:rounded-t-lg text-[16px] ${
-        isPreview === children ? ' bg-gray-200' : ''
-      }`}
+      className={`flex flex-1 items-center justify-center border border-solid border-stone-300 p-8 text-[16px] md:flex-none md:rounded-t-lg md:p-6 
+       ${clsx({ ' bg-gray-200': isPreview === children })}`}
       onClick={() => {
-        console.log(children);
         setIsPreview(children);
       }}
     >
@@ -133,6 +134,31 @@ const FunctionItem = ({ children }: FunctionItem) => {
   return <div className={`mr-8 flex last:mr-0 `}>{children}</div>;
 };
 
+const TextArea = () => {
+  return (
+    <textarea
+      className='mt-8 min-h-[200px] w-full rounded-xl border border-solid border-stone-300 py-6 px-4 text-[14px] resize-y'
+      placeholder='Leave a comment'
+    ></textarea>
+  );
+};
+
+interface Button {
+  children: JSX.Element | string;
+  text?: string;
+}
+const Button = ({ children }: Button) => {
+  return (
+    <div
+      className={clsx({
+        'rounded-lg p-4 bg-green-400 w-fit text-white	font-[700]': true,
+      })}
+    >
+      {children}
+    </div>
+  );
+};
+
 MarkdownItem.Input = Input;
 MarkdownItem.Tab = Tab;
 MarkdownItem.TabContainer = TabContainer;
@@ -141,5 +167,7 @@ MarkdownItem.FunctionGroup = FunctionGroup;
 MarkdownItem.FunctionItem = FunctionItem;
 MarkdownItem.FunctionMobileToggle = FunctionMobileToggle;
 MarkdownItem.FunctionMobileToggleBar = FunctionMobileToggleBar;
+MarkdownItem.TextArea = TextArea;
+MarkdownItem.Button = Button;
 
 export default MarkdownItem;
