@@ -19,7 +19,7 @@ const Wrapper = styled.div<WrapperProps>`
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : "500")};
   padding: 0 7px;
   line-height: normal;
-  height: 25px;
+  height:20px;
   margin-right: 4px;
   white-space: nowrap;
   color: ${(props) =>

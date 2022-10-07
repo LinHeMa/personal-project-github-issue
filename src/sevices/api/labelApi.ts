@@ -73,6 +73,7 @@ export const labelApi = createApi({
         headers: {
           Authorization: `Bearer ${session?.provider_token}`,
         },
+        cache: "no-cache",
       }),
       providesTags: ['Labels'],
       transformResponse: (response: LabelsList[]) => addLightOrDark(response),

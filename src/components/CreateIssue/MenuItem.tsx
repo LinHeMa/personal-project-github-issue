@@ -1,16 +1,31 @@
 import { CheckIcon, GearIcon, XIcon } from '@primer/octicons-react';
-import React, { createContext, Dispatch, useContext, useState } from 'react';
-import avatar from '../../images/github_avatar.png';
+import React, {
+  createContext,
+  Dispatch,
+  useContext,
+  useRef,
+  useState,
+} from 'react';
 import clsx from 'clsx';
-import { useBoolean } from 'usehooks-ts';
+import { useBoolean, useOnClickOutside } from 'usehooks-ts';
+import _ from 'lodash';
+import Label from '../label/Label';
+import { LabelsList } from '../../sevices/api/labelApi';
+import { User } from '../../sevices/api/issueApi';
 
 interface MenuItemContext {
   isOpen: boolean;
   setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  searchValue: string;
+  setSearchValue: Dispatch<React.SetStateAction<string>>;
 }
 const MenuItemContext = createContext<MenuItemContext>({
   isOpen: false,
   setIsOpen: () => {
+    return;
+  },
+  searchValue: '',
+  setSearchValue: () => {
     return;
   },
 });
@@ -21,13 +36,28 @@ type MenuItemProps = {
 
 const MenuItem = (props: MenuItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const providerValue: MenuItemContext = { isOpen, setIsOpen };
+  const ref = useRef(null);
+  const [searchValue, setSearchValue] = useState<string>('');
+  useOnClickOutside(ref, () => setIsOpen(false));
+  const providerValue: MenuItemContext = {
+    isOpen,
+    setIsOpen,
+    searchValue,
+    setSearchValue,
+  };
   return (
     <MenuItemContext.Provider value={providerValue}>
-      <div className=' flex w-full justify-between border-b border-solid border-stone-300 py-8 px-6 md:relative '>
+      <div
+        className=' flex w-full justify-between  py-8 px-6 md:relative '
+        ref={ref}
+      >
         {React.Children.map(props.children, (child) =>
-          React.cloneElement(child, { isOpen, setIsOpen }),
+          React.cloneElement(child, {
+            isOpen,
+            setIsOpen,
+            searchValue,
+            setSearchValue,
+          }),
         )}
       </div>
     </MenuItemContext.Provider>
@@ -50,6 +80,8 @@ const Toggle = ({ children }: Toggle) => {
 
 interface Title {
   source: source;
+  clickedArray?: LabelsList[] | User[];
+  isLabel: boolean;
 }
 
 interface source {
@@ -57,11 +89,42 @@ interface source {
   default: string;
 }
 
-const Title = ({ source }: Title) => {
+const Title = ({ source, clickedArray, isLabel }: Title) => {
   return (
     <div className='flex flex-col  items-start '>
       <h1 className=' pb-6 font-[700] '>{source.title}</h1>
-      <h1 className=''>{source.default}</h1>
+      <h1 className={`${clsx({ hidden: clickedArray?.length !== 0 })}`}>
+        {source.default}
+      </h1>
+
+      <div
+        className={`flex  ${clsx({
+          'flex-wrap': isLabel,
+          'flex-col': !isLabel,
+        })}`}
+      >
+        {clickedArray?.map((item, index) => (
+          <div key={index} className='mb-1'>
+            {'name' in item ? (
+              <Label
+                text={item.name}
+                bgColor={'#' + item.color}
+                isLight={item.isLight}
+                color='#ffffff'
+                borderColor='transparent'
+              />
+            ) : (
+              <div className='flex items-center'>
+                <img
+                  src={item.avatar_url}
+                  className={`mr-2 h-[16px] w-[16px] rounded-full`}
+                />
+                {item.login}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -80,7 +143,7 @@ const List = ({ children }: List) => {
           setIsOpen(!isOpen);
         }}
       />
-      <ul className=' absolute right-[10px] left-[10px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[200px] md:min-h-0 md:w-[298px]'>
+      <ul className=' absolute right-[10px] left-[10px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[400px] md:min-h-0 md:w-[298px]'>
         {children}
       </ul>
     </div>
@@ -94,21 +157,46 @@ interface Item {
   color?: string;
   hasColor: boolean;
   hasImg: boolean;
+  clickFn?: (label: string) => void;
+  clickedArray?: string[];
+  img?: string;
 }
 
-const Item = ({ children, color, hasColor, hasImg }: Item) => {
+const Item = ({
+  children,
+  color,
+  hasColor,
+  hasImg,
+  clickFn,
+  clickedArray,
+  img,
+}: Item) => {
   const { value, toggle } = useBoolean(false);
+  const { searchValue } = useContext(MenuItemContext);
+  const replaceWhite = (string: string) => _.replace(string, / /g, '');
+  const textRefact = _.flow([replaceWhite, _.toLower]);
+
   return (
     <li
-      className='flex items-end  justify-start border-b border-solid border-stone-300 p-4 '
+      className={`flex items-end  justify-start border-b border-solid border-stone-300 p-4 ${clsx(
+        {
+          hidden: !_.includes(textRefact(children), textRefact(searchValue)),
+        },
+      )}`}
       onClick={(e) => {
-        e.stopPropagation();
         toggle();
+        console.log(children);
+        clickFn?.(children);
+        e.stopPropagation();
       }}
     >
-      <CheckIcon className={`mr-2 ${clsx({ invisible: !value })}`} />
+      <CheckIcon
+        className={`mr-2 ${clsx({
+          invisible: !_.includes(clickedArray, children),
+        })}`}
+      />
       <img
-        src={avatar}
+        src={img}
         className={`mr-2 h-[16px] w-[16px] rounded-full ${clsx({
           hidden: !hasImg,
         })}`}
@@ -147,11 +235,14 @@ const ListTitle = ({ children }: ListTitle) => {
 };
 
 const SearchBar = () => {
+  const { searchValue, setSearchValue } = useContext(MenuItemContext);
   return (
     <div
       className={`sticky top-[36px] border-b border-solid border-stone-300 bg-white p-4`}
     >
       <input
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         className='w-full rounded-md border border-solid border-stone-300 p-2'
         type='text'
         placeholder='Type something'
@@ -167,7 +258,7 @@ interface Subtitle {
 
 const Subtitle = ({ children }: Subtitle) => {
   return (
-    <div className='font-[8px] flex justify-start border-b border-solid border-stone-300 bg-stone-100 p-3 font-semibold'>
+    <div className='font-[8px] sticky top-[84px] flex justify-start border-b border-solid border-stone-300 bg-stone-100 p-3 font-semibold'>
       {children}
     </div>
   );

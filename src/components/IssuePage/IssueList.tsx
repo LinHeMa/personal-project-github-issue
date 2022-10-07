@@ -110,7 +110,10 @@ export default function IssueList() {
             />
           </div>
         </div>
-        <button className='ml-auto  flex w-fit items-center whitespace-pre   rounded-md bg-primary-green px-4	py-[5x] text-sm font-medium text-[#ffffff] md:order-3 md:ml-4'>
+        <button
+          className='ml-auto  flex w-fit items-center whitespace-pre   rounded-md bg-primary-green px-4	py-[5x] text-sm font-medium text-[#ffffff] md:order-3 md:ml-4'
+          onClick={() => navigate('/createissue')}
+        >
           New<div className='hidden md:block'> issue</div>
         </button>
         <div className='my-6  flex w-full  rounded-md border border-solid border-gray-300 bg-primary-bg-gray md:my-0 md:w-6/12 lg:mr-4 lg:w-7/12 '>

@@ -105,39 +105,38 @@ type query = {
   page?: string;
 };
 
+export interface postbody {
+  title: string;
+  body: string;
+  assignees: string[] | null;
+  labels: string[] | null;
+}
 export interface postQuery {
   name: string;
   repo: string;
   title: string;
-  body: string;
-  assignees?: string[];
-  milestone?: number;
-  labels?: string[];
+  body: postbody;
 }
 
 const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
     getIssues: build.query<Root[], query>({
       query: (query) =>
-        `/LinHeMa/TEST/issues?&per_page=5${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
+        `/LinHeMa/TEST/issues?&${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
       providesTags: ['Issues'],
     }),
     getListAssignees: build.query<User[], string>({
       query: () => '/LinHeMa/TEST/assignees',
       providesTags: ['Issues'],
     }),
-    createIssue: build.mutation<any, postQuery>({
-      query: ({ name, repo, title, body, assignees, milestone, labels }) => ({
-        url: `/${name}/${repo}/issues`,
-        method: 'POST',
-        body: {
-          title,
+    createIssue: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, body }) {
+        return {
+          url: `/${name}/${repo}/issues`,
+          method: 'POST',
           body,
-          assignees,
-          milestone,
-          labels,
-        },
-      }),
+        };
+      },
       invalidatesTags: [{ type: 'Issues' }],
     }),
   }),

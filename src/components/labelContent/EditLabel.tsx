@@ -233,6 +233,7 @@ const EditLabel = ({
         color: _.trimStart(labelColor, "#"),
       }));
     }
+    console.log(postBody)
   }, [newName, newDescription, labelColor]);
 
   return (

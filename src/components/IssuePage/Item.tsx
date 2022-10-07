@@ -89,8 +89,8 @@ const Item: React.FC<ItemProps> = ({ data }) => {
             #{number} opened {timeCalc(created_at)} by {user.login}
           </a>
         </div>
-        <div className='ml-auto hidden items-start  pt-5 pr-4 sm:flex '>
-          <div className='group mr-4  flex'>
+        <div className='ml-auto hidden min-w-[76px] items-start justify-end pt-5 pr-4 sm:flex'>
+          <div className='group mr-4 flex'>
             {assignees.length > 0
               ? assignees.map((assignee, index) => {
                   return (
@@ -99,7 +99,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
                       src={assignee.avatar_url}
                       className={`h-[20px] w-[20px] rounded-full transition-all duration-300 ease-in-out ${
                         index === assignees.length - 1 ? '' : 'mr-[-12px]'
-                      }  ${assignees.length !== 1 && 'group-hover:mr-2'}`}
+                      }  ${assignees.length !== 1 && 'group-hover:mr-2'}`}  
                     />
                   );
                 })
