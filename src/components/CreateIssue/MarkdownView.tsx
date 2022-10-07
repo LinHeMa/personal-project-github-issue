@@ -14,7 +14,8 @@ import {
   TasklistIcon,
 } from '@primer/octicons-react';
 import ReactMarkdown from 'react-markdown';
-import '../../utils/hooks/markdown.css'
+import MDEditor ,{ commands }from '@uiw/react-md-editor';
+import '../../utils/hooks/markdown.css';
 import remarkFootnotes from 'remark-footnotes';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import remarkGfm from 'remark-gfm';
@@ -27,6 +28,7 @@ import { useBoolean } from 'usehooks-ts';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useRef } from 'react';
 import {
+  addBody,
   addBoldText,
   addCodeText,
   addHeadingText,
@@ -136,7 +138,6 @@ const MarkdownView = () => {
     dispatch(addBoldText(textAreaRef.current!));
     // insert(textAreaRef.current!, '### ', '');
   };
-  console.log(textAreaRef.current);
   return (
     <>
       <img
@@ -158,7 +159,7 @@ const MarkdownView = () => {
           {value ? (
             <MarkdownItem.FunctionBar>
               <MarkdownItem.FunctionMobileToggle></MarkdownItem.FunctionMobileToggle>
-              <MarkdownItem.FunctionGroup>
+              {/* <MarkdownItem.FunctionGroup>
                 {typesettingIcon.map((icon, index) => (
                   <div
                     key={index}
@@ -177,7 +178,7 @@ const MarkdownView = () => {
                     </MarkdownItem.FunctionItem>
                   </div>
                 ))}
-              </MarkdownItem.FunctionGroup>
+              </MarkdownItem.FunctionGroup> */}
               <MarkdownItem.FunctionMobileToggleBar>
                 {textIcon.map((icon, index) => (
                   <MarkdownItem.FunctionItem key={index}>
@@ -190,37 +191,60 @@ const MarkdownView = () => {
             <></>
           )}
           {value ? (
-            <MarkdownItem.TextArea forwardedRef={textAreaRef} />
-          ) : (
-            <div className='prose min-h-[200px] p-8 text-left'>
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm, remarkFootnotes]}
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || '');
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        language={match[1]}
-                        style={dracula}
-                        PreTag='div'
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, '')}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <div className='not-prose'>
-                        <code className='bg-[rgba(175,184,193,0.2)] p-2 text-red-400 font-mono rounded-md' {...props}>
-                          {children}
-                        </code>
-                      </div>
-                    );
-                  },
-                  // ...markdownStyle,
-                }}
-              >
-                {body}
-              </ReactMarkdown>
+            // <MarkdownItem.TextArea forwardedRef={textAreaRef} />
+            <div  data-color-mode='light'>
+              <div className='wmde-markdown-var'>
+                <MDEditor
+                  value={body}
+                  onChange={(text) =>
+                    text ? dispatch(addBody(text)) : dispatch(addBody(''))
+                  }
+                  
+                />
+              </div>
             </div>
+          ) : (
+            <div  data-color-mode='light'>
+              <div className='wmde-markdown-var'>
+                {/* <MDEditor
+                  value={body}
+                  onChange={(text) => text && dispatch(addBody(text))}
+                /> */}
+
+                <MDEditor.Markdown
+                  source={body}
+                />
+              </div>
+            </div>
+            // <div className='prose min-h-[200px] p-8 text-left'>
+            //   <ReactMarkdown
+            //     remarkPlugins={[remarkGfm, remarkFootnotes]}
+            //     components={{
+            //       code({ node, inline, className, children, ...props }) {
+            //         const match = /language-(\w+)/.exec(className || '');
+            //         return !inline && match ? (
+            //           <SyntaxHighlighter
+            //             language={match[1]}
+            //             style={dracula}
+            //             PreTag='div'
+            //             {...props}
+            //           >
+            //             {String(children).replace(/\n$/, '')}
+            //           </SyntaxHighlighter>
+            //         ) : (
+            //           <div className='not-prose'>
+            //             <code className='bg-[rgba(175,184,193,0.2)] p-2 text-red-400 font-mono rounded-md' {...props}>
+            //               {children}
+            //             </code>
+            //           </div>
+            //         );
+            //       },
+            //       // ...markdownStyle,
+            //     }}
+            //   >
+            //     {body}
+            //   </ReactMarkdown>
+            // </div>
           )}
           <div className=' mt-4 flex justify-end'>
             <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
