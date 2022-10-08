@@ -1,18 +1,43 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = { userInfo: "" };
+const initialState: User = {
+  avatar_url: '',
+  email: '',
+  email_verified: false,
+  iss: '',
+  preferred_username: '',
+  provider_id: '',
+  sub: '',
+  user_name: '',
+  token: null,
+};
+
+export type User = {
+  avatar_url: string;
+  email: string;
+  email_verified: boolean;
+  iss: string;
+  preferred_username: string;
+  provider_id: string;
+  sub: string;
+  user_name: string;
+  token?: string | null;
+};
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
-    addUser(state, action: PayloadAction<string>) {
-      state.userInfo = action.payload;
+    addUser(state, action: PayloadAction<User>) {
+      return action.payload;
+    },
+    signOutUser() {
+      return initialState;
     },
   },
 });
 
-export const { addUser } = userSlice.actions;
+export const { addUser, signOutUser } = userSlice.actions;
 
 export default userSlice.reducer;

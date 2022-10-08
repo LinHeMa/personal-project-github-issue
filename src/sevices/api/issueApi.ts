@@ -103,8 +103,12 @@ type query = {
   filter?: string;
   state?: string;
   page?: string;
+  token?: string | null;
 };
 
+type getListAssignees = {
+  token?:string|null
+}
 export interface postbody {
   title: string;
   body: string;
@@ -116,24 +120,47 @@ export interface postQuery {
   repo: string;
   title: string;
   body: postbody;
+  token?: string | null;
 }
 
 const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
     getIssues: build.query<Root[], query>({
-      query: (query) =>
-        `/LinHeMa/TEST/issues?&${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
+      query: (query) => {
+        return {
+          url: `/LinHeMa/TEST/issues?&${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
+          headers: {
+            Authorization: `Bearer ${query.token}`,
+          },
+          cache: 'no-cache',
+        };
+      },
+
       providesTags: ['Issues'],
     }),
     getListAssignees: build.query<User[], string>({
-      query: () => '/LinHeMa/TEST/assignees',
+      query: (token) => {
+        console.log(token)
+        return {
+          url: '/LinHeMa/TEST/assignees',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+        };
+      },
       providesTags: ['Issues'],
     }),
     createIssue: build.mutation<postQuery, Partial<postQuery>>({
-      query({ name, repo, body }) {
+      query({ name, repo, body, token }) {
+        console.log(token)
         return {
           url: `/${name}/${repo}/issues`,
           method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
           body,
         };
       },

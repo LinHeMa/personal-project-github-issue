@@ -1,13 +1,14 @@
-import { SyncIcon } from "@primer/octicons-react";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Button from "../button/Button";
-import _ from "lodash";
-import ColorPicker from "./ColorPicker";
+import { SyncIcon } from '@primer/octicons-react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Button from '../button/Button';
+import _ from 'lodash';
+import ColorPicker from './ColorPicker';
 import {
   useAddLabelListMutation,
   useUpdateLabelListMutation,
-} from "../../sevices/api/labelApi";
+} from '../../sevices/api/labelApi';
+import { useAppSelector } from '../../app/hooks';
 type ChangeColorBtnProps = {
   color: string;
   $isRightFormat?: boolean;
@@ -76,7 +77,7 @@ type InputProps = {
 };
 const ColorInput = styled.input<InputProps>`
   border: 1px solid #d0d7de;
-  color: ${(props) => (props.$isRightFormat ? "inherit" : "#cf222e")};
+  color: ${(props) => (props.$isRightFormat ? 'inherit' : '#cf222e')};
   height: 32px;
   width: 100%;
   margin-top: 8px;
@@ -114,7 +115,7 @@ const ChangeColorWrapper = styled.div`
 
 const ChangeIcon = styled(SyncIcon)<ChangeIconProps>`
   color: ${(props) =>
-    props.isLight || props.$isWhite ? "#ffffff;" : "#000000"};
+    props.isLight || props.$isWhite ? '#ffffff;' : '#000000'};
 `;
 
 const ChangeColorBtn = styled.div<ChangeColorBtnProps>`
@@ -125,8 +126,8 @@ const ChangeColorBtn = styled.div<ChangeColorBtnProps>`
   margin-right: 8px;
   border: 1px solid
     ${(props) =>
-      _.lowerCase(props.color) === "ffffff" ? "#d0d7de" : "transparent"};
-  background-color: ${(props) => "#" + props.color};
+      _.lowerCase(props.color) === 'ffffff' ? '#d0d7de' : 'transparent'};
+  background-color: ${(props) => '#' + props.color};
   background-color: ${(props) =>
     props.$isRightFormat ? props.$newColor : null};
   display: flex;
@@ -198,7 +199,7 @@ const EditLabel = ({
     setNewDescription(target.value);
   };
   const handleNewColorChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const colorReg = new RegExp("^#([A-F0-9]{2,3}|[A-F0-9]{5})$", "i");
+    const colorReg = new RegExp('^#([A-F0-9]{2,3}|[A-F0-9]{5})$', 'i');
     const target = e.target as HTMLInputElement;
     setIsRightFormat(true);
     setLabelColor(target.value);
@@ -207,6 +208,7 @@ const EditLabel = ({
       return;
     }
   };
+  const token = useAppSelector((state) => state.userInfoAction.token);
   const [useUpdateLabelList] = useUpdateLabelListMutation();
   const [addLabelList] = useAddLabelListMutation();
   function generateRandomColor() {
@@ -215,7 +217,7 @@ const EditLabel = ({
   }
 
   useEffect(() => {
-    if (newName !== "" || newName !== name) {
+    if (newName !== '' || newName !== name) {
       setUpdateBody((prev) => ({ ...prev, new_name: newName }));
       setPostBody((prev) => ({ ...prev, name: newName }));
     }
@@ -226,14 +228,13 @@ const EditLabel = ({
     if (labelColor !== color) {
       setUpdateBody((prev) => ({
         ...prev,
-        color: _.trimStart(labelColor, "#"),
+        color: _.trimStart(labelColor, '#'),
       }));
       setPostBody((prev) => ({
         ...prev,
-        color: _.trimStart(labelColor, "#"),
+        color: _.trimStart(labelColor, '#'),
       }));
     }
-    console.log(postBody)
   }, [newName, newDescription, labelColor]);
 
   return (
@@ -245,7 +246,7 @@ const EditLabel = ({
       <DescriptionBlock>
         <Title>Description</Title>
         <Input
-          placeholder="Descritpion(Optional)"
+          placeholder='Descritpion(Optional)'
           value={newDescription}
           onChange={handleDescriptionChange}
         />
@@ -284,17 +285,17 @@ const EditLabel = ({
             setIsEdit(false);
             setLabelColor(`#${color}`);
             setNewName(name);
-            setNewDescription(description ? description : "");
+            setNewDescription(description ? description : '');
             if (setIsCreating) {
               setIsCreating(false);
             }
           }}
         >
           <Button
-            text="Cancel"
-            color="#000000"
-            bgColor="#f6f8fa"
-            fontSize="14px"
+            text='Cancel'
+            color='#000000'
+            bgColor='#f6f8fa'
+            fontSize='14px'
           />
         </CancelWrapper>
 
@@ -303,15 +304,17 @@ const EditLabel = ({
             setIsEdit(false);
             isCreating
               ? addLabelList({
-                  name: "LinHeMa",
-                  repo: "TEST",
+                  name: 'LinHeMa',
+                  repo: 'TEST',
                   postBody: postBody,
+                  token: token,
                 })
               : useUpdateLabelList({
-                  name: "LinHeMa",
-                  repo: "TEST",
+                  name: 'LinHeMa',
+                  repo: 'TEST',
                   lableName: name,
                   updateBody: updateBody,
+                  token: token,
                 });
             setIsEdit(false);
             if (setIsCreating) {
@@ -320,11 +323,11 @@ const EditLabel = ({
           }}
         >
           <Button
-            text={isCreating ? "Create label" : "Save changes"}
-            color="#ffffff"
-            bgColor="#2da44e"
-            fontSize="14px"
-            hoverColor="#2c974b;"
+            text={isCreating ? 'Create label' : 'Save changes'}
+            color='#ffffff'
+            bgColor='#2da44e'
+            fontSize='14px'
+            hoverColor='#2c974b;'
           />
         </SaveChangeWrapper>
       </BottomBlock>

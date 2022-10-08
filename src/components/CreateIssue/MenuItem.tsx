@@ -185,7 +185,6 @@ const Item = ({
       )}`}
       onClick={(e) => {
         toggle();
-        console.log(children);
         clickFn?.(children);
         e.stopPropagation();
       }}

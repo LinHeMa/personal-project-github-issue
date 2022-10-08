@@ -16,6 +16,7 @@ import {
 } from '@primer/octicons-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAppSelector } from '../../app/hooks';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import Button from '../button/Button';
 import DoubleButton from '../button/DoubleButton';
@@ -147,7 +148,8 @@ const TabsWrapper = styled.div`
 
 const Subtitle = () => {
   const navigate = useNavigate();
-  const { data } = useGetIssuesQuery({});
+  const token = useAppSelector((state) => state.userInfoAction.token);
+  const { data } = useGetIssuesQuery({ token: token });
   return (
     <Wrapper>
       <TitleWrapper>

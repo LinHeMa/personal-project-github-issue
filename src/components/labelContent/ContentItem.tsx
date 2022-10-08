@@ -11,6 +11,7 @@ import Label from '../label/Label';
 import EditLabel from './EditLabel';
 import { checkLight } from '../../sevices/api/labelApi';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 
 type FunctionButtonMobileWrapperProps = {
   isToggle: boolean;
@@ -158,6 +159,7 @@ const ContentItem = ({
   setIsCreating,
 }: ContentItemProps) => {
   const dispatch = useDispatch();
+  const token = useAppSelector((state) => state.userInfoAction.token);
   const [isToggle, setIsToggle] = useState(true);
   const toggleRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
@@ -222,6 +224,7 @@ const ContentItem = ({
                     name: 'LinHeMa',
                     repo: 'TEST',
                     lableName: name,
+                    token: token,
                   }).then(() =>
                     dispatch(labelApi.util.invalidateTags(['Labels'])),
                   );

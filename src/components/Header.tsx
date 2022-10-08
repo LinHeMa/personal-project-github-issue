@@ -12,6 +12,7 @@ import profileImg from '../images/github_avatar.png';
 import UserDropDown from './UserDropDown';
 import DropDown from './labelContent/DropDown';
 import useOnClickOutside from '../utils/hooks/useOnClidkOutside';
+import { useNavigate } from 'react-router-dom';
 
 const ListOfCreate = [
   'New repository',
@@ -246,6 +247,7 @@ const Header = ({
   signOut,
   user,
 }: HeaderProps) => {
+  const navigate = useNavigate()
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPlusOpen, setIsPlusOpen] = useState(false);
   const profileRef = useRef(null);
@@ -271,7 +273,7 @@ const Header = ({
         <Link>Marketplace</Link>
         <Link>Explore</Link>
       </ListSearchContainer>
-      <div onClick={signInWithGithub}>
+      <div onClick={()=>signInWithGithub().then(()=>navigate('/'))}>
         <Bell size={16} />
       </div>
       <PlusWrapper

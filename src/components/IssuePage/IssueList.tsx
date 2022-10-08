@@ -30,6 +30,7 @@ export type issueStateType = {
 export default function IssueList() {
   const navigate = useNavigate();
   const data = useAppSelector((state) => state.labelListAction);
+  const token = useAppSelector((state) => state.userInfoAction.token);
   const { data: allIssueData } = useGetIssuesQuery({
     labels: '',
     assignee: '',
@@ -37,6 +38,7 @@ export default function IssueList() {
     filter: '',
     state: '&state=all',
     page: '',
+    token: token,
   });
   const openIssueQty = _.filter(
     allIssueData,
@@ -84,9 +86,11 @@ export default function IssueList() {
     closed: 0,
   });
   const dispatch = useAppDispatch();
+  const userToken = useAppSelector((state) => state.userInfoAction.token);
   const { data: lableData } = useGetLabelListQuery({
     name: 'LinHeMa',
     repo: 'TEST',
+    token: userToken,
   });
   return (
     <>

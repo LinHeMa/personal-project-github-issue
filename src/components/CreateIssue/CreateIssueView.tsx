@@ -73,8 +73,6 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
   const assigneeClickedArray = _.filter(assignees, (assignee) =>
     _.includes(assigneesArray, assignee.login),
   );
-  console.log('assigneesArray', assigneesArray);
-  console.log('labelsArray', labelsArray);
   return (
     <div className='flex w-full flex-col md:w-[240px] lg:w-[256px]'>
       <div className='border-b border-solid border-stone-300'>

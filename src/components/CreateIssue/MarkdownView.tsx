@@ -14,7 +14,7 @@ import {
   TasklistIcon,
 } from '@primer/octicons-react';
 import ReactMarkdown from 'react-markdown';
-import MDEditor ,{ commands }from '@uiw/react-md-editor';
+import MDEditor, { commands } from '@uiw/react-md-editor';
 import '../../utils/hooks/markdown.css';
 import remarkFootnotes from 'remark-footnotes';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -36,7 +36,6 @@ import {
   addQuoteText,
   addTagText,
 } from '../../feature/Label/createIssueSlice';
-import { type } from '@testing-library/user-event/dist/type';
 
 const textIcon: JSX.Element[] = [
   <HeadingIcon key='HeadingIcon' />,
@@ -69,6 +68,7 @@ const MarkdownView = () => {
     {
       button: <HeadingIcon key='HeadingIcon' />,
       function: () => dispatch(addHeadingText(textAreaRef.current!)),
+      // function: () => createHeadlineCommandHandler(1),
     },
     {
       button: <BoldIcon key='BoldIcon' />,
@@ -133,11 +133,6 @@ const MarkdownView = () => {
       },
     },
   ];
-  const addHeadingTextFn = () => {
-    getSelectionHandler();
-    dispatch(addBoldText(textAreaRef.current!));
-    // insert(textAreaRef.current!, '### ', '');
-  };
   return (
     <>
       <img
@@ -192,28 +187,74 @@ const MarkdownView = () => {
           )}
           {value ? (
             // <MarkdownItem.TextArea forwardedRef={textAreaRef} />
-            <div  data-color-mode='light'>
+            <div data-color-mode='light'>
               <div className='wmde-markdown-var'>
                 <MDEditor
                   value={body}
                   onChange={(text) =>
                     text ? dispatch(addBody(text)) : dispatch(addBody(''))
                   }
-                  
+                  placeholder='Leave a comment'
+                  preview="edit"
+                  minHeight={300}
+                  components={{
+                    toolbar: (command, disabled, executeCommand) => {
+                      if (command.keyCommand === 'code') {
+                        return (
+                          <button
+                            aria-label='Insert code'
+                            disabled={disabled}
+                            onClick={(evn) => {
+                              evn.stopPropagation();
+                              executeCommand(command, command.groupName);
+                            }}
+                          >
+                            <CodeIcon />
+                          </button>
+                        );
+                      }
+                      if (command.keyCommand === 'quote') {
+                        return (
+                          <button
+                            aria-label='Insert code'
+                            disabled={disabled}
+                            onClick={(evn) => {
+                              evn.stopPropagation();
+                              executeCommand(command, command.groupName);
+                            }}
+                          >
+                            <QuoteIcon />
+                          </button>
+                        );
+                      }
+                      if (command.keyCommand === 'image') {
+                        return (
+                          <button
+                            aria-label='Insert code'
+                            disabled={disabled}
+                            onClick={(evn) => {
+                              evn.stopPropagation();
+                              executeCommand(command, command.groupName);
+                            }}
+                          >
+                            <ImageIcon />
+                          </button>
+                        );
+                      }
+                    },
+                  }}
                 />
               </div>
             </div>
           ) : (
-            <div  data-color-mode='light'>
+            <div data-color-mode='light'>
               <div className='wmde-markdown-var'>
                 {/* <MDEditor
                   value={body}
                   onChange={(text) => text && dispatch(addBody(text))}
                 /> */}
 
-                <MDEditor.Markdown
-                  source={body}
-                />
+                <MDEditor.Markdown source={body} />
               </div>
             </div>
             // <div className='prose min-h-[200px] p-8 text-left'>

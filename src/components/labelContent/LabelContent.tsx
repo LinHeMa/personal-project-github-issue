@@ -6,6 +6,8 @@ import FunctionBar from './FunctionBar';
 import SortDropdown from './SortDropdown';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
+import { useAppSelector } from '../../app/hooks';
+import { useBoolean } from 'usehooks-ts';
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -47,42 +49,47 @@ const SortBtn = styled.div`
 const LabelContent = () => {
   const [open, setOpen] = useState(false);
   const dropDownRef = useRef(null);
-  const { data, isSuccess } = useGetLabelListQuery({
+  const token = useAppSelector((state) => state.userInfoAction.token);
+  const { data, isSuccess, isError } = useGetLabelListQuery({
     name: 'LinHeMa',
-    repo: 'TEST'
+    repo: 'TEST',
+    token: token,
   });
   useOnClickOutside(dropDownRef, () => setOpen(false));
+  if (isError) console.log(data);
 
-  return (
-    <Wrapper>
-      <FunctionBar />
-      <ContentContainer>
-        <Title>
-          <LabelCount>{isSuccess ? data?.length : 0} labels</LabelCount>
-          <SortBtn
-            ref={dropDownRef}
-            onClick={() => {
-              setOpen((prev) => !prev);
-            }}
-          >
-            Sort <TriangleDownIcon />
-            {open && <SortDropdown />}
-          </SortBtn>
-        </Title>
-      </ContentContainer>
-      {data?.map(({ id, url, name, color, description, isLight }) => (
-        <ContentItem
-          key={id}
-          id={id}
-          url={url}
-          name={name}
-          color={color}
-          description={description}
-          isLight={isLight}
-        />
-      ))}
-    </Wrapper>
-  );
+  if (isSuccess)
+    return (
+      <Wrapper>
+        <FunctionBar />
+        <ContentContainer>
+          <Title>
+            <LabelCount>{isSuccess ? data?.length : 0} labels</LabelCount>
+            <SortBtn
+              ref={dropDownRef}
+              onClick={() => {
+                setOpen((prev) => !prev);
+              }}
+            >
+              Sort <TriangleDownIcon />
+              {open && <SortDropdown />}
+            </SortBtn>
+          </Title>
+        </ContentContainer>
+        {data?.map(({ id, url, name, color, description, isLight }) => (
+          <ContentItem
+            key={id}
+            id={id}
+            url={url}
+            name={name}
+            color={color}
+            description={description}
+            isLight={isLight}
+          />
+        ))}
+      </Wrapper>
+    );
+  return <>fetching</>;
 };
 
 export default LabelContent;
