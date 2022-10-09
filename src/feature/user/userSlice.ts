@@ -1,15 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+//TODO: check if is ok
 const initialState: User = {
-  avatar_url: '',
-  email: '',
+  avatar_url: "",
+  email: "",
   email_verified: false,
-  iss: '',
-  preferred_username: '',
-  provider_id: '',
-  sub: '',
-  user_name: '',
+  iss: "",
+  preferred_username: "",
+  provider_id: "",
+  sub: "",
+  user_name: "",
   token: null,
 };
 
@@ -26,7 +26,7 @@ export type User = {
 };
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<User>) {
@@ -39,5 +39,4 @@ export const userSlice = createSlice({
 });
 
 export const { addUser, signOutUser } = userSlice.actions;
-
 export default userSlice.reducer;

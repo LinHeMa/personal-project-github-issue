@@ -24,3 +24,6 @@ yarn-error.log*
 
 
 .firebase/hosting.YnVpbGQ.cache
+
+.bundle.js
+LICENCE.txt

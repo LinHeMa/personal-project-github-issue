@@ -140,7 +140,6 @@ const issueApi = labelApi.injectEndpoints({
     }),
     getListAssignees: build.query<User[], string>({
       query: (token) => {
-        console.log(token)
         return {
           url: '/LinHeMa/TEST/assignees',
           headers: {
@@ -153,7 +152,6 @@ const issueApi = labelApi.injectEndpoints({
     }),
     createIssue: build.mutation<postQuery, Partial<postQuery>>({
       query({ name, repo, body, token }) {
-        console.log(token)
         return {
           url: `/${name}/${repo}/issues`,
           method: 'POST',

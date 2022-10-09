@@ -1,24 +1,24 @@
-import { useRef, useState } from 'react';
-import styled from 'styled-components';
-import { User } from '@supabase/supabase-js';
+import { useRef, useState } from "react";
+import styled from "styled-components";
+import { User } from "@supabase/supabase-js";
 import {
   BellIcon,
   MarkGithubIcon,
   PlusIcon,
   ThreeBarsIcon,
   TriangleDownIcon,
-} from '@primer/octicons-react';
-import profileImg from '../images/github_avatar.png';
-import UserDropDown from './UserDropDown';
-import DropDown from './labelContent/DropDown';
-import useOnClickOutside from '../utils/hooks/useOnClidkOutside';
-import { useNavigate } from 'react-router-dom';
+} from "@primer/octicons-react";
+import profileImg from "../images/github_avatar.png";
+import UserDropDown from "./UserDropDown";
+import DropDown from "./labelContent/DropDown";
+import useOnClickOutside from "../utils/hooks/useOnClidkOutside";
+import { useNavigate } from "react-router-dom";
 
 const ListOfCreate = [
-  'New repository',
-  'Import repository',
-  'New gist',
-  'New organization',
+  "New repository",
+  "Import repository",
+  "New gist",
+  "New organization",
 ];
 
 const Hr = styled.hr`
@@ -26,18 +26,18 @@ const Hr = styled.hr`
   border: 0.5px solid #d0d7de;
 `;
 const dropDownMenu = [
-  'Your profile',
-  'Your repositories',
-  'Your codespaces',
-  'Your organizations',
-  'Your projects',
-  'Your stars',
-  'Your gitst',
-  <Hr key='hr' />,
-  'Upgrade',
-  'Feature preview',
-  'Help',
-  'Settings',
+  "Your profile",
+  "Your repositories",
+  "Your codespaces",
+  "Your organizations",
+  "Your projects",
+  "Your stars",
+  "Your gitst",
+  <Hr key="hr" />,
+  "Upgrade",
+  "Feature preview",
+  "Help",
+  "Settings",
 ];
 interface WrapperProps {
   showOnMobile: boolean;
@@ -78,7 +78,7 @@ const Wrapper = styled.div<WrapperProps>`
   font-size: 14px;
   line-height: 1.5;
   @media screen and (max-width: 767px) {
-    ${(props) => props.showOnMobile && 'justify-content: space-between;'}
+    ${(props) => props.showOnMobile && "justify-content: space-between;"}
   }
   @media screen and (max-width: 1011px) {
     padding: 16px 24px;
@@ -160,7 +160,7 @@ const Link = styled.div`
 const Request = styled.div<RequestProps>`
   white-space: pre-wrap;
   @media screen and (max-width: 1011px) {
-    ${(props) => props.hideOnMobile && 'display: none'};
+    ${(props) => props.hideOnMobile && "display: none"};
   }
 `;
 
@@ -179,7 +179,7 @@ const ListSearchContainer = styled.div<ListSearchContainerProps>`
   flex-grow: 1;
   align-items: center;
   @media screen and (max-width: 767px) {
-    ${(props) => props.hideOnMobile && 'display:none'}
+    ${(props) => props.hideOnMobile && "display:none"}
   }
 `;
 
@@ -201,7 +201,7 @@ const PlusWrapper = styled.div<PlusWrapperProps>`
     color: rgba(255, 255, 255, 0.7);
   }
   @media screen and (max-width: 767px) {
-    ${(props) => props.hideOnMobile && 'display: none'};
+    ${(props) => props.hideOnMobile && "display: none"};
   }
 `;
 
@@ -210,7 +210,7 @@ const ProfileWrapper = styled.div<ProfileWrapperProps>`
   cursor: pointer;
   align-items: center;
   @media screen and (max-width: 767px) {
-    ${(props) => props.hideOnMobile && 'display: none'};
+    ${(props) => props.hideOnMobile && "display: none"};
   }
 `;
 
@@ -223,7 +223,7 @@ const ProfileDown = styled(TriangleDownIcon)`
 const MenuWrapper = styled.div<MenuWrapperProps>`
   cursor: pointer;
   @media screen and (min-width: 767px) {
-    ${(props) => props.showOnMobile && 'display: none;'}
+    ${(props) => props.showOnMobile && "display: none;"}
   }
 `;
 
@@ -247,7 +247,7 @@ const Header = ({
   signOut,
   user,
 }: HeaderProps) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPlusOpen, setIsPlusOpen] = useState(false);
   const profileRef = useRef(null);
@@ -260,10 +260,10 @@ const Header = ({
       <MenuWrapper showOnMobile>
         <ThreeBarsIcon size={24} />
       </MenuWrapper>
-      <Icon size={32} className='icon' />
+      <Icon size={32} className="icon" />
       <ListSearchContainer hideOnMobile>
         <SearchWrapper>
-          <SearchInput placeholder='Search or jump to...' />
+          <SearchInput placeholder="Search or jump to..." />
           <SearchBtn>/</SearchBtn>
         </SearchWrapper>
         <Link>
@@ -273,7 +273,7 @@ const Header = ({
         <Link>Marketplace</Link>
         <Link>Explore</Link>
       </ListSearchContainer>
-      <div onClick={()=>signInWithGithub().then(()=>navigate('/'))}>
+      <div onClick={() => signInWithGithub().then(() => navigate("/"))}>
         <Bell size={16} />
       </div>
       <PlusWrapper
@@ -284,7 +284,7 @@ const Header = ({
         <PlusIcon size={16} />
         <TriangleDownIcon size={16} />
       </PlusWrapper>
-      {user?.aud === 'authenticated' ? (
+      {user?.aud === "authenticated" ? (
         <ProfileWrapper
           hideOnMobile
           onClick={() => {
@@ -292,13 +292,14 @@ const Header = ({
           }}
         >
           <ProfileImage
-            className='profile-img'
+            className="profile-img"
             bg={user.user_metadata.avatar_url}
           />
           <ProfileDown size={16} />
         </ProfileWrapper>
       ) : (
         <div
+          className="cursor-pointer"
           onClick={() => {
             signInWithGithub();
           }}
