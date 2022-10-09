@@ -34,7 +34,7 @@ const MarkdownContext = createContext<MarkdownContext>({
 });
 
 type MenuItemProps = {
-  children: React.ReactElement[];
+  children: React.ReactElement[] | JSX.Element;
 };
 
 const MarkdownItem = (props: MenuItemProps) => {
@@ -70,7 +70,7 @@ const Input = () => {
         onChange={(e) => dispatch(addTitle(e.target.value))}
         type="text"
         placeholder="Title"
-        className="w-full rounded-lg border border-solid border-stone-400 p-4"
+        className="w-full rounded-lg border border-solid border-stone-400 bg-[#F5F8FA] p-4"
       />
     </div>
   );
@@ -88,7 +88,7 @@ interface TabContainer {
 
 const TabContainer = ({ children }: TabContainer) => {
   return (
-    <div className="my-8 flex justify-between md:justify-start">{children}</div>
+    <div className=" flex justify-between md:justify-start">{children}</div>
   );
 };
 
@@ -113,7 +113,9 @@ interface FunctionBar {
   children: JSX.Element[];
 }
 const FunctionBar = ({ children }: FunctionBar) => {
-  return <div className="flex flex-wrap justify-between px-4">{children}</div>;
+  return (
+    <div className="mt-8 flex flex-wrap justify-between px-4">{children}</div>
+  );
 };
 interface FunctionGroup {
   children: JSX.Element[];
@@ -196,7 +198,7 @@ const Button = ({ children }: Button) => {
         )
       }
       className={clsx({
-        "flex w-fit cursor-pointer items-end justify-center	rounded-lg bg-[#2DA44E] p-4 font-[700] text-white":
+        "flex w-full cursor-pointer items-end justify-center	rounded-lg bg-[#2DA44E] p-4 font-[700] text-white":
           true,
       })}
     >

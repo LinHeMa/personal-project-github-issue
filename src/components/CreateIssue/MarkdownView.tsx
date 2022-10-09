@@ -24,7 +24,6 @@ import "../../utils/hooks/markdown.css";
 import clsx from "clsx";
 import _ from "lodash";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import avatar from "../../images/github_avatar.png";
 import MarkdownItem from "./MarkdownItem";
 import { useBoolean } from "usehooks-ts";
 import { Fragment, useRef } from "react";
@@ -151,54 +150,56 @@ const MarkdownView = () => {
       <div className="h-fit w-full rounded-xl border-solid border-stone-300 p-4 md:m-4 md:border md:p-8">
         <MarkdownItem>
           <MarkdownItem.Input />
-          <MarkdownItem.TabContainer>
-            <MarkdownItem.Tab toggle={setTrue} currentView={value}>
-              Write
-            </MarkdownItem.Tab>
-            <MarkdownItem.Tab toggle={setFalse} currentView={value}>
-              Preview
-            </MarkdownItem.Tab>
-          </MarkdownItem.TabContainer>
-          {value ? (
-            <MarkdownItem.FunctionBar>
-              <MarkdownItem.FunctionMobileToggle></MarkdownItem.FunctionMobileToggle>
-              <MarkdownItem.FunctionGroup>
-                {typesettingIcon.map((icon, index) => (
-                  <div
-                    key={index}
-                    onClick={icon.function}
-                    className={clsx({
-                      "hidden last:mr-0 md:block ": _.includes(
-                        [0, 1, 2, 6, 7, 8],
-                        index
-                      ),
-                      "md:hidden": index === 10,
-                      "mr-8 cursor-pointer last:mr-0": true,
-                    })}
-                  >
-                    <MarkdownItem.FunctionItem key={index}>
-                      {icon.button}
-                    </MarkdownItem.FunctionItem>
-                  </div>
-                ))}
-              </MarkdownItem.FunctionGroup>
-              <MarkdownItem.FunctionMobileToggleBar>
-                {textIcon.map((icon, index) => (
-                  <div
-                    onClick={icon.function}
-                    key={index}
-                    className="mr-8 flex  md:hidden"
-                  >
-                    <MarkdownItem.FunctionItem>
-                      {icon.button}
-                    </MarkdownItem.FunctionItem>
-                  </div>
-                ))}
-              </MarkdownItem.FunctionMobileToggleBar>
-            </MarkdownItem.FunctionBar>
-          ) : (
-            <></>
-          )}
+          <div className="mt-8 mb-2 flex flex-col md:items-end md:justify-between">
+            <MarkdownItem.TabContainer>
+              <MarkdownItem.Tab toggle={setTrue} currentView={value}>
+                Write
+              </MarkdownItem.Tab>
+              <MarkdownItem.Tab toggle={setFalse} currentView={value}>
+                Preview
+              </MarkdownItem.Tab>
+            </MarkdownItem.TabContainer>
+            {value ? (
+              <MarkdownItem.FunctionBar>
+                <MarkdownItem.FunctionMobileToggle></MarkdownItem.FunctionMobileToggle>
+                <MarkdownItem.FunctionGroup>
+                  {typesettingIcon.map((icon, index) => (
+                    <div
+                      key={index}
+                      onClick={icon.function}
+                      className={clsx({
+                        "hidden last:mr-0 md:block ": _.includes(
+                          [0, 1, 2, 6, 7, 8],
+                          index
+                        ),
+                        "md:hidden": index === 10,
+                        "mr-8 cursor-pointer last:mr-0": true,
+                      })}
+                    >
+                      <MarkdownItem.FunctionItem key={index}>
+                        {icon.button}
+                      </MarkdownItem.FunctionItem>
+                    </div>
+                  ))}
+                </MarkdownItem.FunctionGroup>
+                <MarkdownItem.FunctionMobileToggleBar>
+                  {textIcon.map((icon, index) => (
+                    <div
+                      onClick={icon.function}
+                      key={index}
+                      className="mr-8 flex  md:hidden"
+                    >
+                      <MarkdownItem.FunctionItem>
+                        {icon.button}
+                      </MarkdownItem.FunctionItem>
+                    </div>
+                  ))}
+                </MarkdownItem.FunctionMobileToggleBar>
+              </MarkdownItem.FunctionBar>
+            ) : (
+              <></>
+            )}
+          </div>
           {value ? (
             <Fragment>
               <br />
@@ -221,7 +222,7 @@ const MarkdownView = () => {
                 ]}
               >
                 <TextareaAutosize
-                  className="min-h-[300px] w-full whitespace-pre rounded-lg border border-solid border-stone-300 p-4 text-[14px] leading-normal"
+                  className="min-h-[300px] w-full resize-y whitespace-pre rounded-lg border border-solid border-stone-300 bg-[#F5F8FA] p-4 text-[14px] leading-normal"
                   value={body}
                   onChange={(e) => dispatch(addBody(e.target.value))}
                 />
@@ -234,7 +235,7 @@ const MarkdownView = () => {
               </div>
             </div>
           )}
-          <div className=" mt-4 flex justify-end">
+          <div className=" mt-4 ml-auto hidden w-fit justify-end md:flex">
             <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
           </div>
         </MarkdownItem>
