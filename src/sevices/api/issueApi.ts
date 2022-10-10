@@ -1,4 +1,4 @@
-import { labelApi } from './labelApi';
+import {  labelApi } from './labelApi';
 
 export interface Root {
   url: string;
@@ -122,6 +122,25 @@ export interface postQuery {
   body: postbody;
   token?: string | null;
 }
+export function checkLight(bgcolor: string) {
+  const r = parseInt(bgcolor.slice(0, 2), 16);
+  const g = parseInt(bgcolor.slice(2, 4), 16);
+  const b = parseInt(bgcolor.slice(4, 6), 16);
+  const hsp = r * 0.3 + g * 0.6 + b * 0.1;
+  if (hsp > 127.5) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export function addLightOrDark(data: Label[]) {
+  const result = data.map((item) => {
+    const isLight = checkLight(item.color);
+    return { ...item, isLight: isLight };
+  });
+  return result;
+}
 
 const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
@@ -135,8 +154,8 @@ const issueApi = labelApi.injectEndpoints({
           cache: 'no-cache',
         };
       },
-
       providesTags: ['Issues'],
+      
     }),
     getListAssignees: build.query<User[], string>({
       query: (token) => {

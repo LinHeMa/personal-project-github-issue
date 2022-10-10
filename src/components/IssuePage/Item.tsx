@@ -6,6 +6,7 @@ import {
 import React from 'react';
 import Label from '../label/Label';
 import { Root } from '../../sevices/api/issueApi';
+import { checkLight } from '../../sevices/api/labelApi';
 
 type ItemProps = {
   data: Root;
@@ -57,6 +58,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
     created_at,
     user,
   } = data;
+  console.log('labels', labels);
   return (
     <div className='last:rounded-b-lg'>
       <div className='flex min-h-[85px] border-b-[1px] border-solid border-stone-300   sm:border  sm:border-t-[0px] md:h-[62.31px]'>
@@ -81,6 +83,8 @@ const Item: React.FC<ItemProps> = ({ data }) => {
                   bgColor={'#' + label.color}
                   borderColor='transparent'
                   fontWeight='700'
+                  isLight={checkLight(label.color)}
+                  color='#fff'
                 />
               );
             })}
@@ -99,7 +103,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
                       src={assignee.avatar_url}
                       className={`h-[20px] w-[20px] rounded-full transition-all duration-300 ease-in-out ${
                         index === assignees.length - 1 ? '' : 'mr-[-12px]'
-                      }  ${assignees.length !== 1 && 'group-hover:mr-2'}`}  
+                      }  ${assignees.length !== 1 && 'group-hover:mr-2'}`}
                     />
                   );
                 })

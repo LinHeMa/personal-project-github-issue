@@ -14,6 +14,7 @@ import {
 } from "../../feature/Label/createIssueSlice";
 import ReactLoading from "react-loading";
 import { useCreateIssueMutation } from "../../sevices/api/issueApi";
+import { useNavigate } from "react-router-dom";
 
 interface MarkdownContext {
   isPreview: string;
@@ -190,13 +191,14 @@ const Button = ({ children }: Button) => {
   const token = useAppSelector((state) => state.userInfoAction.token);
   const dispatch = useAppDispatch();
   const [createIssue, { isLoading }] = useCreateIssueMutation();
+  const navigate = useNavigate();
   return (
     <div
-      onClick={() =>
-        createIssue({ name, repo, body, token }).then(() =>
-          dispatch(resetAll())
-        )
-      }
+      onClick={() => {
+        createIssue({ name, repo, body, token })
+          .then(() => dispatch(resetAll()))
+          .then(() => navigate("/issuelist"));
+      }}
       className={clsx({
         "flex w-full cursor-pointer items-end justify-center	rounded-lg bg-[#2DA44E] p-4 font-[700] text-white":
           true,

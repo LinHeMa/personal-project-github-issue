@@ -54,7 +54,7 @@ const IssueListItem: React.FC<issueListItemProps> = ({
     page: `&page=${queryStringPage}`,
     token: token,
   });
-
+  
   useEffect(() => {
     const openNum = _.filter(
       data,
