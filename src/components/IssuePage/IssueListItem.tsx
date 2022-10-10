@@ -40,8 +40,10 @@ const IssueListItem: React.FC<issueListItemProps> = ({
     (state) => state.labelListAction.state,
   );
   const queryStringPage = useAppSelector((state) => state.labelListAction.page);
-  const token = useAppSelector((state) => state.userInfoAction.token);
+  const userInfo = useAppSelector((state) => state.userInfoAction);
   const { data } = useGetIssuesQuery({
+    userName: userInfo.user_name,
+    repo: userInfo.chosenRepo,
     labels:
       queryStringLabels.length > 0 ? `labels=${_.join(queryStringLabels)}` : '',
     assignee:
@@ -52,9 +54,9 @@ const IssueListItem: React.FC<issueListItemProps> = ({
     filter: queryStringFilter !== '' ? `&${queryStringFilter}` : '',
     state: queryStringState !== '' ? `&state=${queryStringState}` : '',
     page: `&page=${queryStringPage}`,
-    token: token,
+    token: userInfo.token,
   });
-  
+
   useEffect(() => {
     const openNum = _.filter(
       data,

@@ -30,15 +30,17 @@ export type issueStateType = {
 export default function IssueList() {
   const navigate = useNavigate();
   const data = useAppSelector((state) => state.labelListAction);
-  const token = useAppSelector((state) => state.userInfoAction.token);
+  const userInfo = useAppSelector((state) => state.userInfoAction);
   const { data: allIssueData } = useGetIssuesQuery({
+    userName: userInfo.user_name,
+    repo: userInfo.chosenRepo,
     labels: '',
     assignee: '',
     sort: '',
     filter: '',
     state: '&state=all',
     page: '',
-    token: token,
+    token: userInfo.token,
   });
   const openIssueQty = _.filter(
     allIssueData,
@@ -70,10 +72,11 @@ export default function IssueList() {
       result += `assignee:${inputValue.assignees[0]} `;
     if (inputValue.sort !== '') result += `sort:${inputValue.sort} `;
     if (inputValue.filter === '&creator=@me') result += `author:@me `;
-    if (inputValue.filter === '&assignee=LinHeMa') result += `assignee:@me `;
+    if (inputValue.filter === `&assignee=${userInfo.user_name}`)
+      result += `assignee:@me `;
     if (inputValue.filter === '&mentioned=@me') result += `metions:@me `;
 
-    if (_.includes(inputValue.assignees, 'LinHeMa')) {
+    if (_.includes(inputValue.assignees, `${userInfo.user_name}`)) {
       result = _.join(_.without(_.split(result, ' '), 'author:@me'), ' ');
     }
     return result;
@@ -86,11 +89,10 @@ export default function IssueList() {
     closed: 0,
   });
   const dispatch = useAppDispatch();
-  const userToken = useAppSelector((state) => state.userInfoAction.token);
   const { data: lableData } = useGetLabelListQuery({
-    name: 'LinHeMa',
-    repo: 'TEST',
-    token: userToken,
+    name: userInfo.user_name,
+    repo: userInfo.chosenRepo,
+    token: userInfo.token,
   });
   return (
     <>

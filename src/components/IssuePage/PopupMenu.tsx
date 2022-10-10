@@ -24,13 +24,9 @@ const sortList = [
   { name: 'Recently updated', sort: 'updated-desc' },
   { name: 'Least recently updated', sort: 'updated-asc' },
 ];
-const filterList = [
-  { name: 'Your issues', filter: '&creator=@me' },
-  { name: 'Everything assigned to you', filter: '&assignee=LinHeMa' },
-  { name: 'Everything mentioning you', filter: '&mentioned=@me' },
-];
 
 const PopupMenu = ({ type }: PopupMenuProps) => {
+  const userInfo = useAppSelector((state) => state.userInfoAction);
   const dispatch = useAppDispatch();
   const queryLabel = useAppSelector((state) => state.labelListAction.lables);
   const queryAssignee = useAppSelector(
@@ -39,17 +35,28 @@ const PopupMenu = ({ type }: PopupMenuProps) => {
   const queryFilter = useAppSelector((state) => state.labelListAction.filter);
   const querySort = useAppSelector((state) => state.labelListAction.sort);
   const [filterInput, setFilterInput] = useState<string>('');
-  const userToken = useAppSelector((state) => state.userInfoAction.token);
   const [renderType, setRenderType] = useState<string>('');
   const [labelPop, setLabelPop] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const { data: labels } = useGetLabelListQuery({
-    name: 'LinHeMa',
-    repo: 'TEST',
-    token: userToken,
+    name: userInfo.user_name,
+    repo: userInfo.chosenRepo,
+    token: userInfo.token,
   });
 
-  const { data: assignees } = useGetListAssigneesQuery(`${userToken}`);
+  const { data: assignees } = useGetListAssigneesQuery({
+    userName: userInfo.user_name,
+    repo: userInfo.chosenRepo,
+    token: userInfo.token,
+  });
+  const filterList = [
+    { name: 'Your issues', filter: '&creator=@me' },
+    {
+      name: 'Everything assigned to you',
+      filter: `&assignee=${userInfo.user_name}`,
+    },
+    { name: 'Everything mentioning you', filter: '&mentioned=@me' },
+  ];
   useEffect(() => {
     setLabelPop(false);
   }, [isClicked]);

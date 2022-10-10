@@ -13,15 +13,15 @@ import {
   ShieldIcon,
   StarIcon,
   TabIcon,
-} from "@primer/octicons-react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { useAppSelector } from "../../app/hooks";
-import { useGetIssuesQuery } from "../../sevices/api/issueApi";
-import Button from "../button/Button";
-import DoubleButton from "../button/DoubleButton";
-import Label from "../label/Label";
-import Tabs from "../label/Tabs";
+} from '@primer/octicons-react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useAppSelector } from '../../app/hooks';
+import { useGetIssuesQuery } from '../../sevices/api/issueApi';
+import Button from '../button/Button';
+import DoubleButton from '../button/DoubleButton';
+import Label from '../label/Label';
+import Tabs from '../label/Tabs';
 
 const Wrapper = styled.div`
   line-height: 30px;
@@ -148,9 +148,13 @@ const TabsWrapper = styled.div`
 
 const Subtitle = () => {
   const navigate = useNavigate();
-  const token = useAppSelector((state) => state.userInfoAction.token);
-  const { data } = useGetIssuesQuery({ token: token, state: "all" });
-  console.log(data);
+  const userInfo = useAppSelector((state) => state.userInfoAction);
+  const { data } = useGetIssuesQuery({
+    token: userInfo.token,
+    state: 'all',
+    userName: userInfo.user_name,
+    repo: userInfo.chosenRepo,
+  });
 
   return (
     <Wrapper>
@@ -159,28 +163,28 @@ const Subtitle = () => {
           <BreadCrumb>
             <RouteWrapper>
               <Icon size={16} />
-              <Owner href="#">LinHeMa</Owner>
+              <Owner href='/'>{userInfo.user_name}</Owner>
               <Break>/</Break>
-              <Repo>GitHub-Issue</Repo>
-              <Label text="Public" borderColor="#d0d7de" color="#57606a" />
+              <Repo>{userInfo.chosenRepo}</Repo>
+              <Label text='Public' borderColor='#d0d7de' color='#57606a' />
             </RouteWrapper>
             <ButtonWrapper>
-              <Button icon={<Pin />} text="Pin" hasDropDown={false} />
+              <Button icon={<Pin />} text='Pin' hasDropDown={false} />
               <Button
                 icon={<Eye />}
-                text="Unwatch"
+                text='Unwatch'
                 number={1}
                 hasDropDown={true}
               />
               <DoubleButton
                 icon={<Fork />}
-                text="Fork"
+                text='Fork'
                 number={0}
                 hasDropDown={false}
               />
               <DoubleButton
                 icon={<Star />}
-                text="Star"
+                text='Star'
                 number={0}
                 hasDropDown={false}
               />
@@ -188,22 +192,22 @@ const Subtitle = () => {
           </BreadCrumb>
         </BreadCrumbWrapper>
         <TabsWrapper>
-          <Tabs icon={<Code size={16} />} text="Code" />
+          <Tabs icon={<Code size={16} />} text='Code' />
           <Tabs
             icon={<Issue size={16} />}
-            text="Issues"
+            text='Issues'
             onClick={() => {
-              navigate("/issuelist");
+              navigate('/issuelist');
             }}
             number={data?.length}
           />
-          <Tabs icon={<PullRequest size={16} />} text="Pull requests" />
-          <Tabs icon={<Actions size={16} />} text="Actions" />
-          <Tabs icon={<Projects size={16} />} text="Projects" />
-          <Tabs icon={<Wiki size={16} />} text="Wiki" />
-          <Tabs icon={<Security size={16} />} text="Security" />
-          <Tabs icon={<Insights size={16} />} text="Insights" />
-          <Tabs icon={<Settings size={16} />} text="Settings" />
+          <Tabs icon={<PullRequest size={16} />} text='Pull requests' />
+          <Tabs icon={<Actions size={16} />} text='Actions' />
+          <Tabs icon={<Projects size={16} />} text='Projects' />
+          <Tabs icon={<Wiki size={16} />} text='Wiki' />
+          <Tabs icon={<Security size={16} />} text='Security' />
+          <Tabs icon={<Insights size={16} />} text='Insights' />
+          <Tabs icon={<Settings size={16} />} text='Settings' />
         </TabsWrapper>
       </TitleWrapper>
     </Wrapper>

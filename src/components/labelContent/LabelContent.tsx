@@ -49,14 +49,13 @@ const SortBtn = styled.div`
 const LabelContent = () => {
   const [open, setOpen] = useState(false);
   const dropDownRef = useRef(null);
-  const token = useAppSelector((state) => state.userInfoAction.token);
+  const userInfo = useAppSelector((state) => state.userInfoAction);
   const { data, isSuccess, isError } = useGetLabelListQuery({
-    name: 'LinHeMa',
-    repo: 'TEST',
-    token: token,
+    name: userInfo.user_name,
+    repo: userInfo.chosenRepo,
+    token: userInfo.token,
   });
   useOnClickOutside(dropDownRef, () => setOpen(false));
-  if (isError) console.log(data);
 
   if (isSuccess)
     return (

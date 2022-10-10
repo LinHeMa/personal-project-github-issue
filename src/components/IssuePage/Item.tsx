@@ -58,7 +58,6 @@ const Item: React.FC<ItemProps> = ({ data }) => {
     created_at,
     user,
   } = data;
-  console.log('labels', labels);
   return (
     <div className='last:rounded-b-lg'>
       <div className='flex min-h-[85px] border-b-[1px] border-solid border-stone-300   sm:border  sm:border-t-[0px] md:h-[62.31px]'>

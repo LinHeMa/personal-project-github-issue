@@ -5,12 +5,16 @@ import CreateIssueView from './CreateIssueView';
 import MarkdownView from './MarkdownView';
 
 const CreateIssueContainer = () => {
-  const userToken = useAppSelector((state) => state.userInfoAction.token);
-  const { data: assignees } = useGetListAssigneesQuery(`${userToken}`);
+  const userInfo = useAppSelector((state) => state.userInfoAction);
+  const { data: assignees } = useGetListAssigneesQuery({
+    userName: userInfo.user_name,
+    repo: userInfo.chosenRepo,
+    token: userInfo.token,
+  });
   const { data: labels } = useGetLabelListQuery({
-    name: 'LinHeMa',
-    repo: 'TEST',
-    token: userToken,
+    name: userInfo.user_name,
+    repo: userInfo.chosenRepo,
+    token: userInfo.token,
   });
   return (
     <div className='flex flex-col p-8 pb-[200px] md:container md:mx-auto  md:flex-row'>

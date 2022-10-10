@@ -208,7 +208,7 @@ const EditLabel = ({
       return;
     }
   };
-  const token = useAppSelector((state) => state.userInfoAction.token);
+  const userInfo = useAppSelector((state) => state.userInfoAction);
   const [useUpdateLabelList] = useUpdateLabelListMutation();
   const [addLabelList] = useAddLabelListMutation();
   function generateRandomColor() {
@@ -304,17 +304,17 @@ const EditLabel = ({
             setIsEdit(false);
             isCreating
               ? addLabelList({
-                  name: 'LinHeMa',
-                  repo: 'TEST',
+                  name: userInfo.user_name,
+                  repo: userInfo.chosenRepo,
                   postBody: postBody,
-                  token: token,
+                  token: userInfo.token,
                 })
               : useUpdateLabelList({
-                  name: 'LinHeMa',
-                  repo: 'TEST',
+                  name: userInfo.user_name,
+                  repo: userInfo.chosenRepo,
                   lableName: name,
                   updateBody: updateBody,
-                  token: token,
+                  token: userInfo.token,
                 });
             setIsEdit(false);
             if (setIsCreating) {

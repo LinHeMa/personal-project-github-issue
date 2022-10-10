@@ -7,6 +7,7 @@ import { store } from './app/store';
 import IssueList from './components/IssuePage/IssueList';
 import LabelContent from './components/labelContent/LabelContent';
 import CreateIssueContainer from './components/CreateIssue/CreateIssueContainer';
+import Repo from './components/repo/Repo';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -16,7 +17,8 @@ root.render(
     <Provider store={store}>
       <Routes>
         <Route path='/' element={<App />}>
-          <Route index element={<LabelContent />} />
+          <Route index element={<Repo />} />
+          <Route path='labelcontent' element={<LabelContent />} />
           <Route path='issuelist' element={<IssueList />} />
           <Route path='createissue' element={<CreateIssueContainer />} />
         </Route>

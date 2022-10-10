@@ -1,5 +1,7 @@
 import { SignOutIcon } from '@primer/octicons-react';
+import { userInfo } from 'os';
 import styled from 'styled-components';
+import { useAppSelector } from '../app/hooks';
 import profileImg from '../images/github_avatar.png';
 import SearchBar from './SearchBar';
 
@@ -62,6 +64,7 @@ const Item = styled.div`
 `;
 
 const ItemMenu = () => {
+  const userInfo = useAppSelector((state) => state.userInfoAction);
   return (
     <Conatainer hideOnDesktop>
       <SearchBar />
@@ -69,7 +72,7 @@ const ItemMenu = () => {
         <Item key={index}>{item}</Item>
       ))}
       <Item>
-        <Profile img={profileImg} /> LinHeMa
+        <Profile img={profileImg} /> {userInfo.user_name}
       </Item>
       <Item>
         <Signout size={16} />

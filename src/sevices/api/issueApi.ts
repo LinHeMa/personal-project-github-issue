@@ -1,4 +1,4 @@
-import {  labelApi } from './labelApi';
+import { labelApi } from './labelApi';
 
 export interface Root {
   url: string;
@@ -104,11 +104,13 @@ type query = {
   state?: string;
   page?: string;
   token?: string | null;
+  userName: string;
+  repo: string;
 };
 
 type getListAssignees = {
-  token?:string|null
-}
+  token?: string | null;
+};
 export interface postbody {
   title: string;
   body: string;
@@ -122,32 +124,19 @@ export interface postQuery {
   body: postbody;
   token?: string | null;
 }
-export function checkLight(bgcolor: string) {
-  const r = parseInt(bgcolor.slice(0, 2), 16);
-  const g = parseInt(bgcolor.slice(2, 4), 16);
-  const b = parseInt(bgcolor.slice(4, 6), 16);
-  const hsp = r * 0.3 + g * 0.6 + b * 0.1;
-  if (hsp > 127.5) {
-    return false;
-  } else {
-    return true;
-  }
-}
 
-export function addLightOrDark(data: Label[]) {
-  const result = data.map((item) => {
-    const isLight = checkLight(item.color);
-    return { ...item, isLight: isLight };
-  });
-  return result;
-}
+type getListAssigneesQuery = {
+  token?: string | null;
+  userName: string;
+  repo: string;
+};
 
 const issueApi = labelApi.injectEndpoints({
   endpoints: (build) => ({
     getIssues: build.query<Root[], query>({
       query: (query) => {
         return {
-          url: `/LinHeMa/TEST/issues?&${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
+          url: `/repos/${query.userName}/${query.repo}/issues?&${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
           headers: {
             Authorization: `Bearer ${query.token}`,
           },
@@ -155,12 +144,11 @@ const issueApi = labelApi.injectEndpoints({
         };
       },
       providesTags: ['Issues'],
-      
     }),
-    getListAssignees: build.query<User[], string>({
-      query: (token) => {
+    getListAssignees: build.query<User[], getListAssigneesQuery>({
+      query: ({ userName, repo, token }) => {
         return {
-          url: '/LinHeMa/TEST/assignees',
+          url: `/repos/${userName}/${repo}/assignees`,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -172,7 +160,7 @@ const issueApi = labelApi.injectEndpoints({
     createIssue: build.mutation<postQuery, Partial<postQuery>>({
       query({ name, repo, body, token }) {
         return {
-          url: `/${name}/${repo}/issues`,
+          url: `/repos/${name}/${repo}/issues`,
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,

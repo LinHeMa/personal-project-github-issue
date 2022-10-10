@@ -159,7 +159,7 @@ const ContentItem = ({
   setIsCreating,
 }: ContentItemProps) => {
   const dispatch = useDispatch();
-  const token = useAppSelector((state) => state.userInfoAction.token);
+  const userInfo = useAppSelector((state) => state.userInfoAction);
   const [isToggle, setIsToggle] = useState(true);
   const toggleRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
@@ -221,10 +221,10 @@ const ContentItem = ({
                   )
                 )
                   deleteLabelList({
-                    name: 'LinHeMa',
-                    repo: 'TEST',
+                    name: userInfo.user_name,
+                    repo: userInfo.chosenRepo,
                     lableName: name,
-                    token: token,
+                    token: userInfo.token,
                   }).then(() =>
                     dispatch(labelApi.util.invalidateTags(['Labels'])),
                   );
@@ -253,9 +253,10 @@ const ContentItem = ({
                   )
                 ) {
                   deleteLabelList({
-                    name: 'LinHeMa',
-                    repo: 'TEST',
+                    name: userInfo.user_name,
+                    repo: userInfo.chosenRepo,
                     lableName: name,
+                    token: userInfo.token,
                   });
                 }
               }}

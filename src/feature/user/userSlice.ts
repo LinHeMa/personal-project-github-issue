@@ -1,16 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-//TODO: check if is ok
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 const initialState: User = {
-  avatar_url: "",
-  email: "",
+  avatar_url: '',
+  email: '',
   email_verified: false,
-  iss: "",
-  preferred_username: "",
-  provider_id: "",
-  sub: "",
-  user_name: "",
+  iss: '',
+  preferred_username: '',
+  provider_id: '',
+  sub: '',
+  user_name: '',
   token: null,
+  chosenRepo: '',
 };
 
 export type User = {
@@ -23,14 +23,18 @@ export type User = {
   sub: string;
   user_name: string;
   token?: string | null;
+  chosenRepo: string;
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<User>) {
       return action.payload;
+    },
+    chooseRepo(state, action: PayloadAction<string>) {
+      state.chosenRepo = action.payload;
     },
     signOutUser() {
       return initialState;
@@ -38,5 +42,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addUser, signOutUser } = userSlice.actions;
+export const { addUser, signOutUser, chooseRepo } = userSlice.actions;
 export default userSlice.reducer;

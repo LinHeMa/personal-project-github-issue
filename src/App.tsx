@@ -9,12 +9,10 @@ import Subtitle from './components/subtitle/Subtitle';
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { addUser, signOutUser } from './feature/user/userSlice';
-import { useBoolean } from 'usehooks-ts';
 import { User as userType } from '../src/feature/user/userSlice';
 
 function App() {
   const [user, setUser] = useState<User | null>();
-  const [token, setToken] = useState<string | null>();
   const userToken = useAppSelector((state) => state.userInfoAction);
   const dispatch = useAppDispatch();
 
@@ -27,17 +25,13 @@ function App() {
   async function checkUser() {
     const user = supabase.auth.user();
     const session = supabase.auth.session();
-  console.log(user)
-  console.log(session?.provider_token)
     const userData = {
       ...user?.user_metadata,
       token: session?.provider_token,
     } as userType;
-    if(session)dispatch(addUser(userData));
+    if (session) dispatch(addUser(userData));
 
     setUser(user);
-    console.log(userToken);
-    setToken(session?.provider_token);
   }
 
   async function signInWithGithub() {

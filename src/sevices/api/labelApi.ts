@@ -58,14 +58,14 @@ export function addLightOrDark(data: LabelsList[]) {
 export const labelApi = createApi({
   reducerPath: 'labelApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.github.com/repos',
+    baseUrl: 'https://api.github.com',
   }),
-  tagTypes: ['Labels', 'Issues'],
+  tagTypes: ['Labels', 'Issues','Users'],
   endpoints: (build) => ({
     getLabelList: build.query<LabelsList[], QueryParams>({
       query: ({ name, repo, token }) => {
         return {
-          url: `/${name}/${repo}/labels`,
+          url: `/repos/${name}/${repo}/labels`,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -77,7 +77,7 @@ export const labelApi = createApi({
     }),
     addLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, postBody, token }) => ({
-        url: `/${name}/${repo}/labels`,
+        url: `/repos/${name}/${repo}/labels`,
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -89,7 +89,7 @@ export const labelApi = createApi({
     }),
     updateLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName, updateBody, token }) => ({
-        url: `/${name}/${repo}/labels/${lableName}`,
+        url: `/repos/${name}/${repo}/labels/${lableName}`,
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ export const labelApi = createApi({
     }),
     deleteLabelList: build.mutation<LabelsList, QueryParams>({
       query: ({ name, repo, lableName, token }) => ({
-        url: `/${name}/${repo}/labels/${lableName}`,
+        url: `/repos/${name}/${repo}/labels/${lableName}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
