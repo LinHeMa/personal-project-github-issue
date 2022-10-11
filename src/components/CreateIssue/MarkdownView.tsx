@@ -13,7 +13,7 @@ import {
   ReplyIcon,
   TasklistIcon,
 } from '@primer/octicons-react';
-
+import avatar from '../../images/github_avatar.png';
 import TextareaMarkdown, {
   TextareaMarkdownRef,
   CommandHandler,
@@ -143,7 +143,7 @@ const MarkdownView = () => {
   return (
     <>
       <img
-        src={userImg}
+        src={userImg || avatar}
         alt='profile picture'
         className=' mx-4 mt-4 hidden h-[40px] w-[40px] rounded-full md:block'
       />

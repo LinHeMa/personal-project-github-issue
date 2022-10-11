@@ -10,7 +10,7 @@ const Repo = () => {
     token: userInfo.token,
   });
   return (
-    <div>
+    <div className=' pb-[180px]'>
       {repos?.map((repo) => (
         <RepoItem name={repo.name} key={repo.id} />
       ))}

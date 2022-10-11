@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Button from '../../components/button/Button';
+import { addBasicInfo } from '../../feature/Label/createIssueSlice';
 import {
   addStateCondition,
   resetAll,
@@ -102,7 +103,7 @@ export default function IssueList() {
             onClick={(e) => {
               const target = e.target as HTMLDivElement;
               if (target.outerText.includes('Labels')) {
-                navigate('/');
+                navigate('/labelcontent');
               }
             }}
           >
@@ -118,7 +119,15 @@ export default function IssueList() {
         </div>
         <button
           className='ml-auto  flex w-fit items-center whitespace-pre   rounded-md bg-primary-green px-4	py-[5x] text-sm font-medium text-[#ffffff] md:order-3 md:ml-4'
-          onClick={() => navigate('/createissue')}
+          onClick={() => {
+            navigate('/createissue');
+            dispatch(
+              addBasicInfo({
+                name: userInfo.user_name,
+                repo: userInfo.chosenRepo,
+              }),
+            );
+          }}
         >
           New<div className='hidden md:block'> issue</div>
         </button>
@@ -126,6 +135,7 @@ export default function IssueList() {
           <Button
             text=''
             hasDropDown={false}
+            onClick={()=>console.log('clicked')}
             popup={<PopupMenu type='Filters' />}
           />
 

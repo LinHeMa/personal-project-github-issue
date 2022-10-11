@@ -13,8 +13,8 @@ interface postQuery {
 }
 
 const initialState: postQuery = {
-  name: 'LinHeMa',
-  repo: 'TEST',
+  name: '',
+  repo: '',
   title: '',
   body: '',
   assignees: [],
@@ -43,11 +43,20 @@ function insert(
   textArea.focus();
 }
 
+type addBasicInfoType = {
+  name: string;
+  repo: string;
+};
+
 export const createIssueSlice = createSlice({
   name: 'createIssue',
   initialState,
   reducers: {
     resetAll: () => initialState,
+    addBasicInfo: (state, action: PayloadAction<addBasicInfoType>) => {
+      state.name = action.payload.name;
+      state.repo = action.payload.repo;
+    },
     addTitle: (state, action: PayloadAction<string>) => {
       return { ...state, title: action.payload };
     },
@@ -115,6 +124,7 @@ export const {
   addQuoteText,
   addCodeText,
   addTagText,
+  addBasicInfo,
 } = createIssueSlice.actions;
 
 export default createIssueSlice.reducer;

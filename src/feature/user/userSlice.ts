@@ -31,7 +31,29 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     addUser(state, action: PayloadAction<User>) {
-      return action.payload;
+      const {
+        avatar_url,
+        email,
+        email_verified,
+        iss,
+        preferred_username,
+        provider_id,
+        sub,
+        user_name,
+        token,
+      } = action.payload;
+      return {
+        ...state,
+        avatar_url,
+        email,
+        email_verified,
+        iss,
+        preferred_username,
+        provider_id,
+        sub,
+        user_name,
+        token,
+      };
     },
     chooseRepo(state, action: PayloadAction<string>) {
       state.chosenRepo = action.payload;
