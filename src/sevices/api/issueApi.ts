@@ -1,3 +1,4 @@
+import { IssueData } from '../../components/NewIssue/fakeData/getAnIssue';
 import { labelApi } from './labelApi';
 
 export interface Root {
@@ -37,7 +38,7 @@ export interface Assignee {
   node_id: string;
   avatar_url: string;
   gravatar_id: string;
-  url: string;
+  url?: string;
   html_url: string;
   followers_url: string;
   following_url: string;
@@ -58,7 +59,7 @@ export interface User {
   node_id: string;
   avatar_url: string;
   gravatar_id: string;
-  url: string;
+  url?: string;
   html_url: string;
   followers_url: string;
   following_url: string;
@@ -84,7 +85,7 @@ export interface Label {
 }
 
 export interface Reactions {
-  url: string;
+  url?: string;
   total_count: number;
   '+1': number;
   '-1': number;
@@ -106,6 +107,7 @@ type query = {
   token?: string | null;
   userName: string;
   repo: string;
+  issueId?: number;
 };
 
 type getListAssignees = {
@@ -145,6 +147,18 @@ const issueApi = labelApi.injectEndpoints({
       },
       providesTags: ['Issues'],
     }),
+    getAnIssues: build.query<IssueData, query>({
+      query: (query) => {
+        return {
+          url: `/repos/${query.userName}/${query.repo}/issues/${query.issueId}`,
+          headers: {
+            Authorization: `Bearer ${query.token}`,
+          },
+          cache: 'no-cache',
+        };
+      },
+      providesTags: ['Issues'],
+    }),
     getListAssignees: build.query<User[], getListAssigneesQuery>({
       query: ({ userName, repo, token }) => {
         return {
@@ -172,11 +186,12 @@ const issueApi = labelApi.injectEndpoints({
       invalidatesTags: [{ type: 'Issues' }],
     }),
   }),
-  overrideExisting: false,
+  overrideExisting: true,
 });
 
 export const {
   useGetIssuesQuery,
   useGetListAssigneesQuery,
   useCreateIssueMutation,
+  useGetAnIssuesQuery,
 } = issueApi;

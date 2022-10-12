@@ -1,11 +1,20 @@
 import React from 'react';
-import { issueData } from './fakeData/getAnIssue';
+import { useAppSelector } from '../../app/hooks';
+import { useGetAnIssuesQuery } from '../../sevices/api/issueApi';
+import { IssueData } from './fakeData/getAnIssue';
 import Title from './Title';
 
 const NewIssueContainer = () => {
+  const userInfo = useAppSelector((state) => state.userInfoAction);
+  const { data: issueData, isSuccess } = useGetAnIssuesQuery({
+    userName: 'LinHeMa',
+    repo: 'TEST',
+    token: userInfo.token,
+    issueId: 58,
+  });
   return (
     <div className='container mx-auto'>
-      <Title {...issueData} />
+      <Title {...(issueData as IssueData)} />
     </div>
   );
 };
