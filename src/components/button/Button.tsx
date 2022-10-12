@@ -6,6 +6,7 @@ interface WrapperProps {
   bgColor?: string;
   hoverColor?: string;
   fontSize?: string;
+  borderColor?: string;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -17,7 +18,9 @@ const Wrapper = styled.div<WrapperProps>`
   font-weight: 500;
   cursor: pointer;
   line-height: 20px;
-  border: 1px solid rgba(27, 31, 36, 0.15);
+  border: 1px solid
+    ${(props) =>
+      props.borderColor ? props.borderColor : 'rgba(27, 31, 36, 0.15)'};
   border-radius: 6px;
   color: ${(props) => (props.color ? props.color : '#24292f;')};
   background-color: ${(props) => (props.bgColor ? props.bgColor : '#f6f8fa;')};
@@ -57,6 +60,7 @@ export interface ButtonProps {
   fontSize?: string;
   onClick?: () => void;
   popup?: React.ReactNode;
+  borderColor?: string;
 }
 
 const Button = ({
@@ -68,14 +72,18 @@ const Button = ({
   color,
   hoverColor,
   fontSize,
-  popup
+  popup,
+  borderColor,
+  onClick,
 }: ButtonProps) => {
   return (
     <Wrapper
+      onClick={onClick}
       bgColor={bgColor}
       color={color}
       hoverColor={hoverColor}
       fontSize={fontSize}
+      borderColor={borderColor}
     >
       {icon}
       {text}
