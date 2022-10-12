@@ -4,6 +4,7 @@ import {
   useGetAnIssuesQuery,
   useGetCommentsQuery,
 } from '../../sevices/api/issueApi';
+import CommentBlock from './CommentBlock';
 import { IssueData } from './fakeData/getAnIssue';
 import Title from './Title';
 
@@ -23,11 +24,17 @@ const NewIssueContainer = () => {
     issueId: 58,
   });
   console.log(comments);
-  return (
-    <div className='container mx-auto'>
-      <Title {...(issueData as IssueData)} />
-    </div>
-  );
+
+  if (isSuccess)
+    return (
+      <div className='p-[16px] pb-[180px]'>
+        <Title {...(issueData as IssueData)} />
+        {comments?.map((comment) => (
+          <CommentBlock {...comment} key={comment.id} />
+        ))}
+      </div>
+    );
+  return <>fetching</>;
 };
 
 export default NewIssueContainer;
