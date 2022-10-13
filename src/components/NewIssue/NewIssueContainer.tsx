@@ -24,34 +24,35 @@ import Participants from './Participants';
 import IssueControlMenu from './IssueControlMenu';
 
 const NewIssueContainer = () => {
+  const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
+  const sessionUser = JSON.parse(sessionStorage.getItem('user')!);
   console.count('rendered');
   //  TODO use variables
   const userInfo = useAppSelector((state) => state.userInfoAction);
   const { data: issueData, isSuccess } = useGetAnIssuesQuery({
-    userName: 'LinHeMa',
-    repo: 'TEST',
+    userName: sessionUser,
+    repo: sessionRepo,
     token: userInfo.token,
     issueId: 58,
   });
   const { data: comments } = useGetCommentsQuery({
-    userName: 'LinHeMa',
-    repo: 'TEST',
+    userName: sessionUser,
+    repo: sessionRepo,
     token: userInfo.token,
     issueId: 58,
   });
   const { data: assignees } = useGetListAssigneesQuery({
-    userName: userInfo.user_name,
+    userName: sessionUser,
     // repo: userInfo.chosenRepo,
-    repo: 'TEST',
+    repo: sessionRepo,
     token: userInfo.token,
   });
   const { data: labels } = useGetLabelListQuery({
-    name: userInfo.user_name,
+    name: sessionUser,
     // repo: userInfo.chosenRepo,
-    repo: 'TEST',
+    repo: sessionRepo,
     token: userInfo.token,
   });
-  console.log('issueData', issueData);
   const firstIssue = {
     body: issueData?.body,
     user: issueData?.user,
@@ -64,7 +65,7 @@ const NewIssueContainer = () => {
   if (isSuccess)
     return (
       <div className=' mx-auto max-w-[1280px] p-[16px] pb-[180px] '>
-        <Title {...(issueData as IssueData)} />
+        <Title {...(issueData as IssueData)} isSuccess={isSuccess} />
         <div className='flex flex-col md:flex-row'>
           <div className='md:mr-8 md:w-full'>
             <CommentBlock {...firstIssue} />

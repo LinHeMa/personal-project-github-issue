@@ -83,8 +83,8 @@ const CommentBlock = ({
           <div data-color-mode='light' className='mt-8'>
             <div className='wmde-markdown-var'>
               <MDEditor.Markdown
-                source={body}
-                style={{ whiteSpace: 'pre-wrap' }}
+                source={_.isEmpty(body) ? '*No description proviede*' : body}
+                style={{ whiteSpace: 'pre-wrap'}}
               />
             </div>
             <div className='mt-4 flex'>

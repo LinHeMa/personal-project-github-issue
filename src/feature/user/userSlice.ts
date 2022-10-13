@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import _ from 'lodash';
+const tokenInLocalStorage = _.get(JSON.parse(localStorage.getItem('user')!), [
+  'currentSession',
+  'access_token',
+]);
+
 const initialState: User = {
   avatar_url: '',
   email: '',
@@ -8,9 +14,9 @@ const initialState: User = {
   preferred_username: '',
   provider_id: '',
   sub: '',
-  user_name: '',
-  token: null,
-  chosenRepo: '',
+  user_name: JSON.parse(sessionStorage.getItem('user')!) || '',
+  token: tokenInLocalStorage || '',
+  chosenRepo: JSON.parse(sessionStorage.getItem('repo')!) || '',
 };
 
 export type User = {
@@ -59,6 +65,7 @@ export const userSlice = createSlice({
       state.chosenRepo = action.payload;
     },
     signOutUser() {
+      sessionStorage.clear();
       return initialState;
     },
   },

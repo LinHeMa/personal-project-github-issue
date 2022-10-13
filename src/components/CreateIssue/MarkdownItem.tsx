@@ -2,19 +2,19 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   TypographyIcon,
-} from "@primer/octicons-react";
-import clsx from "clsx";
-import _ from "lodash";
-import React, { createContext, Dispatch, useContext, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+} from '@primer/octicons-react';
+import clsx from 'clsx';
+import _ from 'lodash';
+import React, { createContext, Dispatch, useContext, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   addBody,
   addTitle,
   resetAll,
-} from "../../feature/Label/createIssueSlice";
-import ReactLoading from "react-loading";
-import { useCreateIssueMutation } from "../../sevices/api/issueApi";
-import { useNavigate } from "react-router-dom";
+} from '../../feature/Label/createIssueSlice';
+import ReactLoading from 'react-loading';
+import { useCreateIssueMutation } from '../../sevices/api/issueApi';
+import { useNavigate } from 'react-router-dom';
 
 interface MarkdownContext {
   isPreview: string;
@@ -24,7 +24,7 @@ interface MarkdownContext {
 }
 
 const MarkdownContext = createContext<MarkdownContext>({
-  isPreview: "Write",
+  isPreview: 'Write',
   setIsPreview: () => {
     return;
   },
@@ -39,7 +39,7 @@ type MenuItemProps = {
 };
 
 const MarkdownItem = (props: MenuItemProps) => {
-  const [isPreview, setIsPreview] = useState("Write");
+  const [isPreview, setIsPreview] = useState('Write');
   const [markdownToggle, setMarkdownToggle] = useState(false);
 
   const providerValue: MarkdownContext = {
@@ -51,7 +51,7 @@ const MarkdownItem = (props: MenuItemProps) => {
   return (
     <MarkdownContext.Provider value={providerValue}>
       {React.Children.map(props.children, (child) =>
-        React.cloneElement(child, { isPreview, setIsPreview })
+        React.cloneElement(child, { isPreview, setIsPreview }),
       )}
     </MarkdownContext.Provider>
   );
@@ -69,9 +69,9 @@ const Input = () => {
       <input
         value={title}
         onChange={(e) => dispatch(addTitle(e.target.value))}
-        type="text"
-        placeholder="Title"
-        className="w-full rounded-lg border border-solid border-stone-400 bg-[#F5F8FA] p-4"
+        type='text'
+        placeholder='Title'
+        className='w-full rounded-lg border border-solid border-stone-400 bg-[#F5F8FA] p-4'
       />
     </div>
   );
@@ -89,7 +89,7 @@ interface TabContainer {
 
 const TabContainer = ({ children }: TabContainer) => {
   return (
-    <div className=" flex justify-between md:justify-start">{children}</div>
+    <div className=' flex justify-between md:justify-start'>{children}</div>
   );
 };
 
@@ -98,7 +98,7 @@ const Tab = ({ children, toggle, currentView }: Tab) => {
   return (
     <div
       className={`flex flex-1 cursor-pointer items-center justify-center border border-solid border-stone-300 p-8 text-[16px] md:flex-none md:rounded-t-lg md:p-6 
-      ${clsx({ " bg-[#F6F8FA] border-b-1": isPreview !== children })}
+      ${clsx({ ' border-b-1 bg-[#F6F8FA]': isPreview !== children })}
        `}
       onClick={() => {
         toggle();
@@ -115,7 +115,7 @@ interface FunctionBar {
 }
 const FunctionBar = ({ children }: FunctionBar) => {
   return (
-    <div className="mt-8 flex flex-wrap justify-between px-4">{children}</div>
+    <div className='mt-8 flex flex-wrap justify-between px-4'>{children}</div>
   );
 };
 interface FunctionGroup {
@@ -123,7 +123,7 @@ interface FunctionGroup {
 }
 
 const FunctionGroup = ({ children }: FunctionGroup) => {
-  return <div className="flex">{children}</div>;
+  return <div className='flex'>{children}</div>;
 };
 
 const FunctionMobileToggle = () => {
@@ -133,7 +133,7 @@ const FunctionMobileToggle = () => {
       onClick={() => {
         setMarkdownToggle(!markdownToggle);
       }}
-      className="md:hidden"
+      className='md:hidden'
     >
       <TypographyIcon />
       {markdownToggle ? <ChevronDownIcon /> : <ChevronUpIcon />}
@@ -147,7 +147,7 @@ type FunctionMobileToggleBar = {
 const FunctionMobileToggleBar = ({ children }: FunctionMobileToggleBar) => {
   const { markdownToggle } = useContext(MarkdownContext);
   return markdownToggle ? (
-    <div className="mt-8 flex w-full md:hidden">{children}</div>
+    <div className='mt-8 flex w-full md:hidden'>{children}</div>
   ) : (
     <></>
   );
@@ -174,8 +174,8 @@ const TextArea = ({ forwardedRef }: TextArea) => {
       ref={forwardedRef}
       value={body}
       onChange={(e) => dispatch(addBody(e.target.value))}
-      className="mt-8 min-h-[200px] w-full resize-y rounded-xl border border-solid border-stone-300 py-6 px-4 text-[14px] leading-normal"
-      placeholder="Leave a comment"
+      className='mt-8 min-h-[200px] w-full resize-y rounded-xl border border-solid border-stone-300 py-6 px-4 text-[14px] leading-normal'
+      placeholder='Leave a comment'
     />
   );
 };
@@ -186,7 +186,7 @@ interface Button {
 }
 const Button = ({ children }: Button) => {
   const { name, repo, ...body } = useAppSelector(
-    (state) => state.createIssueAction
+    (state) => state.createIssueAction,
   );
   const token = useAppSelector((state) => state.userInfoAction.token);
   const dispatch = useAppDispatch();
@@ -195,21 +195,26 @@ const Button = ({ children }: Button) => {
   return (
     <div
       onClick={() => {
-        createIssue({ name, repo, body, token })
+        createIssue({
+          name,
+          repo: sessionStorage.getItem('repo')!,
+          body,
+          token,
+        })
           .then(() => dispatch(resetAll()))
-          .then(() => navigate("/issuelist"));
+          .then(() => navigate('/issuelist'));
       }}
       className={clsx({
-        "flex w-full cursor-pointer items-end justify-center	rounded-lg bg-[#2DA44E] p-4 font-[700] text-white":
+        'flex w-full cursor-pointer items-end justify-center	rounded-lg bg-[#2DA44E] p-4 font-[700] text-white':
           true,
       })}
     >
       {isLoading ? (
         <ReactLoading
-          type={"bubbles"}
-          color={"#ffffff"}
-          width="24px"
-          height="14px"
+          type={'bubbles'}
+          color={'#ffffff'}
+          width='24px'
+          height='14px'
         />
       ) : (
         children

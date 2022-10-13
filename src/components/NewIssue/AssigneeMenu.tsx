@@ -18,17 +18,7 @@ const AssigneeMenu = ({ assignees, clickedAssignees }: assigneeMenuProps) => {
   const assigneesArray = useAppSelector(
     (state) => state.createIssueAction.assignees,
   );
-  const assigneeClickedArray = _.filter(assignees, (assignee) =>
-    _.includes(assigneesArray, assignee.login),
-  );
-  const clickedAssigneesStrArray = clickedAssignees?.map(
-    (assignee) => assignee.login,
-  );
-  useEffect(() => {
-    clickedAssigneesStrArray?.forEach((assignee) =>
-      dispatch(addAssignee(assignee)),
-    );
-  }, []);
+
   return (
     <div>
       <div className='border-b border-solid border-stone-300'>

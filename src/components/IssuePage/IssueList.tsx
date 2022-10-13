@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSessionStorage } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Button from '../../components/button/Button';
 import { addBasicInfo } from '../../feature/Label/createIssueSlice';
@@ -17,6 +18,7 @@ import {
   addStateCondition,
   resetAll,
 } from '../../feature/Label/LabelListActionSlice';
+import { chooseRepo } from '../../feature/user/userSlice';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import BiFunctionButton from '../button/BiFunctionButton';
@@ -135,7 +137,7 @@ export default function IssueList() {
           <Button
             text=''
             hasDropDown={false}
-            onClick={()=>console.log('clicked')}
+            onClick={() => console.log('clicked')}
             popup={<PopupMenu type='Filters' />}
           />
 

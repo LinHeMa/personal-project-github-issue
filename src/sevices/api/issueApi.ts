@@ -127,6 +127,7 @@ export interface postQuery {
   title: string;
   body: postbody;
   token?: string | null;
+  issueNumber?: number;
 }
 
 type getListAssigneesQuery = {
@@ -211,6 +212,20 @@ const issueApi = labelApi.injectEndpoints({
       },
       invalidatesTags: [{ type: 'Issues' }],
     }),
+    updateIssue: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, body, token, issueNumber }) {
+        return {
+          url: `/repos/${name}/${repo}/issues/${issueNumber}`,
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+          body,
+        };
+      },
+      invalidatesTags: [{ type: 'Issues' }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -222,4 +237,5 @@ export const {
   useGetAnIssuesQuery,
   useGetCommentsQuery,
   useGetAnIssueLabelsQuery,
+  useUpdateIssueMutation,
 } = issueApi;
