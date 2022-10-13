@@ -51,7 +51,15 @@ const NewIssueContainer = () => {
     repo: 'TEST',
     token: userInfo.token,
   });
-  console.log('issueData', issueData?.labels);
+  console.log('issueData', issueData);
+  const firstIssue = {
+    body: issueData?.body,
+    user: issueData?.user,
+    created_at: issueData?.created_at,
+    updated_at: issueData?.updated_at,
+    author_association: issueData?.author_association,
+    reactions: issueData?.reactions,
+  };
 
   if (isSuccess)
     return (
@@ -59,6 +67,7 @@ const NewIssueContainer = () => {
         <Title {...(issueData as IssueData)} />
         <div className='flex flex-col md:flex-row'>
           <div className='md:mr-8 md:w-full'>
+            <CommentBlock {...firstIssue} />
             {comments?.map((comment) => (
               <CommentBlock {...comment} key={comment.id} />
             ))}

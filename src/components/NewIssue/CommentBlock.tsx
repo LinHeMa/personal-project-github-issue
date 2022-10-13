@@ -9,12 +9,12 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import React from 'react';
 import {
-  Comment,
   Comment as commentType,
   Reactions,
 } from '../../utils/type/commentsType';
 import { timeCalc } from '../IssuePage/Item';
 import Emoji from './Emoji';
+import { IssueData } from './fakeData/getAnIssue';
 
 const CommentBlock = ({
   body,
