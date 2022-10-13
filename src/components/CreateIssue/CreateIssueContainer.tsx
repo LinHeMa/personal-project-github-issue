@@ -16,9 +16,10 @@ const CreateIssueContainer = () => {
     repo: userInfo.chosenRepo,
     token: userInfo.token,
   });
+  
   return (
     <div className='flex flex-col p-8 pb-[200px] md:container md:mx-auto  md:flex-row'>
-      <MarkdownView />
+      <MarkdownView hasInput minHeight=''/>
       <CreateIssueView assignees={assignees} labels={labels} />
     </div>
   );

@@ -33,7 +33,11 @@ const Left = styled.div`
   }
 `;
 
-const Right = styled.div`
+type RightProps = {
+  $bgColorRight?: string;
+};
+
+const Right = styled.div<RightProps>`
   display: flex;
   font-weight: 500;
   align-items: center;
@@ -45,7 +49,8 @@ const Right = styled.div`
   border-radius: 0 6px 6px 0;
   border-left: none;
   color: #24292f;
-  /* background-color: #f6f8fa; */
+  background-color: ${(props) =>
+    props.$bgColorRight ? props.$bgColorRight : '#f6f8fa'};
   padding: 3px 8px;
   &:hover {
     background-color: #f3f4f6;
@@ -68,9 +73,10 @@ interface BifunctionButtonProps {
   text: string;
   number?: number;
   hasDropDown?: boolean;
-  iconRight: React.ReactNode;
-  textRight: string;
+  iconRight?: React.ReactNode;
+  textRight?: string;
   numberRight?: number;
+  $bgColorRight?: string;
 }
 
 const BiFunctionButton = ({
@@ -81,15 +87,16 @@ const BiFunctionButton = ({
   iconRight,
   textRight,
   numberRight,
+  $bgColorRight,
 }: BifunctionButtonProps) => {
   return (
     <Wrapper>
       <Left>
-        {icon}
+        <span className='mr-2'>{icon}</span>
         {text}
         {number !== undefined ? <Notification>{number}</Notification> : null}
       </Left>
-      <Right>
+      <Right $bgColorRight={$bgColorRight}>
         {iconRight}
         {textRight}
         {numberRight !== undefined ? (

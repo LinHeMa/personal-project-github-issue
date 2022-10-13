@@ -4,6 +4,7 @@ import {
   CrossReferenceIcon,
   HeadingIcon,
   ImageIcon,
+  IssueClosedIcon,
   ItalicIcon,
   LinkIcon,
   ListOrderedIcon,
@@ -12,6 +13,7 @@ import {
   QuoteIcon,
   ReplyIcon,
   TasklistIcon,
+  TriangleDownIcon,
 } from '@primer/octicons-react';
 import avatar from '../../images/github_avatar.png';
 import TextareaMarkdown, {
@@ -28,6 +30,8 @@ import MarkdownItem from './MarkdownItem';
 import { useBoolean } from 'usehooks-ts';
 import { Fragment, useRef } from 'react';
 import { addBody } from '../../feature/Label/createIssueSlice';
+import BiFunctionButton from '../button/BiFunctionButton';
+import Button from '../button/Button';
 
 type showOnMobileIcon = {
   button: JSX.Element;
@@ -37,7 +41,13 @@ type MarkdownIcon = {
   button: JSX.Element;
   function: () => void;
 };
-const MarkdownView = () => {
+
+type MarkdownView = {
+  hasInput: boolean;
+  minHeight: string;
+  commentPage?: boolean;
+};
+const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
   const userImg = useAppSelector((state) => state.userInfoAction.avatar_url);
   const { value, setTrue, setFalse } = useBoolean(true);
   const textAreaRef = useRef<TextareaMarkdownRef>(null);
@@ -142,14 +152,16 @@ const MarkdownView = () => {
   ];
   return (
     <>
-      <img
-        src={userImg || avatar}
-        alt='profile picture'
-        className=' mx-4 mt-4 hidden h-[40px] w-[40px] rounded-full md:block'
-      />
+      {!commentPage && (
+        <img
+          src={userImg || avatar}
+          alt='profile picture'
+          className=' mx-4 mt-4 hidden h-[40px] w-[40px] rounded-full md:block'
+        />
+      )}
       <div className='h-fit w-full rounded-xl border-solid border-stone-300 p-4 md:m-4 md:border md:p-8'>
         <MarkdownItem>
-          <MarkdownItem.Input />
+          {hasInput ? <MarkdownItem.Input /> : <></>}
           <div className='mt-8 mb-2 flex flex-col md:flex-row md:items-end md:justify-between'>
             <MarkdownItem.TabContainer>
               <MarkdownItem.Tab toggle={setTrue} currentView={value}>
@@ -161,7 +173,7 @@ const MarkdownView = () => {
             </MarkdownItem.TabContainer>
             {value ? (
               <MarkdownItem.FunctionBar>
-                <MarkdownItem.FunctionMobileToggle></MarkdownItem.FunctionMobileToggle>
+                <MarkdownItem.FunctionMobileToggle />
                 <MarkdownItem.FunctionGroup>
                   {MarkdownIcon.map((icon, index) => (
                     <div
@@ -222,7 +234,9 @@ const MarkdownView = () => {
                 ]}
               >
                 <TextareaAutosize
-                  className={`min-h-[300px] w-full resize-y whitespace-pre rounded-lg border border-solid border-stone-300 bg-[#F5F8FA] p-4 text-[14px] leading-normal `}
+                  className={`${
+                    minHeight ? minHeight : 'min-h-[300px]'
+                  } w-full resize-y whitespace-pre rounded-lg border border-solid border-stone-300 bg-[#F5F8FA] p-4 text-[14px] leading-normal `}
                   value={body}
                   onChange={(e) => dispatch(addBody(e.target.value))}
                 />
@@ -235,9 +249,27 @@ const MarkdownView = () => {
               </div>
             </div>
           )}
-          <div className=' mt-4 ml-auto hidden w-fit justify-end md:flex'>
-            <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
-          </div>
+
+          {!commentPage ? (
+            <div className=' mt-4 ml-auto hidden w-fit justify-end md:flex'>
+              <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
+            </div>
+          ) : (
+            <div className=' mt-4 ml-auto w-fit justify-end flex'>
+              <BiFunctionButton
+                icon={<IssueClosedIcon fill='#8250DF' />}
+                text={`Closed with comment`}
+                iconRight={<TriangleDownIcon />}
+              />
+              <Button
+                fontSize='14px'
+                text='Comment'
+                bgColor='#2da44e'
+                color='#ffffff'
+                hoverColor='#2C974B'
+              />
+            </div>
+          )}
         </MarkdownItem>
       </div>
     </>

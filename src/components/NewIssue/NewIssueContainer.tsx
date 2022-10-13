@@ -7,11 +7,19 @@ import {
 import CommentBlock from './CommentBlock';
 import { IssueData } from './fakeData/getAnIssue';
 import Title from './Title';
+import ReactLoading from 'react-loading';
+import MarkdownItem from '../CreateIssue/MarkdownItem';
+import MarkdownView from '../CreateIssue/MarkdownView';
+import CommentMarkdown from './CommentMarkdown';
 
 const NewIssueContainer = () => {
   //  TODO use variables
   const userInfo = useAppSelector((state) => state.userInfoAction);
-  const { data: issueData, isSuccess } = useGetAnIssuesQuery({
+  const {
+    data: issueData,
+    isSuccess,
+    isFetching,
+  } = useGetAnIssuesQuery({
     userName: 'LinHeMa',
     repo: 'TEST',
     token: userInfo.token,
@@ -23,7 +31,7 @@ const NewIssueContainer = () => {
     token: userInfo.token,
     issueId: 58,
   });
-  console.log(comments);
+  console.count('rendered');
 
   if (isSuccess)
     return (
@@ -32,9 +40,19 @@ const NewIssueContainer = () => {
         {comments?.map((comment) => (
           <CommentBlock {...comment} key={comment.id} />
         ))}
+        <CommentMarkdown userInfo={userInfo} />
       </div>
     );
-  return <>fetching</>;
+  return (
+    <div className='mt-16 flex justify-center'>
+      <ReactLoading
+        type='spinningBubbles'
+        color='#23a7e4'
+        height={'20%'}
+        width={'20%'}
+      />
+    </div>
+  );
 };
 
 export default NewIssueContainer;

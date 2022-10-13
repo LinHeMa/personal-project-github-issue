@@ -11,14 +11,17 @@ export default {
   component: MarkdownItem,
 } as ComponentMeta<typeof MarkdownView>;
 
-const Template: ComponentStory<typeof MarkdownView> = () => (
+const Template: ComponentStory<typeof MarkdownView> = (args) => (
   <BrowserRouter>
     <Provider store={store}>
       <div className='flex flex-col p-8 pb-[200px] md:container md:mx-auto  md:flex-row'>
-        <MarkdownView />
+        <MarkdownView {...args} />
       </div>
     </Provider>
   </BrowserRouter>
 );
 
 export const DefaultLabel = Template.bind({});
+DefaultLabel.args = {
+  hasInput: true,
+};

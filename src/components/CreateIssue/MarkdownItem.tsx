@@ -97,8 +97,8 @@ const Tab = ({ children, toggle, currentView }: Tab) => {
   const { isPreview, setIsPreview } = useContext(MarkdownContext);
   return (
     <div
-      className={`flex flex-1 cursor-pointer items-center justify-center border border-solid border-stone-300 p-8 text-[16px] md:flex-none md:rounded-t-lg md:p-6
-      ${clsx({ " bg-gray-200": isPreview === children })}
+      className={`flex flex-1 cursor-pointer items-center justify-center border border-solid border-stone-300 p-8 text-[16px] md:flex-none md:rounded-t-lg md:p-6 
+      ${clsx({ " bg-[#F6F8FA] border-b-1": isPreview !== children })}
        `}
       onClick={() => {
         toggle();
