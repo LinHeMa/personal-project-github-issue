@@ -20,6 +20,7 @@ import LabelMenu from './LabelMenu';
 import ProjectsMenu from './ProjectsMenu';
 import MileStoneMenu from './MileStoneMenu';
 import DevelpomentMenu from './DevelopmentMenu';
+import Participants from './Participants';
 
 const NewIssueContainer = () => {
   console.count('rendered');
@@ -49,7 +50,6 @@ const NewIssueContainer = () => {
     repo: 'TEST',
     token: userInfo.token,
   });
-
   console.log('issueData', issueData?.labels);
 
   if (isSuccess)
@@ -72,6 +72,7 @@ const NewIssueContainer = () => {
             <ProjectsMenu />
             <MileStoneMenu />
             <DevelpomentMenu />
+            <Participants comments={comments} />
           </div>
         </div>
       </div>

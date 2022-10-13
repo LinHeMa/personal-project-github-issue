@@ -86,14 +86,14 @@ interface Title {
 
 interface source {
   title: string;
-  default: string;
+  default?: string | JSX.Element[];
 }
 
 const Title = ({ source, clickedArray, isLabel }: Title) => {
   return (
     <div className='flex flex-col  items-start '>
       <h1 className=' pb-6 font-[700] '>{source.title}</h1>
-      <h1 className={`${clsx({ hidden: !_.isEmpty(clickedArray)})}`}>
+      <h1 className={`${clsx({ hidden: !_.isEmpty(clickedArray) })} flex`}>
         {source.default}
       </h1>
 
