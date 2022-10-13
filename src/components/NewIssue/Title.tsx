@@ -1,5 +1,5 @@
 import { IssueOpenedIcon } from '@primer/octicons-react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../button/Button';
 import clsx from 'clsx';
 import { timeCalc } from '../IssuePage/Item';
@@ -37,7 +37,27 @@ const Title: React.FC<IssueData> = ({
   );
   const token = useAppSelector((state) => state.userInfoAction.token);
   const titleInput = useAppSelector((state) => state.createIssueAction.title);
-
+  const observer = useRef<IntersectionObserver | null>(null);
+  const [fixedHeaderStatus, setFixedHeaderStatus] = useState<boolean>(false);
+  const headerBottom = useCallback((node: HTMLDivElement) => {
+    if (node) {
+      const options = {
+        rootMargin: '0px',
+        threshold: 0,
+      };
+      const callback = (entries: IntersectionObserverEntry[]) => {
+        if (entries[0].isIntersecting) {
+          setFixedHeaderStatus(false);
+          console.log('in');
+        } else {
+          setFixedHeaderStatus(true);
+          console.log('out');
+        }
+      };
+      observer.current = new IntersectionObserver(callback, options);
+      observer.current.observe(node);
+    }
+  }, []);
   useEffect(() => {
     const prevLabelsArray = labels.map((label) => label.name);
     const prevAssigneesArray = assignees.map((assignee) => assignee.login);
@@ -56,7 +76,7 @@ const Title: React.FC<IssueData> = ({
   const [updateIssue] = useUpdateIssueMutation();
 
   return (
-    <div className='px-4 md:py-6'>
+    <div className='px-4 md:py-6' ref={headerBottom}>
       <div className='md:flex'>
         <input
           value={titleInput}
@@ -184,6 +204,42 @@ const Title: React.FC<IssueData> = ({
           </div>
         </div>
       </div>
+      <header
+        className={`${
+          fixedHeaderStatus ? 'block' : 'hidden'
+        } border-borderGray fixed top-0 left-0 right-0 z-[200] flex flex-col border-b border-solid bg-white px-2 py-[16px] `}
+      >
+        <div className='mx-auto flex w-full max-w-[1216px] items-start pl-10'>
+          <div>
+            {state === 'open' && (
+              <div
+                className={` min-w-[77px] mr-2 h-[32px] w-fit rounded-[2em] bg-primary-green py-[8px] px-[12px] text-white`}
+              >
+                <IssueOpenedIcon />
+                <span className='ml-1 text-[14px]'>{_.upperFirst(state)}</span>
+              </div>
+            )}
+            {state === 'closed' && <div></div>}
+            {state === 'closed2' && <div></div>}
+          </div>
+          <div>
+            <div className='flex  overflow-hidden pb-[2px]'>
+              <h1 className='text-left text-[14px] font-semibold tracking-wider	'>
+                {title}
+              </h1>
+              <h2 className='text-[14px] tracking-wider text-[#5A636C]'>
+                #{number}
+              </h2>
+            </div>
+            <div className=' flex items-center overflow-hidden whitespace-pre '>
+              <div className='mt-2 flex  text-[#57606A]'>
+                <span className='font-semibold '>{user.login}</span> {state}{' '}
+                this issue {timeCalc(created_at)} · {comments} comments
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
     </div>
   );
 };
