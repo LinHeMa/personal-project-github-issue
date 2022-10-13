@@ -26,20 +26,6 @@ const CommentMarkdown: React.FC<CommentMarkdownProps> = ({ userInfo }) => {
           commentPage
         />
       </div>
-      {/* <div className='flex justify-end'>
-        <BiFunctionButton
-          icon={<IssueClosedIcon fill='#8250DF' />}
-          text={`Closed with comment`}
-          iconRight={<TriangleDownIcon />}
-        />
-        <Button
-          fontSize='14px'
-          text='Comment'
-          bgColor='#2da44e'
-          color='#ffffff'
-          hoverColor='#2C974B'
-        />
-      </div> */}
     </div>
   );
 };

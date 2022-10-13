@@ -1,6 +1,6 @@
 import { IssueData } from '../../components/NewIssue/fakeData/getAnIssue';
 import { Comments } from '../../utils/type/commentsType';
-import { labelApi } from './labelApi';
+import { labelApi, LabelsList } from './labelApi';
 
 export interface Root {
   url: string;
@@ -109,6 +109,7 @@ type query = {
   userName: string;
   repo: string;
   issueId?: number;
+  issue_number?: number;
 };
 
 type getListAssignees = {
@@ -184,6 +185,18 @@ const issueApi = labelApi.injectEndpoints({
       },
       providesTags: ['Issues'],
     }),
+    getAnIssueLabels: build.query<LabelsList[], query>({
+      query: ({ userName, repo, token, issue_number }) => {
+        return {
+          url: `/repos/${userName}/${repo}/issues/${issue_number}/labels`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+        };
+      },
+      providesTags: ['Issues'],
+    }),
     createIssue: build.mutation<postQuery, Partial<postQuery>>({
       query({ name, repo, body, token }) {
         return {
@@ -208,4 +221,5 @@ export const {
   useCreateIssueMutation,
   useGetAnIssuesQuery,
   useGetCommentsQuery,
+  useGetAnIssueLabelsQuery,
 } = issueApi;

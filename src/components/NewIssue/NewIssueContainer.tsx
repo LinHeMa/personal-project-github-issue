@@ -1,8 +1,10 @@
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import {
+  useGetAnIssueLabelsQuery,
   useGetAnIssuesQuery,
   useGetCommentsQuery,
+  useGetListAssigneesQuery,
 } from '../../sevices/api/issueApi';
 import CommentBlock from './CommentBlock';
 import { IssueData } from './fakeData/getAnIssue';
@@ -11,15 +13,15 @@ import ReactLoading from 'react-loading';
 import MarkdownItem from '../CreateIssue/MarkdownItem';
 import MarkdownView from '../CreateIssue/MarkdownView';
 import CommentMarkdown from './CommentMarkdown';
+import CreateIssueView from '../CreateIssue/CreateIssueView';
+import { useGetLabelListQuery } from '../../sevices/api/labelApi';
+import AssigneeMenu from './AssigneeMenu';
 
 const NewIssueContainer = () => {
+  console.count('rendered');
   //  TODO use variables
   const userInfo = useAppSelector((state) => state.userInfoAction);
-  const {
-    data: issueData,
-    isSuccess,
-    isFetching,
-  } = useGetAnIssuesQuery({
+  const { data: issueData, isSuccess } = useGetAnIssuesQuery({
     userName: 'LinHeMa',
     repo: 'TEST',
     token: userInfo.token,
@@ -31,16 +33,40 @@ const NewIssueContainer = () => {
     token: userInfo.token,
     issueId: 58,
   });
-  console.count('rendered');
+  const { data: assignees } = useGetListAssigneesQuery({
+    userName: userInfo.user_name,
+    // repo: userInfo.chosenRepo,
+    repo: 'TEST',
+    token: userInfo.token,
+  });
+  const { data: labels } = useGetAnIssueLabelsQuery({
+    userName: userInfo.user_name,
+    // repo: userInfo.chosenRepo,
+    issue_number: 58,
+    repo: 'TEST',
+    token: userInfo.token,
+  });
+
+  console.log('issueData', issueData?.assignees);
 
   if (isSuccess)
     return (
-      <div className='p-[16px] pb-[180px]'>
+      <div className=' p-[16px] pb-[180px] max-w-[1280px] mx-auto '>
         <Title {...(issueData as IssueData)} />
-        {comments?.map((comment) => (
-          <CommentBlock {...comment} key={comment.id} />
-        ))}
-        <CommentMarkdown userInfo={userInfo} />
+        <div className='flex flex-col md:flex-row'>
+          <div className=' grow mr-8'>
+            {comments?.map((comment) => (
+              <CommentBlock {...comment} key={comment.id} />
+            ))}
+            <CommentMarkdown userInfo={userInfo} />
+          </div>
+          <div className='grow'>
+            <AssigneeMenu
+              assignees={assignees}
+              clickedAssignees={issueData?.assignees}
+            />
+          </div>
+        </div>
       </div>
     );
   return (
