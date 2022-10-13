@@ -16,6 +16,10 @@ import CommentMarkdown from './CommentMarkdown';
 import CreateIssueView from '../CreateIssue/CreateIssueView';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import AssigneeMenu from './AssigneeMenu';
+import LabelMenu from './LabelMenu';
+import ProjectsMenu from './ProjectsMenu';
+import MileStoneMenu from './MileStoneMenu';
+import DevelpomentMenu from './DevelopmentMenu';
 
 const NewIssueContainer = () => {
   console.count('rendered');
@@ -39,32 +43,35 @@ const NewIssueContainer = () => {
     repo: 'TEST',
     token: userInfo.token,
   });
-  const { data: labels } = useGetAnIssueLabelsQuery({
-    userName: userInfo.user_name,
+  const { data: labels } = useGetLabelListQuery({
+    name: userInfo.user_name,
     // repo: userInfo.chosenRepo,
-    issue_number: 58,
     repo: 'TEST',
     token: userInfo.token,
   });
 
-  console.log('issueData', issueData?.assignees);
+  console.log('issueData', issueData?.labels);
 
   if (isSuccess)
     return (
-      <div className=' p-[16px] pb-[180px] max-w-[1280px] mx-auto '>
+      <div className=' mx-auto max-w-[1280px] p-[16px] pb-[180px] '>
         <Title {...(issueData as IssueData)} />
         <div className='flex flex-col md:flex-row'>
-          <div className=' grow mr-8'>
+          <div className='md:mr-8 md:w-full'>
             {comments?.map((comment) => (
               <CommentBlock {...comment} key={comment.id} />
             ))}
             <CommentMarkdown userInfo={userInfo} />
           </div>
-          <div className='grow'>
+          <div className=' md:max-w-[300px]'>
             <AssigneeMenu
               assignees={assignees}
               clickedAssignees={issueData?.assignees}
             />
+            <LabelMenu labels={labels} clickedLabelsArray={issueData?.labels} />
+            <ProjectsMenu />
+            <MileStoneMenu />
+            <DevelpomentMenu />
           </div>
         </div>
       </div>
