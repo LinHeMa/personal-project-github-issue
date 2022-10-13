@@ -21,6 +21,7 @@ import ProjectsMenu from './ProjectsMenu';
 import MileStoneMenu from './MileStoneMenu';
 import DevelpomentMenu from './DevelopmentMenu';
 import Participants from './Participants';
+import IssueControlMenu from './IssueControlMenu';
 
 const NewIssueContainer = () => {
   console.count('rendered');
@@ -73,6 +74,7 @@ const NewIssueContainer = () => {
             <MileStoneMenu />
             <DevelpomentMenu />
             <Participants comments={comments} />
+            <IssueControlMenu />
           </div>
         </div>
       </div>
