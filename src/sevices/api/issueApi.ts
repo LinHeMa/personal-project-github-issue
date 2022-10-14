@@ -128,6 +128,7 @@ export interface postQuery {
   body: postbody | string;
   token?: string | null;
   issueNumber?: number;
+  commentId?: number;
 }
 
 type getListAssigneesQuery = {
@@ -240,6 +241,19 @@ const issueApi = labelApi.injectEndpoints({
       },
       invalidatesTags: [{ type: 'Issues' }],
     }),
+    deleteComment: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, token, commentId }) {
+        return {
+          url: `/repos/${name}/${repo}/issues/comments/${commentId}`,
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+        };
+      },
+      invalidatesTags: [{ type: 'Issues' }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -253,4 +267,5 @@ export const {
   useGetAnIssueLabelsQuery,
   useUpdateIssueMutation,
   useCreateCommentMutation,
+  useDeleteCommentMutation,
 } = issueApi;

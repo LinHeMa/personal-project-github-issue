@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-const tokenInLocalStorage = _.get(JSON.parse(localStorage.getItem('user')!), [
-  'currentSession',
-  'access_token',
-]);
+const tokenInLocalStorage = _.get(
+  JSON.parse(localStorage.getItem('supabase.auth.token')!),
+  ['currentSession', 'provider_token'],
+);
 
 const initialState: User = {
   avatar_url: '',

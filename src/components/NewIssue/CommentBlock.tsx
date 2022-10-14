@@ -7,7 +7,8 @@ import {
 import MDEditor from '@uiw/react-md-editor';
 import clsx from 'clsx';
 import _ from 'lodash';
-import React from 'react';
+import React, { useRef } from 'react';
+import { useBoolean, useOnClickOutside } from 'usehooks-ts';
 import {
   Comment as commentType,
   Reactions,
@@ -15,6 +16,7 @@ import {
 import { timeCalc } from '../IssuePage/Item';
 import Emoji from './Emoji';
 import { IssueData } from './fakeData/getAnIssue';
+import Flyout from './Flyout';
 
 const CommentBlock = ({
   body,
@@ -23,7 +25,11 @@ const CommentBlock = ({
   updated_at,
   author_association,
   reactions,
+  id,
 }: commentType) => {
+  const { value, setFalse, toggle } = useBoolean(false);
+  const flyoutRef = useRef(null);
+  useOnClickOutside(flyoutRef, () => setFalse());
   const turnNormalCase = _.flow([_.lowerCase, _.upperFirst]);
   const turnReactionsToArray = (obj: Reactions) => {
     const array = [];
@@ -74,8 +80,22 @@ const CommentBlock = ({
             <div className=' mr-4 hidden h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-full md:flex'>
               <SmileyIcon size={16} />
             </div>
-            <span className='cursor-pointer'>
+            <span
+              className='relative cursor-pointer'
+              onClick={(e) => {
+                toggle();
+                e.stopPropagation();
+              }}
+            >
               <KebabHorizontalIcon />
+              <span
+                ref={flyoutRef}
+                className={` absolute -right-[10px] top-12 z-10 ${clsx({
+                  hidden: !value,
+                })}`}
+              >
+                <Flyout commentId={id} />
+              </span>
             </span>
           </div>
         </div>
@@ -84,7 +104,7 @@ const CommentBlock = ({
             <div className='wmde-markdown-var'>
               <MDEditor.Markdown
                 source={_.isEmpty(body) ? '*No description proviede*' : body}
-                style={{ whiteSpace: 'pre-wrap'}}
+                style={{ whiteSpace: 'pre-wrap' }}
               />
             </div>
             <div className='mt-4 flex'>

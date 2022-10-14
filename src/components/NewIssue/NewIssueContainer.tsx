@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import {
+  useDeleteCommentMutation,
   useGetAnIssueLabelsQuery,
   useGetAnIssuesQuery,
   useGetCommentsQuery,
@@ -53,6 +54,7 @@ const NewIssueContainer = () => {
     repo: sessionRepo,
     token: userInfo.token,
   });
+  
   const firstIssue = {
     body: issueData?.body,
     user: issueData?.user,
@@ -61,7 +63,7 @@ const NewIssueContainer = () => {
     author_association: issueData?.author_association,
     reactions: issueData?.reactions,
   };
-
+  console.log(comments)
   if (isSuccess)
     return (
       <div className=' mx-auto max-w-[1280px] p-[16px] pb-[180px] '>
