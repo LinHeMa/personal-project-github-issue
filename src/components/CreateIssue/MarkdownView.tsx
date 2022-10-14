@@ -39,6 +39,7 @@ import {
 import {
   editCommentBody,
   removeAnEditingComment,
+  resetNewComment,
 } from '../../feature/updateIssueSlice';
 
 type showOnMobileIcon = {
@@ -170,6 +171,7 @@ const MarkdownView = ({
     },
   ];
   const editingComments = useAppSelector((state) => state.updateIssueAction);
+  console.log(editingComments);
   const [updateAComment] = useUpdateACommentMutation();
   return (
     <>
@@ -261,6 +263,8 @@ const MarkdownView = ({
                   value={
                     editComment
                       ? _.find(editingComments, { id: editCommentId })?.body
+                      : commentPage
+                      ? _.find(editingComments, { id: 0 })?.body
                       : body
                   }
                   onChange={(e) => {
@@ -268,6 +272,13 @@ const MarkdownView = ({
                       return dispatch(
                         editCommentBody({
                           id: editCommentId!,
+                          body: e.target.value,
+                        }),
+                      );
+                    if (commentPage)
+                      return dispatch(
+                        editCommentBody({
+                          id: 0,
                           body: e.target.value,
                         }),
                       );
@@ -284,6 +295,8 @@ const MarkdownView = ({
                   source={
                     editComment
                       ? _.find(editingComments, { id: editCommentId })?.body
+                      : commentPage
+                      ? _.find(editingComments, { id: 0 })?.body
                       : body
                   }
                 />
@@ -316,9 +329,9 @@ const MarkdownView = ({
                     // TODO turn into variables
                     issueNumber: 58,
                     token,
-                    body,
-                  });
-                  dispatch(resetAll());
+                    body: _.find(editingComments, { id: 0 })?.body,
+                  }).then(() => dispatch(resetNewComment()));
+                  // dispatch(resetAll());
                 }}
               />
             </div>

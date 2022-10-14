@@ -3,6 +3,7 @@ import React, {
   createContext,
   Dispatch,
   useContext,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -11,7 +12,8 @@ import { useBoolean, useOnClickOutside } from 'usehooks-ts';
 import _ from 'lodash';
 import Label from '../label/Label';
 import { LabelsList } from '../../sevices/api/labelApi';
-import { User } from '../../sevices/api/issueApi';
+import { User, useUpdateIssueMutation } from '../../sevices/api/issueApi';
+import { useAppSelector } from '../../app/hooks';
 
 interface MenuItemContext {
   isOpen: boolean;
@@ -36,9 +38,37 @@ type MenuItemProps = {
 
 const MenuItem = (props: MenuItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const userRepo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const ref = useRef(null);
   const [searchValue, setSearchValue] = useState<string>('');
-  useOnClickOutside(ref, () => setIsOpen(false));
+  const { name, repo, ...body } = useAppSelector(
+    (state) => state.createIssueAction,
+  );
+  const [updateIssue] = useUpdateIssueMutation();
+  useOnClickOutside(ref, () => {
+    if (!isOpen) return;
+    updateIssue({
+      name: userName,
+      repo: userRepo,
+      token,
+      body,
+      // TODO turn into variable
+      issueNumber: 58,
+    });
+    console.log('clicked out', {
+      name: userName,
+      repo: userRepo,
+      token,
+      body,
+    });
+
+    setIsOpen(false);
+  });
   const providerValue: MenuItemContext = {
     isOpen,
     setIsOpen,

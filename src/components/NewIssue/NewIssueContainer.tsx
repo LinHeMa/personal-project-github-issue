@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import {
   useDeleteCommentMutation,
@@ -6,6 +6,7 @@ import {
   useGetAnIssuesQuery,
   useGetCommentsQuery,
   useGetListAssigneesQuery,
+  useUpdateIssueMutation,
 } from '../../sevices/api/issueApi';
 import CommentBlock from './CommentBlock';
 import { IssueData } from './fakeData/getAnIssue';
@@ -64,10 +65,12 @@ const NewIssueContainer = () => {
     author_association: issueData?.author_association,
     reactions: issueData?.reactions,
   };
+
   function returnEditStatus(status: boolean) {
     setIsEdit(status);
   }
-  const editingComments = useAppSelector((state) => state.updateIssueAction);
+
+
 
   console.log('comments:', comments);
   if (isSuccess)
@@ -87,11 +90,18 @@ const NewIssueContainer = () => {
             <CommentMarkdown avatar_url={userInfo.avatar_url} />
           </div>
           <div className=' md:max-w-[300px]'>
-            <AssigneeMenu
-              assignees={assignees}
-              clickedAssignees={issueData?.assignees}
-            />
-            <LabelMenu labels={labels} clickedLabelsArray={issueData?.labels} />
+            <span onClick={() => console.log('clicked')}>
+              <AssigneeMenu
+                assignees={assignees}
+                clickedAssignees={issueData?.assignees}
+              />
+            </span>
+            <span onClick={() => console.log('clicked')}>
+              <LabelMenu
+                labels={labels}
+                clickedLabelsArray={issueData?.labels}
+              />
+            </span>
             <ProjectsMenu />
             <MileStoneMenu />
             <DevelpomentMenu />

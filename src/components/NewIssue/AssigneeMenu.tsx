@@ -15,10 +15,10 @@ const AssigneeMenu = ({ assignees, clickedAssignees }: assigneeMenuProps) => {
   const handleAddAssignee = (assignee: string) => {
     dispatch(addAssignee(assignee));
   };
-  const assigneesArray = useAppSelector(
+  console.log(clickedAssignees)
+  const clickedAssigneesToString = useAppSelector(
     (state) => state.createIssueAction.assignees,
   );
-
   return (
     <div>
       <div className='border-b border-solid border-stone-300'>
@@ -46,7 +46,7 @@ const AssigneeMenu = ({ assignees, clickedAssignees }: assigneeMenuProps) => {
                         handleAddAssignee(assignee)
                       }
                       img={avatar_url}
-                      clickedArray={assigneesArray}
+                      clickedArray={clickedAssigneesToString}
                     >
                       {login}
                     </MenuItem.Item>

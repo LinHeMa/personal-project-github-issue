@@ -7,13 +7,13 @@ type updateIssueType = {
   body: string;
 };
 
-const initialState: updateIssueType[] = [];
+const initialState: updateIssueType[] = [{ id: 0, body: '' }];
 
 export const updateIssueSlice = createSlice({
   name: 'updateIssue',
   initialState,
   reducers: {
-    resetAll: () => initialState,
+    resetNewComment: () => initialState,
     addEditComment: (state, action: PayloadAction<updateIssueType>) => {
       state.push({ id: action.payload.id, body: action.payload.body });
       state = _.uniqBy(state, 'id');
@@ -32,7 +32,7 @@ export const updateIssueSlice = createSlice({
 });
 
 export const {
-  resetAll,
+  resetNewComment,
   addEditComment,
   removeAnEditingComment,
   editCommentBody,

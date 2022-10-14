@@ -59,7 +59,8 @@ const Title: React.FC<IssueData> = ({
       observer.current.observe(node);
     }
   }, []);
-  function initializeIssueData() {
+
+  useEffect(() => {
     const prevLabelsArray = labels.map((label) => label.name);
     const prevAssigneesArray = assignees.map((assignee) => assignee.login);
     console.log(prevLabelsArray, prevAssigneesArray, 'initialize');
@@ -72,7 +73,7 @@ const Title: React.FC<IssueData> = ({
       console.log(assignee);
       dispatch(addAssignee(assignee));
     });
-  }
+  }, []);
 
   const [updateIssue] = useUpdateIssueMutation();
 
@@ -131,7 +132,6 @@ const Title: React.FC<IssueData> = ({
             <Button
               text='Edit'
               onClick={() => {
-                initializeIssueData();
                 setTrue();
               }}
             />
