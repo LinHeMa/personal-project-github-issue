@@ -125,7 +125,7 @@ export interface postQuery {
   name: string;
   repo: string;
   title: string;
-  body: postbody;
+  body: postbody | string;
   token?: string | null;
   issueNumber?: number;
 }
@@ -226,6 +226,20 @@ const issueApi = labelApi.injectEndpoints({
       },
       invalidatesTags: [{ type: 'Issues' }],
     }),
+    createComment: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, body, token, issueNumber }) {
+        return {
+          url: `/repos/${name}/${repo}/issues/${issueNumber}/comments`,
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+          body: { body },
+        };
+      },
+      invalidatesTags: [{ type: 'Issues' }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -238,4 +252,5 @@ export const {
   useGetCommentsQuery,
   useGetAnIssueLabelsQuery,
   useUpdateIssueMutation,
+  useCreateCommentMutation,
 } = issueApi;

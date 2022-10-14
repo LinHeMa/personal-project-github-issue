@@ -13,6 +13,7 @@ import {
   addBody,
   addLabel,
   addTitle,
+  resetAll,
 } from '../../feature/Label/createIssueSlice';
 import { useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import _ from 'lodash';
@@ -58,7 +59,7 @@ const Title: React.FC<IssueData> = ({
       observer.current.observe(node);
     }
   }, []);
-  useEffect(() => {
+  function initializeIssueData() {
     const prevLabelsArray = labels.map((label) => label.name);
     const prevAssigneesArray = assignees.map((assignee) => assignee.login);
     console.log(prevLabelsArray, prevAssigneesArray, 'initialize');
@@ -71,7 +72,7 @@ const Title: React.FC<IssueData> = ({
       console.log(assignee);
       dispatch(addAssignee(assignee));
     });
-  }, []);
+  }
 
   const [updateIssue] = useUpdateIssueMutation();
 
@@ -94,6 +95,7 @@ const Title: React.FC<IssueData> = ({
             fontSize='14px'
             onClick={() => {
               console.log(body);
+
               updateIssue({
                 name: sessionUser,
                 repo: sessionRepo,
@@ -101,6 +103,7 @@ const Title: React.FC<IssueData> = ({
                 token,
                 issueNumber: number,
               });
+              dispatch(resetAll());
               setFalse();
             }}
           />
@@ -110,7 +113,10 @@ const Title: React.FC<IssueData> = ({
             bgColor='transparent'
             color='#0969DA'
             borderColor='transparent'
-            onClick={setFalse}
+            onClick={() => {
+              dispatch(resetAll());
+              setFalse();
+            }}
           />
         </div>
       </div>
@@ -125,6 +131,7 @@ const Title: React.FC<IssueData> = ({
             <Button
               text='Edit'
               onClick={() => {
+                initializeIssueData();
                 setTrue();
               }}
             />
@@ -213,7 +220,7 @@ const Title: React.FC<IssueData> = ({
           <div>
             {state === 'open' && (
               <div
-                className={` min-w-[77px] mr-2 h-[32px] w-fit rounded-[2em] bg-primary-green py-[8px] px-[12px] text-white`}
+                className={` mr-2 h-[32px] w-fit min-w-[77px] rounded-[2em] bg-primary-green py-[8px] px-[12px] text-white`}
               >
                 <IssueOpenedIcon />
                 <span className='ml-1 text-[14px]'>{_.upperFirst(state)}</span>

@@ -29,9 +29,10 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import MarkdownItem from './MarkdownItem';
 import { useBoolean } from 'usehooks-ts';
 import { Fragment, useRef } from 'react';
-import { addBody } from '../../feature/Label/createIssueSlice';
+import { addBody, resetAll } from '../../feature/Label/createIssueSlice';
 import BiFunctionButton from '../button/BiFunctionButton';
 import Button from '../button/Button';
+import { useCreateCommentMutation } from '../../sevices/api/issueApi';
 
 type showOnMobileIcon = {
   button: JSX.Element;
@@ -48,6 +49,9 @@ type MarkdownView = {
   commentPage?: boolean;
 };
 const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
+  const nameInSessionStorage = JSON.parse(sessionStorage.getItem('user')!);
+  const repoInSessionStorage = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = useAppSelector((state) => state.userInfoAction.token);
   const userImg = useAppSelector((state) => state.userInfoAction.avatar_url);
   const { value, setTrue, setFalse } = useBoolean(true);
   const textAreaRef = useRef<TextareaMarkdownRef>(null);
@@ -65,7 +69,7 @@ const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
     if (content) return cursor.insert(` - [ ] ${content}`);
     cursor.replaceLine(currentLine.lineNumber, ` - [ ] ${lineText}`);
   };
-
+  const [createComment] = useCreateCommentMutation();
   const showOnMobileIcon: showOnMobileIcon[] = [
     {
       button: <HeadingIcon key='HeadingIcon' />,
@@ -249,13 +253,12 @@ const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
               </div>
             </div>
           )}
-
           {!commentPage ? (
             <div className=' mt-4 ml-auto hidden w-fit justify-end md:flex'>
               <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
             </div>
           ) : (
-            <div className=' mt-4 ml-auto w-fit justify-end flex'>
+            <div className=' mt-4 ml-auto flex w-fit justify-end'>
               <BiFunctionButton
                 icon={<IssueClosedIcon fill='#8250DF' />}
                 text={`Closed with comment`}
@@ -267,6 +270,24 @@ const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
                 bgColor='#2da44e'
                 color='#ffffff'
                 hoverColor='#2C974B'
+                onClick={() => {
+                  if (_.isEmpty(body)) return;
+                  console.log({
+                    name: nameInSessionStorage,
+                    repo: repoInSessionStorage,
+                    token,
+                    body,
+                  });
+                  createComment({
+                    name: nameInSessionStorage,
+                    repo: repoInSessionStorage,
+                    // TODO turn into variables
+                    issueNumber: 58,
+                    token,
+                    body,
+                  });
+                  dispatch(resetAll());
+                }}
               />
             </div>
           )}
