@@ -8,11 +8,10 @@ import MarkdownItem from '../CreateIssue/MarkdownItem';
 import MarkdownView from '../CreateIssue/MarkdownView';
 
 type CommentMarkdownProps = {
-  userInfo: User;
+  avatar_url: string;
 };
 
-const CommentMarkdown: React.FC<CommentMarkdownProps> = ({ userInfo }) => {
-  const { avatar_url } = userInfo;
+const CommentMarkdown: React.FC<CommentMarkdownProps> = ({ avatar_url }) => {
   return (
     <div className='border-t-2 border-solid border-stone-300 md:pt-8'>
       <div className='flex'>

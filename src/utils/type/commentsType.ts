@@ -12,6 +12,7 @@ export interface Comment {
   issue_url?: string;
   reactions?: Reactions;
   author_association?: string;
+  returnEditStatus?: (status: boolean) => void;
 }
 
 export interface User {
@@ -35,14 +36,14 @@ export interface User {
   site_admin: boolean;
 }
 export interface Reactions {
-  'url': string;
-  'total_count': number;
+  url: string;
+  total_count: number;
   '+1': number;
   '-1': number;
-  'laugh': number;
-  'hooray': number;
-  'confused': number;
-  'heart': number;
-  'rocket': number;
-  'eyes': number;
+  laugh: number;
+  hooray: number;
+  confused: number;
+  heart: number;
+  rocket: number;
+  eyes: number;
 }

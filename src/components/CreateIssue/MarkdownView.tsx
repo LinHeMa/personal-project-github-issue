@@ -32,7 +32,14 @@ import { Fragment, useRef } from 'react';
 import { addBody, resetAll } from '../../feature/Label/createIssueSlice';
 import BiFunctionButton from '../button/BiFunctionButton';
 import Button from '../button/Button';
-import { useCreateCommentMutation } from '../../sevices/api/issueApi';
+import {
+  useCreateCommentMutation,
+  useUpdateACommentMutation,
+} from '../../sevices/api/issueApi';
+import {
+  editCommentBody,
+  removeAnEditingComment,
+} from '../../feature/updateIssueSlice';
 
 type showOnMobileIcon = {
   button: JSX.Element;
@@ -47,8 +54,16 @@ type MarkdownView = {
   hasInput: boolean;
   minHeight: string;
   commentPage?: boolean;
+  editComment?: boolean;
+  editCommentId?: number;
 };
-const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
+const MarkdownView = ({
+  hasInput,
+  minHeight,
+  commentPage,
+  editComment,
+  editCommentId,
+}: MarkdownView) => {
   const nameInSessionStorage = JSON.parse(sessionStorage.getItem('user')!);
   const repoInSessionStorage = JSON.parse(sessionStorage.getItem('repo')!);
   const token = useAppSelector((state) => state.userInfoAction.token);
@@ -154,9 +169,11 @@ const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
       },
     },
   ];
+  const editingComments = useAppSelector((state) => state.updateIssueAction);
+  const [updateAComment] = useUpdateACommentMutation();
   return (
     <>
-      {!commentPage && (
+      {!(commentPage || editComment) && (
         <img
           src={userImg || avatar}
           alt='profile picture'
@@ -241,23 +258,39 @@ const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
                   className={`${
                     minHeight ? minHeight : 'min-h-[300px]'
                   } w-full resize-y whitespace-pre rounded-lg border border-solid border-stone-300 bg-[#F5F8FA] p-4 text-[14px] leading-normal `}
-                  value={body}
-                  onChange={(e) => dispatch(addBody(e.target.value))}
+                  value={
+                    editComment
+                      ? _.find(editingComments, { id: editCommentId })?.body
+                      : body
+                  }
+                  onChange={(e) => {
+                    if (editComment)
+                      return dispatch(
+                        editCommentBody({
+                          id: editCommentId!,
+                          body: e.target.value,
+                        }),
+                      );
+                    dispatch(addBody(e.target.value));
+                  }}
                 />
               </TextareaMarkdown.Wrapper>
             </Fragment>
           ) : (
             <div data-color-mode='light' className='mt-8'>
               <div className='wmde-markdown-var'>
-                <MDEditor.Markdown source={body} />
+                <MDEditor.Markdown
+                  style={{ whiteSpace: 'pre-wrap' }}
+                  source={
+                    editComment
+                      ? _.find(editingComments, { id: editCommentId })?.body
+                      : body
+                  }
+                />
               </div>
             </div>
           )}
-          {!commentPage ? (
-            <div className=' mt-4 ml-auto hidden w-fit justify-end md:flex'>
-              <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
-            </div>
-          ) : (
+          {commentPage ? (
             <div className=' mt-4 ml-auto flex w-fit justify-end'>
               <BiFunctionButton
                 icon={<IssueClosedIcon fill='#8250DF' />}
@@ -271,7 +304,6 @@ const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
                 color='#ffffff'
                 hoverColor='#2C974B'
                 onClick={() => {
-                  if (_.isEmpty(body)) return;
                   console.log({
                     name: nameInSessionStorage,
                     repo: repoInSessionStorage,
@@ -289,6 +321,49 @@ const MarkdownView = ({ hasInput, minHeight, commentPage }: MarkdownView) => {
                   dispatch(resetAll());
                 }}
               />
+            </div>
+          ) : editComment ? (
+            <div className=' mt-4 ml-auto flex w-fit justify-end'>
+              <Button
+                fontSize='14px'
+                text='Cancel'
+                bgColor='#f6f8fa'
+                color='#cf222e'
+                hoverTextColor='#fff'
+                hoverColor='#A40E26'
+                onClick={() => {
+                  dispatch(removeAnEditingComment(editCommentId!));
+                }}
+              />
+              <Button
+                fontSize='14px'
+                text='Comment'
+                bgColor='#2da44e'
+                color='#ffffff'
+                hoverColor='#2C974B'
+                onClick={() => {
+                  console.log({
+                    name: nameInSessionStorage,
+                    repo: repoInSessionStorage,
+                    token,
+                    body,
+                  });
+                  updateAComment({
+                    name: nameInSessionStorage,
+                    repo: repoInSessionStorage,
+                    // TODO turn into variables
+                    commentId: editCommentId,
+                    token,
+                    body: _.find(editingComments, { id: editCommentId })?.body,
+                  }).then(() =>
+                    dispatch(removeAnEditingComment(editCommentId!)),
+                  );
+                }}
+              />
+            </div>
+          ) : (
+            <div className=' mt-4 ml-auto hidden w-fit justify-end md:flex'>
+              <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
             </div>
           )}
         </MarkdownItem>

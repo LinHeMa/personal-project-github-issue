@@ -145,6 +145,7 @@ const issueApi = labelApi.injectEndpoints({
           url: `/repos/${query.userName}/${query.repo}/issues?&${query.labels}${query.assignee}${query.sort}${query.filter}${query.state}${query.page}`,
           headers: {
             Authorization: `Bearer ${query.token}`,
+            'if-none-match': '',
           },
           cache: 'no-cache',
         };
@@ -157,6 +158,7 @@ const issueApi = labelApi.injectEndpoints({
           url: `/repos/${query.userName}/${query.repo}/issues/${query.issueId}`,
           headers: {
             Authorization: `Bearer ${query.token}`,
+            'if-none-match': '',
           },
           cache: 'no-cache',
         };
@@ -169,6 +171,7 @@ const issueApi = labelApi.injectEndpoints({
           url: `/repos/${query.userName}/${query.repo}/issues/${query.issueId}/comments`,
           headers: {
             Authorization: `Bearer ${query.token}`,
+            'if-none-match': '',
           },
           cache: 'no-cache',
         };
@@ -181,6 +184,7 @@ const issueApi = labelApi.injectEndpoints({
           url: `/repos/${userName}/${repo}/assignees`,
           headers: {
             Authorization: `Bearer ${token}`,
+            'if-none-match': '',
           },
           cache: 'no-cache',
         };
@@ -193,6 +197,7 @@ const issueApi = labelApi.injectEndpoints({
           url: `/repos/${userName}/${repo}/issues/${issue_number}/labels`,
           headers: {
             Authorization: `Bearer ${token}`,
+            'if-none-match': '',
           },
           cache: 'no-cache',
         };
@@ -254,6 +259,20 @@ const issueApi = labelApi.injectEndpoints({
       },
       invalidatesTags: [{ type: 'Issues' }],
     }),
+    updateAComment: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, token, commentId, body }) {
+        return {
+          url: `/repos/${name}/${repo}/issues/comments/${commentId}`,
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: { body },
+          cache: 'no-cache',
+        };
+      },
+      invalidatesTags: [{ type: 'Issues' }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -268,4 +287,5 @@ export const {
   useUpdateIssueMutation,
   useCreateCommentMutation,
   useDeleteCommentMutation,
+  useUpdateACommentMutation,
 } = issueApi;

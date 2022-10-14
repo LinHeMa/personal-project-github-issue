@@ -7,6 +7,7 @@ interface WrapperProps {
   hoverColor?: string;
   fontSize?: string;
   borderColor?: string;
+  hoverTextColor?: string;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -29,6 +30,8 @@ const Wrapper = styled.div<WrapperProps>`
   &:hover {
     background-color: ${(props) =>
       props.hoverColor ? props.hoverColor : '#f3f4f6;'};
+    color: ${(props) =>
+      props.hoverTextColor ? props.hoverTextColor : '#ffffff;'};
   }
   &:last-child {
     margin-right: 0;
@@ -61,6 +64,7 @@ export interface ButtonProps {
   onClick?: () => void;
   popup?: React.ReactNode;
   borderColor?: string;
+  hoverTextColor?: string;
 }
 
 const Button = ({
@@ -74,6 +78,7 @@ const Button = ({
   fontSize,
   popup,
   borderColor,
+  hoverTextColor,
   onClick,
 }: ButtonProps) => {
   return (
@@ -84,6 +89,7 @@ const Button = ({
       hoverColor={hoverColor}
       fontSize={fontSize}
       borderColor={borderColor}
+      hoverTextColor={hoverTextColor}
     >
       {icon}
       {text}

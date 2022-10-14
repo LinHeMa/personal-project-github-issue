@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import {
   useDeleteCommentMutation,
@@ -23,10 +23,13 @@ import MileStoneMenu from './MileStoneMenu';
 import DevelpomentMenu from './DevelopmentMenu';
 import Participants from './Participants';
 import IssueControlMenu from './IssueControlMenu';
+import { useBoolean } from 'usehooks-ts';
+import _ from 'lodash';
 
 const NewIssueContainer = () => {
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
   const sessionUser = JSON.parse(sessionStorage.getItem('user')!);
+  const [isEdit, setIsEdit] = useState(false);
   console.count('rendered');
   //  TODO use variables
   const userInfo = useAppSelector((state) => state.userInfoAction);
@@ -44,17 +47,15 @@ const NewIssueContainer = () => {
   });
   const { data: assignees } = useGetListAssigneesQuery({
     userName: sessionUser,
-    // repo: userInfo.chosenRepo,
     repo: sessionRepo,
     token: userInfo.token,
   });
   const { data: labels } = useGetLabelListQuery({
     name: sessionUser,
-    // repo: userInfo.chosenRepo,
     repo: sessionRepo,
     token: userInfo.token,
   });
-  
+
   const firstIssue = {
     body: issueData?.body,
     user: issueData?.user,
@@ -63,7 +64,12 @@ const NewIssueContainer = () => {
     author_association: issueData?.author_association,
     reactions: issueData?.reactions,
   };
-  console.log(comments)
+  function returnEditStatus(status: boolean) {
+    setIsEdit(status);
+  }
+  const editingComments = useAppSelector((state) => state.updateIssueAction);
+
+  console.log('comments:', comments);
   if (isSuccess)
     return (
       <div className=' mx-auto max-w-[1280px] p-[16px] pb-[180px] '>
@@ -72,9 +78,13 @@ const NewIssueContainer = () => {
           <div className='md:mr-8 md:w-full'>
             <CommentBlock {...firstIssue} />
             {comments?.map((comment) => (
-              <CommentBlock {...comment} key={comment.id} />
+              <CommentBlock
+                {...comment}
+                key={comment.id}
+                returnEditStatus={returnEditStatus}
+              />
             ))}
-            <CommentMarkdown userInfo={userInfo} />
+            <CommentMarkdown avatar_url={userInfo.avatar_url} />
           </div>
           <div className=' md:max-w-[300px]'>
             <AssigneeMenu

@@ -4,6 +4,7 @@ import { labelApi } from '../sevices/api/labelApi';
 import labelListActionReducer from '../feature/Label/LabelListActionSlice';
 import userInfoReducer from '../feature/user/userSlice';
 import createIssueReducer from '../feature/Label/createIssueSlice';
+import updateIssueReducer from '../feature/updateIssueSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     labelListAction: labelListActionReducer,
     userInfoAction: userInfoReducer,
     createIssueAction: createIssueReducer,
+    updateIssueAction: updateIssueReducer,
 
     // Api
     [labelApi.reducerPath]: labelApi.reducer,
