@@ -80,6 +80,7 @@ const MarkdownView = ({
   const nameInSessionStorage = JSON.parse(sessionStorage.getItem('user')!);
   const repoInSessionStorage = JSON.parse(sessionStorage.getItem('repo')!);
   const token = useAppSelector((state) => state.userInfoAction.token);
+  const issueNumber = JSON.parse(sessionStorage.getItem('issueNumber')!);
   const userImg = useAppSelector((state) => state.userInfoAction.avatar_url);
   const { value, setTrue, setFalse } = useBoolean(true);
   const {
@@ -331,13 +332,19 @@ const MarkdownView = ({
             <div data-color-mode='light' className='mt-8'>
               <div className='wmde-markdown-var'>
                 <MDEditor.Markdown
-                  style={{ whiteSpace: 'pre-wrap' }}
+                  style={{ whiteSpace: 'pre-wrap', minHeight: '100px' }}
                   source={
                     editComment
                       ? _.find(editingComments, { id: editCommentId })?.body
+                        ? _.find(editingComments, { id: editCommentId })?.body
+                        : '*Nothing to preview*'
                       : commentPage
                       ? _.find(editingComments, { id: 0 })?.body
+                        ? _.find(editingComments, { id: 0 })?.body
+                        : '*Nothing to preview*'
                       : body
+                      ? body
+                      : '*Nothing to preview*'
                   }
                 />
               </div>
@@ -424,7 +431,7 @@ const MarkdownView = ({
                     name: nameInSessionStorage,
                     repo: repoInSessionStorage,
                     // TODO turn into variables
-                    issueNumber: 58,
+                    issueNumber,
                     token,
                     body: _.find(editingComments, { id: 0 })?.body,
                   }).then(() => dispatch(resetNewComment()));
@@ -446,7 +453,7 @@ const MarkdownView = ({
               />
               <Button
                 fontSize='14px'
-                text='Comment'
+                text='Update comment'
                 bgColor='#2da44e'
                 color='#ffffff'
                 hoverColor='#2C974B'
@@ -454,7 +461,6 @@ const MarkdownView = ({
                   updateAComment({
                     name: nameInSessionStorage,
                     repo: repoInSessionStorage,
-                    // TODO turn into variables
                     commentId: editCommentId,
                     token,
                     body: _.find(editingComments, { id: editCommentId })?.body,

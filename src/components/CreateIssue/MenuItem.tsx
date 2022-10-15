@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { useBoolean, useOnClickOutside } from 'usehooks-ts';
 import _ from 'lodash';
 import Label from '../label/Label';
-import { LabelsList } from '../../sevices/api/labelApi';
+import { checkLight, LabelsList } from '../../sevices/api/labelApi';
 import { User, useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import { useAppSelector } from '../../app/hooks';
 
@@ -44,6 +44,8 @@ const MenuItem = (props: MenuItemProps) => {
     JSON.parse(localStorage.getItem('supabase.auth.token')!),
     ['currentSession', 'provider_token'],
   );
+
+  const issueNumber = JSON.parse(sessionStorage.getItem('issueNumber')!);
   const ref = useRef(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const { name, repo, ...body } = useAppSelector(
@@ -58,7 +60,7 @@ const MenuItem = (props: MenuItemProps) => {
       token,
       body,
       // TODO turn into variable
-      issueNumber: 58,
+      issueNumber,
     });
     console.log('clicked out', {
       name: userName,
@@ -139,7 +141,7 @@ const Title = ({ source, clickedArray, isLabel }: Title) => {
               <Label
                 text={item.name}
                 bgColor={'#' + item.color}
-                isLight={item.isLight}
+                isLight={checkLight(item.color)}
                 color='#ffffff'
                 borderColor='transparent'
               />

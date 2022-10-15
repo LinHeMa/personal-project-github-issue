@@ -7,6 +7,8 @@ import React from 'react';
 import Label from '../label/Label';
 import { Root } from '../../sevices/api/issueApi';
 import { checkLight } from '../../sevices/api/labelApi';
+import { useNavigate } from 'react-router-dom';
+import { useSessionStorage } from 'usehooks-ts';
 
 type ItemProps = {
   data: Root;
@@ -58,8 +60,17 @@ const Item: React.FC<ItemProps> = ({ data }) => {
     created_at,
     user,
   } = data;
+  const [value, setValue] = useSessionStorage('issueNumber', 0);
+  const navigate = useNavigate();
+  console.log(data);
   return (
-    <div className='last:rounded-b-lg'>
+    <div
+      className='last:rounded-b-lg'
+      onClick={() => {
+        setValue(number);
+        navigate('/newissue');
+      }}
+    >
       <div className='flex min-h-[85px] border-b-[1px] border-solid border-stone-300   sm:border  sm:border-t-[0px] md:h-[62.31px]'>
         <div className='flex items-start justify-center py-[12.5px] pl-[10px]'>
           <input type='checkbox' className='mr-4 hidden lg:block' />

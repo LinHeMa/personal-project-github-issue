@@ -32,6 +32,7 @@ const NewIssueContainer = () => {
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
   const sessionUser = JSON.parse(sessionStorage.getItem('user')!);
   const [isEdit, setIsEdit] = useState(false);
+  const issueId = JSON.parse(sessionStorage.getItem('issueNumber')!);
   console.count('rendered');
   //  TODO use variables
   const userInfo = useAppSelector((state) => state.userInfoAction);
@@ -39,13 +40,13 @@ const NewIssueContainer = () => {
     userName: sessionUser,
     repo: sessionRepo,
     token: userInfo.token,
-    issueId: 58,
+    issueId,
   });
   const { data: comments } = useGetCommentsQuery({
     userName: sessionUser,
     repo: sessionRepo,
     token: userInfo.token,
-    issueId: 58,
+    issueId,
   });
   const { data: assignees } = useGetListAssigneesQuery({
     userName: sessionUser,

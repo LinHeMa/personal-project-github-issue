@@ -26,6 +26,7 @@ const IssueListItem: React.FC<issueListItemProps> = ({
   closedIssueQty,
 }) => {
   const dispatch = useAppDispatch();
+
   const queryStringLabels = useAppSelector(
     (state) => state.labelListAction.lables,
   );
