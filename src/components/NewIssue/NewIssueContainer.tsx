@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   useDeleteCommentMutation,
   useGetAnIssueLabelsQuery,
@@ -26,6 +26,7 @@ import Participants from './Participants';
 import IssueControlMenu from './IssueControlMenu';
 import { useBoolean } from 'usehooks-ts';
 import _ from 'lodash';
+import { addState } from '../../feature/Label/createIssueSlice';
 
 const NewIssueContainer = () => {
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
@@ -65,14 +66,22 @@ const NewIssueContainer = () => {
     author_association: issueData?.author_association,
     reactions: issueData?.reactions,
   };
-
   function returnEditStatus(status: boolean) {
     setIsEdit(status);
   }
-
-
-
-  console.log('comments:', comments);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    let button = '';
+    issueData?.state === 'open' ? (button = 'completed') : (button = 'reopen');
+    dispatch(
+      addState({
+        state: issueData?.state as string,
+        stateReason: issueData?.state_reason as string,
+        buttonNow: button,
+      }),
+    );
+  }, [issueData]);
+  console.log('comments:', issueData);
   if (isSuccess)
     return (
       <div className=' mx-auto max-w-[1280px] p-[16px] pb-[180px] '>

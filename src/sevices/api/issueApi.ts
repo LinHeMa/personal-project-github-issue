@@ -120,6 +120,8 @@ export interface postbody {
   body: string;
   assignees: string[] | null;
   labels: string[] | null;
+  state?: string;
+  stateReason?: string;
 }
 export interface postQuery {
   name: string;
@@ -222,12 +224,70 @@ const issueApi = labelApi.injectEndpoints({
       query({ name, repo, body, token, issueNumber }) {
         return {
           url: `/repos/${name}/${repo}/issues/${issueNumber}`,
-          method: 'POST',
+          method: 'PATCH',
           headers: {
             Authorization: `Bearer ${token}`,
           },
           cache: 'no-cache',
           body,
+        };
+      },
+      invalidatesTags: [{ type: 'Issues' }],
+    }),
+    completeIssue: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, body, token, issueNumber }) {
+        const querybody = {
+          ...(body as postbody),
+          state: 'closed',
+          state_reason: 'compeleted',
+        };
+        return {
+          url: `/repos/${name}/${repo}/issues/${issueNumber}`,
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+          body: querybody,
+        };
+      },
+      invalidatesTags: [{ type: 'Issues' }],
+    }),
+    notPlannedIssue: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, body, token, issueNumber }) {
+        const querybody = {
+          ...(body as postbody),
+          state: 'closed',
+          state_reason: 'not_planned',
+        };
+        return {
+          url: `/repos/${name}/${repo}/issues/${issueNumber}`,
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+          body: querybody,
+        };
+      },
+      invalidatesTags: [{ type: 'Issues' }],
+    }),
+    // TODO reopen
+    reopenIssue: build.mutation<postQuery, Partial<postQuery>>({
+      query({ name, repo, body, token, issueNumber }) {
+        const querybody = {
+          ...(body as postbody),
+          state: 'open',
+          state_reason: 'reopened',
+        };
+        return {
+          url: `/repos/${name}/${repo}/issues/${issueNumber}`,
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: 'no-cache',
+          body: querybody,
         };
       },
       invalidatesTags: [{ type: 'Issues' }],
@@ -288,4 +348,7 @@ export const {
   useCreateCommentMutation,
   useDeleteCommentMutation,
   useUpdateACommentMutation,
+  useCompleteIssueMutation,
+  useNotPlannedIssueMutation,
+  useReopenIssueMutation,
 } = issueApi;

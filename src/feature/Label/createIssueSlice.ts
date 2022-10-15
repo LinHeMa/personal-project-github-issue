@@ -10,6 +10,9 @@ interface postQuery {
   body: string;
   assignees: string[];
   labels: string[];
+  state?: string;
+  stateReason?: string;
+  buttonNow?: string;
 }
 
 const initialState: postQuery = {
@@ -19,6 +22,9 @@ const initialState: postQuery = {
   body: '',
   assignees: [],
   labels: [],
+  state: '',
+  stateReason: '',
+  buttonNow: '',
 };
 
 function insert(
@@ -46,6 +52,12 @@ function insert(
 type addBasicInfoType = {
   name: string;
   repo: string;
+};
+
+type stateType = {
+  state: string;
+  stateReason: string;
+  buttonNow?: string;
 };
 
 export const createIssueSlice = createSlice({
@@ -78,6 +90,14 @@ export const createIssueSlice = createSlice({
         state.assignees,
         (assignee) => assignee !== repeat,
       );
+    },
+    addState: (state, action: PayloadAction<stateType>) => {
+      state.state = action.payload.state;
+      state.stateReason = action.payload.stateReason;
+      state.buttonNow = action.payload.buttonNow;
+    },
+    changeButtonState: (state, action: PayloadAction<string>) => {
+      state.buttonNow = action.payload;
     },
     addHeadingText: (state, action: PayloadAction<HTMLTextAreaElement>) => {
       if (!action.payload) return;
@@ -125,6 +145,8 @@ export const {
   addCodeText,
   addTagText,
   addBasicInfo,
+  addState,
+  changeButtonState,
 } = createIssueSlice.actions;
 
 export default createIssueSlice.reducer;

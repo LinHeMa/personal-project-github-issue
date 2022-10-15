@@ -5,6 +5,7 @@ import {
   HeadingIcon,
   ImageIcon,
   IssueClosedIcon,
+  IssueReopenedIcon,
   ItalicIcon,
   LinkIcon,
   ListOrderedIcon,
@@ -12,6 +13,7 @@ import {
   MentionIcon,
   QuoteIcon,
   ReplyIcon,
+  SkipIcon,
   TasklistIcon,
   TriangleDownIcon,
 } from '@primer/octicons-react';
@@ -29,18 +31,28 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import MarkdownItem from './MarkdownItem';
 import { useBoolean } from 'usehooks-ts';
 import { Fragment, useRef } from 'react';
-import { addBody, resetAll } from '../../feature/Label/createIssueSlice';
+import {
+  addBody,
+  addState,
+  resetAll,
+} from '../../feature/Label/createIssueSlice';
 import BiFunctionButton from '../button/BiFunctionButton';
 import Button from '../button/Button';
 import {
+  useCompleteIssueMutation,
   useCreateCommentMutation,
+  useNotPlannedIssueMutation,
+  useReopenIssueMutation,
   useUpdateACommentMutation,
+  useUpdateIssueMutation,
 } from '../../sevices/api/issueApi';
 import {
   editCommentBody,
   removeAnEditingComment,
   resetNewComment,
 } from '../../feature/updateIssueSlice';
+import ControlIssueFlyout from '../NewIssue/ControlIssueFlyout';
+import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 
 type showOnMobileIcon = {
   button: JSX.Element;
@@ -70,6 +82,15 @@ const MarkdownView = ({
   const token = useAppSelector((state) => state.userInfoAction.token);
   const userImg = useAppSelector((state) => state.userInfoAction.avatar_url);
   const { value, setTrue, setFalse } = useBoolean(true);
+  const {
+    value: closeFlyoutState,
+    setTrue: openFlyout,
+    setFalse: closeFlyout,
+  } = useBoolean(false);
+  const flyoutRef = useRef(null);
+  useOnClickOutside(flyoutRef, () => {
+    closeFlyout();
+  });
   const textAreaRef = useRef<TextareaMarkdownRef>(null);
   const dispatch = useAppDispatch();
   const body = useAppSelector((state) => state.createIssueAction.body);
@@ -173,6 +194,25 @@ const MarkdownView = ({
   const editingComments = useAppSelector((state) => state.updateIssueAction);
   console.log(editingComments);
   const [updateAComment] = useUpdateACommentMutation();
+
+  const updateIssueArray = useAppSelector((state) => state.updateIssueAction);
+  const commentBody = _.find(updateIssueArray, { id: 0 })?.body;
+  console.log('update', commentBody);
+  const { name, repo, ...stateBody } = useAppSelector(
+    (state) => state.createIssueAction,
+  );
+  console.log('body', stateBody);
+  const issueState = useAppSelector((state) => state.createIssueAction.state);
+  const issueStateReason = useAppSelector(
+    (state) => state.createIssueAction.stateReason,
+  );
+  const issueStateBtnChanged = useAppSelector(
+    (state) => state.createIssueAction.buttonNow,
+  );
+  const [updateIssue] = useUpdateIssueMutation();
+  const [completeIssue] = useCompleteIssueMutation();
+  const [closeIssueAsNotPlanned] = useNotPlannedIssueMutation();
+  const [reopenIssue] = useReopenIssueMutation();
   return (
     <>
       {!(commentPage || editComment) && (
@@ -304,12 +344,75 @@ const MarkdownView = ({
             </div>
           )}
           {commentPage ? (
-            <div className=' mt-4 ml-auto flex w-fit justify-end'>
-              <BiFunctionButton
-                icon={<IssueClosedIcon fill='#8250DF' />}
-                text={`Closed with comment`}
-                iconRight={<TriangleDownIcon />}
-              />
+            <div className=' mt-4 ml-auto flex w-fit cursor-pointer justify-end'>
+              <div className='mr-6 flex'>
+                <div
+                  className='rounded-l-lg border border-solid border-stone-300 bg-[#f6f8fa] py-[5px] px-[16px] text-[14px] leading-[20px]'
+                  onClick={() => {
+                    if (issueStateBtnChanged === 'reopen') {
+                      reopenIssue({
+                        name: nameInSessionStorage,
+                        repo: repoInSessionStorage,
+                        token: token,
+                        body: stateBody,
+                        issueNumber: 58,
+                      });
+                    } else if (issueStateBtnChanged === 'completed') {
+                      completeIssue({
+                        name: nameInSessionStorage,
+                        repo: repoInSessionStorage,
+                        token: token,
+                        body: stateBody,
+                        issueNumber: 58,
+                      });
+                    } else if (issueStateBtnChanged === 'not_planned') {
+                      closeIssueAsNotPlanned({
+                        name: nameInSessionStorage,
+                        repo: repoInSessionStorage,
+                        token: token,
+                        body: stateBody,
+                        issueNumber: 58,
+                      });
+                    }
+                  }}
+                >
+                  <span className='mr-2'>
+                    {issueStateBtnChanged === 'reopen' ? (
+                      <IssueReopenedIcon fill='#1A7F38' />
+                    ) : issueStateBtnChanged === 'not_planned' ? (
+                      <SkipIcon fill='#818890' />
+                    ) : (
+                      <IssueClosedIcon fill='#8250DF' />
+                    )}
+                  </span>
+                  {issueStateBtnChanged === 'reopen'
+                    ? 'Reopen'
+                    : issueStateBtnChanged === 'not_planned'
+                    ? commentBody
+                      ? 'Close with comment'
+                      : 'Close as not planned'
+                    : commentBody
+                    ? 'Close with comment'
+                    : 'Close issue'}
+                </div>
+                <div className='rounded-r-lg border border-l-0 border-solid border-stone-300 bg-[#f6f8fa] py-[5px] px-[9px] text-[14px] leading-[20px]'>
+                  <span
+                    ref={flyoutRef}
+                    className='relative'
+                    onClick={(e) => {
+                      if (closeFlyoutState) return;
+                      openFlyout();
+                      e.stopPropagation();
+                    }}
+                  >
+                    <TriangleDownIcon />
+                    {closeFlyoutState && (
+                      <ControlIssueFlyout closeFlyout={closeFlyout} />
+                    )}
+                  </span>
+                </div>
+              </div>
+
               <Button
                 fontSize='14px'
                 text='Comment'
@@ -317,12 +420,6 @@ const MarkdownView = ({
                 color='#ffffff'
                 hoverColor='#2C974B'
                 onClick={() => {
-                  console.log({
-                    name: nameInSessionStorage,
-                    repo: repoInSessionStorage,
-                    token,
-                    body,
-                  });
                   createComment({
                     name: nameInSessionStorage,
                     repo: repoInSessionStorage,
@@ -331,7 +428,6 @@ const MarkdownView = ({
                     token,
                     body: _.find(editingComments, { id: 0 })?.body,
                   }).then(() => dispatch(resetNewComment()));
-                  // dispatch(resetAll());
                 }}
               />
             </div>
@@ -355,12 +451,6 @@ const MarkdownView = ({
                 color='#ffffff'
                 hoverColor='#2C974B'
                 onClick={() => {
-                  console.log({
-                    name: nameInSessionStorage,
-                    repo: repoInSessionStorage,
-                    token,
-                    body,
-                  });
                   updateAComment({
                     name: nameInSessionStorage,
                     repo: repoInSessionStorage,

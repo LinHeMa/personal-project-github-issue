@@ -12,6 +12,7 @@ import {
   addAssignee,
   addBody,
   addLabel,
+  addState,
   addTitle,
   resetAll,
 } from '../../feature/Label/createIssueSlice';
@@ -214,7 +215,7 @@ const Title: React.FC<IssueData> = ({
       <header
         className={`${
           fixedHeaderStatus ? 'block' : 'hidden'
-        } border-borderGray fixed top-0 left-0 right-0 z-[200] flex flex-col border-b border-solid bg-white px-2 py-[16px] `}
+        } border-borderGray flex-col fixed top-0 left-0 right-0 z-[200] flex border-b border-solid bg-white px-2 py-[16px] `}
       >
         <div className='mx-auto flex w-full max-w-[1216px] items-start pl-10'>
           <div>
