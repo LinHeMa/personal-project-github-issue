@@ -1,23 +1,10 @@
-import _ from "lodash";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addAssignee, addLabel } from "../../feature/Label/createIssueSlice";
-import { User } from "../../sevices/api/issueApi";
-import { LabelsList } from "../../sevices/api/labelApi";
-import Label from "../label/Label";
-import MarkdownItem from "./MarkdownItem";
-import MenuItem from "./MenuItem";
-
-const sideBarList = [
-  { title: "Assignees", default: "No one" },
-  { title: "Labels", default: "None yet" },
-  { title: "Projects", default: "None yet" },
-  { title: "Milestone", default: "No milestone" },
-  {
-    title: "Development",
-    default: "Shows branches and pull requests linked to this issue",
-  },
-  { title: "Helpful resources", default: "Github Community Guidelines" },
-];
+import _ from 'lodash';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addAssignee, addLabel } from '../../feature/Label/createIssueSlice';
+import { User } from '../../sevices/api/issueApi';
+import { LabelsList } from '../../sevices/api/labelApi';
+import MarkdownItem from './MarkdownItem';
+import MenuItem from './MenuItem';
 
 interface source {
   title: string;
@@ -35,7 +22,7 @@ export function Menu({ source }: Menu) {
   return (
     <div>
       <MenuItem>
-        <div className=" relative flex w-full justify-between border-b border-solid border-stone-300 py-8 px-6">
+        <div className=' relative flex w-full justify-between border-b border-solid border-stone-300 py-8 px-6'>
           <MenuItem.Title source={source} isLabel={false} />
           <MenuItem.Toggle>
             <MenuItem.List>
@@ -66,21 +53,21 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
   };
   const labelsArray = useAppSelector((state) => state.createIssueAction.labels);
   const assigneesArray = useAppSelector(
-    (state) => state.createIssueAction.assignees
+    (state) => state.createIssueAction.assignees,
   );
   const labelClickedArray = _.filter(labels, (label) =>
-    _.includes(labelsArray, label.name)
+    _.includes(labelsArray, label.name),
   );
   const assigneeClickedArray = _.filter(assignees, (assignee) =>
-    _.includes(assigneesArray, assignee.login)
+    _.includes(assigneesArray, assignee.login),
   );
   return (
-    <div className="flex w-full flex-col md:w-[240px] lg:w-[256px]">
-      <div className="border-b border-solid border-stone-300">
-        <MenuItem>
+    <div className='flex w-full flex-col md:w-[240px] lg:w-[256px]'>
+      <div className='border-b border-solid border-stone-300'>
+        <MenuItem notCreated>
           <MenuItem.Title
             clickedArray={assigneeClickedArray}
-            source={{ title: "Assignees", default: "No one" }}
+            source={{ title: 'Assignees', default: 'No one' }}
             isLabel={false}
           />
           <MenuItem.Toggle>
@@ -90,7 +77,7 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
               </MenuItem.ListTitle>
               <MenuItem.SearchBar />
               <MenuItem.Subtitle>Suggestions</MenuItem.Subtitle>
-              <div className="">
+              <div className=''>
                 {assignees?.map(({ login, avatar_url }, index) => {
                   return (
                     <MenuItem.Item
@@ -112,10 +99,10 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
           </MenuItem.Toggle>
         </MenuItem>
       </div>
-      <div className="border-b border-solid border-stone-300 pb-4">
-        <MenuItem>
+      <div className='border-b border-solid border-stone-300 pb-4'>
+        <MenuItem notCreated>
           <MenuItem.Title
-            source={{ title: "Labels", default: "None yet" }}
+            source={{ title: 'Labels', default: 'None yet' }}
             clickedArray={labelClickedArray}
             isLabel={true}
           />
@@ -123,7 +110,7 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
             <MenuItem.List>
               <MenuItem.ListTitle>Apply labels to this page</MenuItem.ListTitle>
               <MenuItem.SearchBar />
-              <div className=" ">
+              <div className=' '>
                 {labels?.map(({ name, color }, index) => {
                   return (
                     <MenuItem.Item
@@ -144,7 +131,7 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
         </MenuItem>
       </div>
 
-      <div className="my-8 flex w-full md:hidden">
+      <div className='my-8 flex w-full md:hidden'>
         <MarkdownItem>
           <MarkdownItem.Button>Sumbit new issue</MarkdownItem.Button>
         </MarkdownItem>

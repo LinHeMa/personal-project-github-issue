@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-  useDeleteCommentMutation,
-  useGetAnIssueLabelsQuery,
   useGetAnIssuesQuery,
   useGetCommentsQuery,
   useGetListAssigneesQuery,
-  useUpdateIssueMutation,
 } from '../../sevices/api/issueApi';
 import CommentBlock from './CommentBlock';
 import { IssueData } from './fakeData/getAnIssue';
 import Title from './Title';
 import ReactLoading from 'react-loading';
-import MarkdownItem from '../CreateIssue/MarkdownItem';
-import MarkdownView from '../CreateIssue/MarkdownView';
 import CommentMarkdown from './CommentMarkdown';
-import CreateIssueView from '../CreateIssue/CreateIssueView';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import AssigneeMenu from './AssigneeMenu';
 import LabelMenu from './LabelMenu';
@@ -24,39 +18,40 @@ import MileStoneMenu from './MileStoneMenu';
 import DevelpomentMenu from './DevelopmentMenu';
 import Participants from './Participants';
 import IssueControlMenu from './IssueControlMenu';
-import { useBoolean } from 'usehooks-ts';
 import _ from 'lodash';
-import { addState } from '../../feature/Label/createIssueSlice';
+import { addState, resetAll } from '../../feature/Label/createIssueSlice';
 
 const NewIssueContainer = () => {
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
   const sessionUser = JSON.parse(sessionStorage.getItem('user')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const [isEdit, setIsEdit] = useState(false);
   const issueId = JSON.parse(sessionStorage.getItem('issueNumber')!);
-  console.count('rendered');
-  //  TODO use variables
   const userInfo = useAppSelector((state) => state.userInfoAction);
   const { data: issueData, isSuccess } = useGetAnIssuesQuery({
     userName: sessionUser,
     repo: sessionRepo,
-    token: userInfo.token,
+    token,
     issueId,
   });
   const { data: comments } = useGetCommentsQuery({
     userName: sessionUser,
     repo: sessionRepo,
-    token: userInfo.token,
+    token,
     issueId,
   });
   const { data: assignees } = useGetListAssigneesQuery({
     userName: sessionUser,
     repo: sessionRepo,
-    token: userInfo.token,
+    token,
   });
   const { data: labels } = useGetLabelListQuery({
     name: sessionUser,
     repo: sessionRepo,
-    token: userInfo.token,
+    token,
   });
 
   const firstIssue = {
@@ -82,14 +77,13 @@ const NewIssueContainer = () => {
       }),
     );
   }, [issueData]);
-  console.log('comments:', issueData);
   if (isSuccess)
     return (
       <div className=' mx-auto max-w-[1280px] p-[16px] pb-[180px] '>
         <Title {...(issueData as IssueData)} isSuccess={isSuccess} />
         <div className='flex flex-col md:flex-row'>
           <div className='md:mr-8 md:w-full'>
-            <CommentBlock {...firstIssue} />
+            <CommentBlock {...firstIssue} firstIssue />
             {comments?.map((comment) => (
               <CommentBlock
                 {...comment}
@@ -99,7 +93,7 @@ const NewIssueContainer = () => {
             ))}
             <CommentMarkdown avatar_url={userInfo.avatar_url} />
           </div>
-          <div className=' md:max-w-[300px]'>
+          <div className=' min-w-[256px] lg:min-w-[300px]'>
             <span onClick={() => console.log('clicked')}>
               <AssigneeMenu
                 assignees={assignees}

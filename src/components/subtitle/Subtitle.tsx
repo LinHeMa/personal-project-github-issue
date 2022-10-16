@@ -14,9 +14,12 @@ import {
   StarIcon,
   TabIcon,
 } from '@primer/octicons-react';
+import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { resetAll } from '../../feature/Label/createIssueSlice';
+import { resetNewComment } from '../../feature/updateIssueSlice';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import Button from '../button/Button';
 import DoubleButton from '../button/DoubleButton';
@@ -148,12 +151,18 @@ const TabsWrapper = styled.div`
 
 const Subtitle = () => {
   const navigate = useNavigate();
-  const userInfo = useAppSelector((state) => state.userInfoAction);
+  const dispatch = useAppDispatch();
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const repo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const { data } = useGetIssuesQuery({
-    token: userInfo.token,
+    token,
     state: 'all',
-    userName: userInfo.user_name,
-    repo: userInfo.chosenRepo,
+    userName,
+    repo,
   });
 
   return (
@@ -163,9 +172,9 @@ const Subtitle = () => {
           <BreadCrumb>
             <RouteWrapper>
               <Icon size={16} />
-              <Owner href='/'>{userInfo.user_name}</Owner>
+              <Owner href='/'>{userName}</Owner>
               <Break>/</Break>
-              <Repo>{userInfo.chosenRepo}</Repo>
+              <Repo>{repo}</Repo>
               <Label text='Public' borderColor='#d0d7de' color='#57606a' />
             </RouteWrapper>
             <ButtonWrapper>
@@ -198,6 +207,7 @@ const Subtitle = () => {
             text='Issues'
             onClick={() => {
               navigate('/issuelist');
+              dispatch(resetNewComment());
             }}
             number={data?.length}
           />

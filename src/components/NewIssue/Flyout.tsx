@@ -40,8 +40,9 @@ const Flyout = ({ commentId, openEdit, body }: FlyoutProps) => {
           className='w-full p-[10px] pl-[16px] text-left hover:bg-[#0969DA] hover:text-white'
           onClick={() => {
             console.log('clicked');
-            
-            dispatch(addEditComment({ id: commentId!, body: body! }));
+            if (commentId)
+              dispatch(addEditComment({ id: commentId, body: body! }));
+            dispatch(addEditComment({ id: 'firstissue', body: body! }));
           }}
         >
           Edit
@@ -49,19 +50,21 @@ const Flyout = ({ commentId, openEdit, body }: FlyoutProps) => {
         <div className='w-full p-[10px] pl-[16px] text-left hover:bg-[#0969DA] hover:text-white'>
           Hide
         </div>
-        <div
-          className='w-full p-[10px] pl-[16px] text-left text-[#cf222e] hover:bg-[#cf232e] hover:text-white'
-          onClick={() =>
-            deleteAcomments({
-              name,
-              repo,
-              token,
-              commentId,
-            })
-          }
-        >
-          Delete
-        </div>
+        {commentId && (
+          <div
+            className='w-full p-[10px] pl-[16px] text-left text-[#cf222e] hover:bg-[#cf232e] hover:text-white'
+            onClick={() =>
+              deleteAcomments({
+                name,
+                repo,
+                token,
+                commentId,
+              })
+            }
+          >
+            Delete
+          </div>
+        )}
       </div>
       <div className=' w-full'>
         <div className='w-full p-[10px] pl-[16px] text-left hover:bg-[#0969DA] hover:text-white'>

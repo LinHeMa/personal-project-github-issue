@@ -26,6 +26,12 @@ const IssueListItem: React.FC<issueListItemProps> = ({
   closedIssueQty,
 }) => {
   const dispatch = useAppDispatch();
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const repo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
 
   const queryStringLabels = useAppSelector(
     (state) => state.labelListAction.lables,
@@ -41,10 +47,9 @@ const IssueListItem: React.FC<issueListItemProps> = ({
     (state) => state.labelListAction.state,
   );
   const queryStringPage = useAppSelector((state) => state.labelListAction.page);
-  const userInfo = useAppSelector((state) => state.userInfoAction);
   const { data } = useGetIssuesQuery({
-    userName: userInfo.user_name,
-    repo: userInfo.chosenRepo,
+    userName,
+    repo,
     labels:
       queryStringLabels.length > 0 ? `labels=${_.join(queryStringLabels)}` : '',
     assignee:
@@ -55,7 +60,7 @@ const IssueListItem: React.FC<issueListItemProps> = ({
     filter: queryStringFilter !== '' ? `&${queryStringFilter}` : '',
     state: queryStringState !== '' ? `&state=${queryStringState}` : '',
     page: `&page=${queryStringPage}`,
-    token: userInfo.token,
+    token,
   });
 
   useEffect(() => {

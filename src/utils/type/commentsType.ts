@@ -13,6 +13,7 @@ export interface Comment {
   reactions?: Reactions;
   author_association?: string;
   returnEditStatus?: (status: boolean) => void;
+  firstIssue?: boolean;
 }
 
 export interface User {

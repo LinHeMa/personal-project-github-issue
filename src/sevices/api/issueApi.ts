@@ -239,7 +239,7 @@ const issueApi = labelApi.injectEndpoints({
         const querybody = {
           ...(body as postbody),
           state: 'closed',
-          state_reason: 'compeleted',
+          state_reason: 'completed',
         };
         return {
           url: `/repos/${name}/${repo}/issues/${issueNumber}`,

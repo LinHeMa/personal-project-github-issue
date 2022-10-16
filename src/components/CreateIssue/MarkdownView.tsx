@@ -31,12 +31,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import MarkdownItem from './MarkdownItem';
 import { useBoolean } from 'usehooks-ts';
 import { Fragment, useRef } from 'react';
-import {
-  addBody,
-  addState,
-  resetAll,
-} from '../../feature/Label/createIssueSlice';
-import BiFunctionButton from '../button/BiFunctionButton';
+import { addBody } from '../../feature/Label/createIssueSlice';
 import Button from '../button/Button';
 import {
   useCompleteIssueMutation,
@@ -69,11 +64,13 @@ type MarkdownView = {
   commentPage?: boolean;
   editComment?: boolean;
   editCommentId?: number;
+  firstIssue?: boolean;
 };
 const MarkdownView = ({
   hasInput,
   minHeight,
   commentPage,
+  firstIssue,
   editComment,
   editCommentId,
 }: MarkdownView) => {
@@ -202,11 +199,6 @@ const MarkdownView = ({
   const { name, repo, ...stateBody } = useAppSelector(
     (state) => state.createIssueAction,
   );
-  console.log('body', stateBody);
-  const issueState = useAppSelector((state) => state.createIssueAction.state);
-  const issueStateReason = useAppSelector(
-    (state) => state.createIssueAction.stateReason,
-  );
   const issueStateBtnChanged = useAppSelector(
     (state) => state.createIssueAction.buttonNow,
   );
@@ -223,10 +215,10 @@ const MarkdownView = ({
           className=' mx-4 mt-4 hidden h-[40px] w-[40px] rounded-full md:block'
         />
       )}
-      <div className='h-fit w-full rounded-xl border-solid border-stone-300 p-4 md:m-4 md:border md:p-8'>
+      <div className='h-fit w-full min-w-0 rounded-xl border-solid border-stone-300 p-2 md:ml-4 md:border'>
         <MarkdownItem>
           {hasInput ? <MarkdownItem.Input /> : <></>}
-          <div className='mt-8 mb-2 flex flex-col md:flex-row md:items-end md:justify-between'>
+          <div className='mt-1 mb-2 flex flex-col md:flex-row md:flex-wrap md:items-end md:justify-between lg:flex-nowrap'>
             <MarkdownItem.TabContainer>
               <MarkdownItem.Tab toggle={setTrue} currentView={value}>
                 Write
@@ -249,7 +241,7 @@ const MarkdownView = ({
                           index,
                         ),
                         'md:hidden': index === 10,
-                        'mr-8 cursor-pointer last:mr-0': true,
+                        'mr-[8px] cursor-pointer last:mr-0': true,
                       })}
                     >
                       <MarkdownItem.FunctionItem key={index}>
@@ -302,17 +294,18 @@ const MarkdownView = ({
                     minHeight ? minHeight : 'min-h-[300px]'
                   } w-full resize-y whitespace-pre rounded-lg border border-solid border-stone-300 bg-[#F5F8FA] p-4 text-[14px] leading-normal `}
                   value={
-                    editComment
+                    editComment && editCommentId
                       ? _.find(editingComments, { id: editCommentId })?.body
-                      : commentPage
+                      : commentPage && !firstIssue
                       ? _.find(editingComments, { id: 0 })?.body
                       : body
                   }
                   onChange={(e) => {
-                    if (editComment)
+                    if (firstIssue) return dispatch(addBody(e.target.value));
+                    if (editComment && editCommentId)
                       return dispatch(
                         editCommentBody({
-                          id: editCommentId!,
+                          id: editCommentId,
                           body: e.target.value,
                         }),
                       );
@@ -334,11 +327,11 @@ const MarkdownView = ({
                 <MDEditor.Markdown
                   style={{ whiteSpace: 'pre-wrap', minHeight: '100px' }}
                   source={
-                    editComment
+                    editComment && editCommentId
                       ? _.find(editingComments, { id: editCommentId })?.body
                         ? _.find(editingComments, { id: editCommentId })?.body
                         : '*Nothing to preview*'
-                      : commentPage
+                      : commentPage && !firstIssue
                       ? _.find(editingComments, { id: 0 })?.body
                         ? _.find(editingComments, { id: 0 })?.body
                         : '*Nothing to preview*'
@@ -362,7 +355,7 @@ const MarkdownView = ({
                         repo: repoInSessionStorage,
                         token: token,
                         body: stateBody,
-                        issueNumber: 58,
+                        issueNumber,
                       });
                     } else if (issueStateBtnChanged === 'completed') {
                       completeIssue({
@@ -370,7 +363,7 @@ const MarkdownView = ({
                         repo: repoInSessionStorage,
                         token: token,
                         body: stateBody,
-                        issueNumber: 58,
+                        issueNumber,
                       });
                     } else if (issueStateBtnChanged === 'not_planned') {
                       closeIssueAsNotPlanned({
@@ -378,7 +371,7 @@ const MarkdownView = ({
                         repo: repoInSessionStorage,
                         token: token,
                         body: stateBody,
-                        issueNumber: 58,
+                        issueNumber,
                       });
                     }
                   }}
@@ -448,7 +441,10 @@ const MarkdownView = ({
                 hoverTextColor='#fff'
                 hoverColor='#A40E26'
                 onClick={() => {
-                  dispatch(removeAnEditingComment(editCommentId!));
+                  console.log(editCommentId);
+                  if (editCommentId)
+                    dispatch(removeAnEditingComment(editCommentId));
+                  dispatch(removeAnEditingComment('firstissue'));
                 }}
               />
               <Button
@@ -458,15 +454,27 @@ const MarkdownView = ({
                 color='#ffffff'
                 hoverColor='#2C974B'
                 onClick={() => {
-                  updateAComment({
-                    name: nameInSessionStorage,
-                    repo: repoInSessionStorage,
-                    commentId: editCommentId,
-                    token,
-                    body: _.find(editingComments, { id: editCommentId })?.body,
-                  }).then(() =>
-                    dispatch(removeAnEditingComment(editCommentId!)),
-                  );
+                  editCommentId
+                    ? updateAComment({
+                        name: nameInSessionStorage,
+                        repo: repoInSessionStorage,
+                        commentId: editCommentId,
+                        token,
+                        body: _.find(editingComments, { id: editCommentId })
+                          ?.body,
+                      }).then(() =>
+                        dispatch(removeAnEditingComment(editCommentId!)),
+                      )
+                    : updateIssue({
+                        name: nameInSessionStorage,
+                        repo: repoInSessionStorage,
+                        issueNumber,
+                        token,
+                        body: stateBody,
+                      });
+                  if (editCommentId)
+                    dispatch(removeAnEditingComment(editCommentId));
+                  dispatch(removeAnEditingComment('firstissue'));
                 }}
               />
             </div>

@@ -8,6 +8,7 @@ import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import { useAppSelector } from '../../app/hooks';
 import { useBoolean } from 'usehooks-ts';
+import _ from 'lodash';
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -50,10 +51,16 @@ const LabelContent = () => {
   const [open, setOpen] = useState(false);
   const dropDownRef = useRef(null);
   const userInfo = useAppSelector((state) => state.userInfoAction);
+  const name = JSON.parse(sessionStorage.getItem('user')!);
+  const repo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const { data, isSuccess, isError } = useGetLabelListQuery({
-    name: userInfo.user_name,
-    repo: userInfo.chosenRepo,
-    token: userInfo.token,
+    name,
+    repo,
+    token,
   });
   useOnClickOutside(dropDownRef, () => setOpen(false));
 

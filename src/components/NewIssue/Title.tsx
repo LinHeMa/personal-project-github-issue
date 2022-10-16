@@ -1,4 +1,8 @@
-import { IssueOpenedIcon } from '@primer/octicons-react';
+import {
+  IssueClosedIcon,
+  IssueOpenedIcon,
+  SkipIcon,
+} from '@primer/octicons-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../button/Button';
 import clsx from 'clsx';
@@ -12,17 +16,18 @@ import {
   addAssignee,
   addBody,
   addLabel,
-  addState,
   addTitle,
   resetAll,
 } from '../../feature/Label/createIssueSlice';
 import { useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import _ from 'lodash';
+import { useNavigate } from 'react-router-dom';
 
 const Title: React.FC<IssueData> = ({
   title,
   number,
   state,
+  state_reason,
   user,
   created_at,
   comments,
@@ -30,7 +35,7 @@ const Title: React.FC<IssueData> = ({
   labels,
   body: prevBody,
 }) => {
-  const { toggle, value, setFalse, setTrue } = useBoolean(false);
+  const { value, setFalse, setTrue } = useBoolean(false);
   const dispatch = useAppDispatch();
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
   const sessionUser = JSON.parse(sessionStorage.getItem('user')!);
@@ -62,21 +67,21 @@ const Title: React.FC<IssueData> = ({
   }, []);
 
   useEffect(() => {
+    dispatch(resetAll());
     const prevLabelsArray = labels.map((label) => label.name);
     const prevAssigneesArray = assignees.map((assignee) => assignee.login);
-    console.log(prevLabelsArray, prevAssigneesArray, 'initialize');
     dispatch(addTitle(title));
     dispatch(addBody(prevBody));
     prevLabelsArray.forEach((label) => {
       dispatch(addLabel(label));
     });
     prevAssigneesArray.forEach((assignee) => {
-      console.log(assignee);
       dispatch(addAssignee(assignee));
     });
   }, []);
 
   const [updateIssue] = useUpdateIssueMutation();
+  const navigate = useNavigate();
 
   return (
     <div className='px-4 md:py-6' ref={headerBottom}>
@@ -96,8 +101,6 @@ const Title: React.FC<IssueData> = ({
             text='Save'
             fontSize='14px'
             onClick={() => {
-              console.log(body);
-
               updateIssue({
                 name: sessionUser,
                 repo: sessionRepo,
@@ -116,7 +119,6 @@ const Title: React.FC<IssueData> = ({
             color='#0969DA'
             borderColor='transparent'
             onClick={() => {
-              dispatch(resetAll());
               setFalse();
             }}
           />
@@ -141,6 +143,10 @@ const Title: React.FC<IssueData> = ({
               bgColor='#2C974B'
               color='#ffffff'
               hoverColor='#2C974B'
+              onClick={() => {
+                dispatch(resetAll());
+                navigate('/createissue');
+              }}
             />
           </div>
           <div className='text-[#0969DA] md:hidden'>Jump to buttom</div>
@@ -163,8 +169,22 @@ const Title: React.FC<IssueData> = ({
             <span className='ml-1'>{state}</span>
           </div>
         )}
-        {state === 'closed' && <div></div>}
-        {state === 'closed2' && <div></div>}
+        {state === 'closed' && state_reason === 'completed' && (
+          <div
+            className={` mr-2 w-fit rounded-[2em] bg-[#8250DF] py-[5px] px-[12px] text-white`}
+          >
+            <IssueClosedIcon />
+            <span className='ml-1'>{_.upperFirst(state)}</span>
+          </div>
+        )}
+        {state === 'closed' && state_reason === 'not_planned' && (
+          <div
+            className={` mr-2 w-fit rounded-[2em] bg-[#818890] py-[5px] px-[12px] text-white`}
+          >
+            <SkipIcon />
+            <span className='ml-1'>{_.upperFirst(state)}</span>
+          </div>
+        )}
         <div className='mt-2 flex  flex-wrap text-[#57606A]'>
           <span className='font-semibold '>{user.login}</span> {state} this
           issue {timeCalc(created_at)} · {comments} comments
@@ -215,7 +235,7 @@ const Title: React.FC<IssueData> = ({
       <header
         className={`${
           fixedHeaderStatus ? 'block' : 'hidden'
-        } border-borderGray flex-col fixed top-0 left-0 right-0 z-[200] flex border-b border-solid bg-white px-2 py-[16px] `}
+        } border-borderGray fixed top-0 left-0 right-0 z-[200] flex flex-col border-b border-solid bg-white px-2 py-[16px] `}
       >
         <div className='mx-auto flex w-full max-w-[1216px] items-start pl-10'>
           <div>
@@ -240,8 +260,11 @@ const Title: React.FC<IssueData> = ({
               </h2>
             </div>
             <div className=' flex items-center overflow-hidden whitespace-pre '>
-              <div className='mt-2 flex  text-[#57606A]'>
-                <span className='font-semibold '>{user.login}</span> {state}{' '}
+              <div className='mt-2 flex  whitespace-pre text-[#57606A]'>
+                <span className='whitespace-pre font-semibold'>
+                  {user.login}
+                </span>
+                <span className='ml-1 whitespace-pre'>{state}</span>
                 this issue {timeCalc(created_at)} · {comments} comments
               </div>
             </div>

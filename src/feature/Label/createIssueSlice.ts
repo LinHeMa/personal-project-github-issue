@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import LabelSlice from './LabelSlice';
 
 interface postQuery {
   name: string;

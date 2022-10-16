@@ -1,25 +1,30 @@
-import { useAppSelector } from '../../app/hooks';
+import _ from 'lodash';
 import { useGetListAssigneesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import CreateIssueView from './CreateIssueView';
 import MarkdownView from './MarkdownView';
 
 const CreateIssueContainer = () => {
-  const userInfo = useAppSelector((state) => state.userInfoAction);
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const repo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const { data: assignees } = useGetListAssigneesQuery({
-    userName: userInfo.user_name,
-    repo: userInfo.chosenRepo,
-    token: userInfo.token,
+    userName,
+    repo,
+    token,
   });
   const { data: labels } = useGetLabelListQuery({
-    name: userInfo.user_name,
-    repo: userInfo.chosenRepo,
-    token: userInfo.token,
+    name: userName,
+    repo,
+    token,
   });
   
   return (
     <div className='flex flex-col p-8 pb-[200px] md:container md:mx-auto  md:flex-row'>
-      <MarkdownView hasInput minHeight=''/>
+      <MarkdownView hasInput minHeight='' />
       <CreateIssueView assignees={assignees} labels={labels} />
     </div>
   );

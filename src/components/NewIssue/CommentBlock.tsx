@@ -1,5 +1,4 @@
 import {
-  ArrowDownIcon,
   KebabHorizontalIcon,
   SmileyIcon,
   TriangleDownIcon,
@@ -7,7 +6,7 @@ import {
 import MDEditor from '@uiw/react-md-editor';
 import clsx from 'clsx';
 import _ from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useBoolean, useOnClickOutside } from 'usehooks-ts';
 import { useAppSelector } from '../../app/hooks';
 import {
@@ -16,9 +15,7 @@ import {
 } from '../../utils/type/commentsType';
 import MarkdownView from '../CreateIssue/MarkdownView';
 import { timeCalc } from '../IssuePage/Item';
-import CommentMarkdown from './CommentMarkdown';
 import Emoji from './Emoji';
-import { IssueData } from './fakeData/getAnIssue';
 import Flyout from './Flyout';
 
 const CommentBlock = ({
@@ -29,16 +26,10 @@ const CommentBlock = ({
   author_association,
   reactions,
   id,
-  returnEditStatus,
 }: commentType) => {
   const editingComments = useAppSelector((state) => state.updateIssueAction);
   const { value, setFalse, toggle } = useBoolean(false);
-  const {
-    value: isEdit,
-    setFalse: closeEdit,
-    setTrue: openEdit,
-    toggle: toggleEdit,
-  } = useBoolean(false);
+  const { setTrue: openEdit } = useBoolean(false);
 
   const flyoutRef = useRef(null);
   useOnClickOutside(flyoutRef, () => setFalse());
@@ -60,7 +51,7 @@ const CommentBlock = ({
         src={user?.avatar_url}
         className={`mr-[16px] hidden h-[40px]  w-[40px] rounded-full md:block`}
       />
-      {!_.find(editingComments, { id: id }) ? (
+      {!_.find(editingComments, { id: id || 'firstissue' }) ? (
         <div className=' relative w-full pb-[32px]  after:absolute after:top-0 after:left-[20px] after:-z-10 after:h-full after:border after:border-solid after:border-[#D8DEE3]'>
           <div
             className={`flex  items-center justify-between whitespace-pre rounded-t-lg border border-b-0   border-solid border-stone-300 bg-[#F6F8FA] py-[12px] px-[18px] text-[14px] text-[#57606A] md:rounded-t-xl ${clsx(
@@ -139,6 +130,7 @@ const CommentBlock = ({
           hasInput={false}
           minHeight={'min-h-[100px]'}
           editComment
+          firstIssue
           editCommentId={id}
         />
       )}

@@ -27,6 +27,12 @@ const sortList = [
 
 const PopupMenu = ({ type }: PopupMenuProps) => {
   const userInfo = useAppSelector((state) => state.userInfoAction);
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const repo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const dispatch = useAppDispatch();
   const queryLabel = useAppSelector((state) => state.labelListAction.lables);
   const queryAssignee = useAppSelector(
@@ -39,15 +45,15 @@ const PopupMenu = ({ type }: PopupMenuProps) => {
   const [labelPop, setLabelPop] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const { data: labels } = useGetLabelListQuery({
-    name: userInfo.user_name,
-    repo: userInfo.chosenRepo,
-    token: userInfo.token,
+    name: userName,
+    repo,
+    token,
   });
 
   const { data: assignees } = useGetListAssigneesQuery({
-    userName: userInfo.user_name,
-    repo: userInfo.chosenRepo,
-    token: userInfo.token,
+    userName,
+    repo,
+    token,
   });
   const filterList = [
     { name: 'Your issues', filter: '&creator=@me' },

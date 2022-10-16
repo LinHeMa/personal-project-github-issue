@@ -9,6 +9,7 @@ import { Root } from '../../sevices/api/issueApi';
 import { checkLight } from '../../sevices/api/labelApi';
 import { useNavigate } from 'react-router-dom';
 import { useSessionStorage } from 'usehooks-ts';
+import clsx from 'clsx';
 
 type ItemProps = {
   data: Root;
@@ -62,7 +63,6 @@ const Item: React.FC<ItemProps> = ({ data }) => {
   } = data;
   const [value, setValue] = useSessionStorage('issueNumber', 0);
   const navigate = useNavigate();
-  console.log(data);
   return (
     <div
       className='last:rounded-b-lg'
@@ -71,40 +71,43 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         navigate('/newissue');
       }}
     >
-      <div className='flex min-h-[85px] border-b-[1px] border-solid border-stone-300   sm:border  sm:border-t-[0px] md:h-[62.31px]'>
+      <div className='flex min-h-[85px] cursor-pointer border-b-[1px] border-solid   border-stone-300  hover:bg-[#f6f8fa] sm:border sm:border-t-[0px] md:h-[62.31px]'>
         <div className='flex items-start justify-center py-[12.5px] pl-[10px]'>
           <input type='checkbox' className='mr-4 hidden lg:block' />
         </div>
-        <div className='self-start pl-4  pt-5'>
+        <div className='self-start pl-4 pt-5'>
           {state === 'open' ? (
             <IssueOpenedIcon fill='#1a7f37' />
           ) : (
             <IssueClosedIcon fill='#8250df' />
           )}
         </div>
+
         <div className='flex flex-col items-start p-5  pl-3 pr-4 md:flex-row md:flex-wrap md:justify-start  '>
-          <h1 className='text-[16px] font-semibold leading-5'>{title}</h1>
-          <div className='mt-3 flex  flex-wrap items-start leading-5 md:mt-0 md:ml-2 '>
-            {labels.map((label) => {
-              return (
-                <Label
-                  text={label.name}
-                  key={label.id}
-                  bgColor={'#' + label.color}
-                  borderColor='transparent'
-                  fontWeight='700'
-                  isLight={checkLight(label.color)}
-                  color='#fff'
-                />
-              );
-            })}
+          <div className='flex h-max items-center'>
+            <h1 className='text-[16px] font-semibold leading-5'>{title}</h1>
+            <div className='mt-3 flex  flex-wrap items-start leading-5 md:mt-0 md:ml-2 '>
+              {labels.map((label) => {
+                return (
+                  <Label
+                    text={label.name}
+                    key={label.id}
+                    bgColor={'#' + label.color}
+                    borderColor='transparent'
+                    fontWeight='700'
+                    isLight={checkLight(label.color)}
+                    color='#fff'
+                  />
+                );
+              })}
+            </div>
           </div>
           <a className='mt-3 whitespace-pre text-start text-primary-icon-gray md:w-full'>
             #{number} opened {timeCalc(created_at)} by {user.login}
           </a>
         </div>
-        <div className='ml-auto hidden min-w-[76px] items-start justify-end pt-5 pr-4 sm:flex'>
-          <div className='group mr-4 flex'>
+        <div className='ml-auto items-start justify-end overflow-hidden pt-5 pr-4 sm:flex '>
+          <div className='group mr-4 flex  min-w-[90px] justify-center overflow-hidden'>
             {assignees.length > 0
               ? assignees.map((assignee, index) => {
                   return (
@@ -112,18 +115,26 @@ const Item: React.FC<ItemProps> = ({ data }) => {
                       key={assignee.id}
                       src={assignee.avatar_url}
                       className={`h-[20px] w-[20px] rounded-full transition-all duration-300 ease-in-out ${
-                        index === assignees.length - 1 ? '' : 'mr-[-12px]'
-                      }  ${assignees.length !== 1 && 'group-hover:mr-2'}`}
+                        assignees.length !== 1 &&
+                        'ease-in-out group-hover:mr-2 group-hover:block'
+                      }
+                      ${clsx({
+                        'mr-[-12px]':
+                          index !== assignees.length - 1 &&
+                          index >= assignees.length - 3,
+                        hidden: index < assignees.length - 3,
+                      })}
+                      `}
                     />
                   );
                 })
               : null}
           </div>
-          <div className='group flex items-center hover:cursor-pointer'>
+          <div className='group flex items-center justify-center text-[#57606A] hover:cursor-pointer hover:text-[#0969da] sm:min-w-[60px]'>
             {comments ? (
-              <CommentIcon fill='#57606A' />
+              <CommentIcon />
             ) : (
-              <CommentIcon fill='#57606A' className=' invisible' />
+              <CommentIcon className=' invisible' />
             )}
             <p className='pl-2'>
               {comments ? (

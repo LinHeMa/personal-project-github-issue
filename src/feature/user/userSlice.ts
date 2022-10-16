@@ -14,9 +14,9 @@ const initialState: User = {
   preferred_username: '',
   provider_id: '',
   sub: '',
-  user_name: JSON.parse(sessionStorage.getItem('user')!) || '',
+  user_name: '',
   token: tokenInLocalStorage || '',
-  chosenRepo: JSON.parse(sessionStorage.getItem('repo')!) || '',
+  chosenRepo: '',
 };
 
 export type User = {

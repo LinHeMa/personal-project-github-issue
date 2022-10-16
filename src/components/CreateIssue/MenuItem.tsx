@@ -34,6 +34,7 @@ const MenuItemContext = createContext<MenuItemContext>({
 
 type MenuItemProps = {
   children: JSX.Element[] | JSX.Element;
+  notCreated?: boolean;
 };
 
 const MenuItem = (props: MenuItemProps) => {
@@ -53,13 +54,14 @@ const MenuItem = (props: MenuItemProps) => {
   );
   const [updateIssue] = useUpdateIssueMutation();
   useOnClickOutside(ref, () => {
+    setIsOpen(false);
     if (!isOpen) return;
+    if (props.notCreated) return;
     updateIssue({
       name: userName,
       repo: userRepo,
       token,
       body,
-      // TODO turn into variable
       issueNumber,
     });
     console.log('clicked out', {
@@ -69,7 +71,6 @@ const MenuItem = (props: MenuItemProps) => {
       body,
     });
 
-    setIsOpen(false);
   });
   const providerValue: MenuItemContext = {
     isOpen,
@@ -125,7 +126,11 @@ const Title = ({ source, clickedArray, isLabel }: Title) => {
   return (
     <div className='flex flex-col  items-start '>
       <h1 className=' pb-6 font-[700] '>{source.title}</h1>
-      <h1 className={`${clsx({ hidden: !_.isEmpty(clickedArray) })} flex`}>
+      <h1
+        className={`${clsx({
+          hidden: !_.isEmpty(clickedArray),
+        })} flex justify-start text-left`}
+      >
         {source.default}
       </h1>
 

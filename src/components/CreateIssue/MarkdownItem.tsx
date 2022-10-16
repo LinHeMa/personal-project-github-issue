@@ -89,11 +89,13 @@ interface TabContainer {
 
 const TabContainer = ({ children }: TabContainer) => {
   return (
-    <div className=' flex justify-between md:justify-start'>{children}</div>
+    <div className=' flex max-h-[40px] justify-between md:justify-start'>
+      {children}
+    </div>
   );
 };
 
-const Tab = ({ children, toggle, currentView }: Tab) => {
+const Tab = ({ children, toggle }: Tab) => {
   const { isPreview, setIsPreview } = useContext(MarkdownContext);
   return (
     <div
@@ -115,7 +117,9 @@ interface FunctionBar {
 }
 const FunctionBar = ({ children }: FunctionBar) => {
   return (
-    <div className='mt-8 flex flex-wrap justify-between px-4'>{children}</div>
+    <div className='flex w-full flex-wrap justify-between px-4 pb-[8px] lg:w-fit'>
+      {children}
+    </div>
   );
 };
 interface FunctionGroup {
@@ -147,7 +151,7 @@ type FunctionMobileToggleBar = {
 const FunctionMobileToggleBar = ({ children }: FunctionMobileToggleBar) => {
   const { markdownToggle } = useContext(MarkdownContext);
   return markdownToggle ? (
-    <div className='mt-8 flex w-full md:hidden'>{children}</div>
+    <div className='mt-0 flex w-full md:hidden'>{children}</div>
   ) : (
     <></>
   );
@@ -158,7 +162,7 @@ interface FunctionItem {
 }
 
 const FunctionItem = ({ children }: FunctionItem) => {
-  return <div className={`mr-8 flex last:mr-0 `}>{children}</div>;
+  return <div className={`mr-[8px] flex last:mr-0 `}>{children}</div>;
 };
 
 type TextArea = {
@@ -196,8 +200,8 @@ const Button = ({ children }: Button) => {
     <div
       onClick={() => {
         createIssue({
-          name,
-          repo: sessionStorage.getItem('repo')!,
+          name: JSON.parse(sessionStorage.getItem('user')!),
+          repo: JSON.parse(sessionStorage.getItem('repo')!),
           body,
           token,
         })

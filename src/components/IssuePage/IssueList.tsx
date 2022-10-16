@@ -10,15 +10,13 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSessionStorage } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Button from '../../components/button/Button';
-import { addBasicInfo } from '../../feature/Label/createIssueSlice';
 import {
   addStateCondition,
   resetAll,
 } from '../../feature/Label/LabelListActionSlice';
-import { chooseRepo } from '../../feature/user/userSlice';
+import { resetAll as resetIssueInfo } from '../../feature/Label/createIssueSlice';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import BiFunctionButton from '../button/BiFunctionButton';
@@ -32,18 +30,24 @@ export type issueStateType = {
 
 export default function IssueList() {
   const navigate = useNavigate();
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const repo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const data = useAppSelector((state) => state.labelListAction);
   const userInfo = useAppSelector((state) => state.userInfoAction);
   const { data: allIssueData } = useGetIssuesQuery({
-    userName: userInfo.user_name,
-    repo: userInfo.chosenRepo,
+    userName,
+    repo,
     labels: '',
     assignee: '',
     sort: '',
     filter: '',
     state: '&state=all',
     page: '',
-    token: userInfo.token,
+    token,
   });
   const openIssueQty = _.filter(
     allIssueData,
@@ -93,9 +97,9 @@ export default function IssueList() {
   });
   const dispatch = useAppDispatch();
   const { data: lableData } = useGetLabelListQuery({
-    name: userInfo.user_name,
-    repo: userInfo.chosenRepo,
-    token: userInfo.token,
+    name: userName,
+    repo,
+    token,
   });
   return (
     <>
@@ -122,13 +126,9 @@ export default function IssueList() {
         <button
           className='ml-auto  flex w-fit items-center whitespace-pre   rounded-md bg-primary-green px-4	py-[5x] text-sm font-medium text-[#ffffff] md:order-3 md:ml-4'
           onClick={() => {
+            dispatch(resetAll());
+            dispatch(resetIssueInfo());
             navigate('/createissue');
-            dispatch(
-              addBasicInfo({
-                name: userInfo.user_name,
-                repo: userInfo.chosenRepo,
-              }),
-            );
           }}
         >
           New<div className='hidden md:block'> issue</div>

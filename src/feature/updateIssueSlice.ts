@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
 type updateIssueType = {
-  id: number;
+  id: number | string;
   body: string;
 };
 
@@ -18,7 +18,7 @@ export const updateIssueSlice = createSlice({
       state.push({ id: action.payload.id, body: action.payload.body });
       state = _.uniqBy(state, 'id');
     },
-    removeAnEditingComment: (state, action: PayloadAction<number>) => {
+    removeAnEditingComment: (state, action: PayloadAction<number | string>) => {
       return (state = _.filter(
         state,
         (comment) => comment.id !== action.payload,

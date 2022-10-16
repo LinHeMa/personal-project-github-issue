@@ -1,9 +1,7 @@
-import { CheckIcon } from '@primer/octicons-react';
 import _ from 'lodash';
-import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addLabel } from '../../feature/Label/createIssueSlice';
-import { Label, useUpdateIssueMutation } from '../../sevices/api/issueApi';
+import { Label } from '../../sevices/api/issueApi';
 import { LabelsList } from '../../sevices/api/labelApi';
 import MenuItem from '../CreateIssue/MenuItem';
 
