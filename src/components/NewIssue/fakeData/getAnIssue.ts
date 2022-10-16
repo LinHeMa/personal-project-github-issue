@@ -1,4 +1,4 @@
-export const issueData = {
+export const fakeIssueData = {
   url: 'https://api.github.com/repos/LinHeMa/TEST/issues/58',
   repository_url: 'https://api.github.com/repos/LinHeMa/TEST',
   labels_url:

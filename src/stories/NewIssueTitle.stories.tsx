@@ -2,10 +2,10 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import '../../.storybook/stories.css';
 import Title from '../components/NewIssue/Title';
-import { issueData } from '../components/NewIssue/fakeData/getAnIssue';
+import { fakeIssueData } from '../components/NewIssue/fakeData/getAnIssue';
 
 export default {
-  title: 'GithubIssue/NewIssue',
+  title: 'GithubIssue/NewIssue(S4)',
   component: Title,
 } as ComponentMeta<typeof Title>;
 
@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof Title> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {
-  ...issueData,
+  ...fakeIssueData,
   labels: [
     {
       id: 4576400410,

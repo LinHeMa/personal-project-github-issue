@@ -13,16 +13,20 @@ const Participants = ({ comments }: ParticipantsType) => {
       return comment.user?.avatar_url;
     }),
   );
-  
+
   const participantsImg = participantsImgUrl.map((imgUrl, index) => (
-    <img key={index} src={imgUrl} className='h-[26px] w-[26px] rounded-full mr-2' />
+    <img
+      key={index}
+      src={imgUrl}
+      className='mr-2 h-[26px] w-[26px] rounded-full'
+    />
   ));
   return (
     <div className='border-b border-solid border-stone-300 pb-4'>
       <MenuItem>
         <MenuItem.Title
           source={{
-            title: `4 participants`,
+            title: `${participantsImg.length} participants`,
             default: participantsImg,
           }}
           isLabel={false}
