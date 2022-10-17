@@ -376,6 +376,15 @@ const MarkdownView = ({
                         issueNumber,
                       });
                     }
+                    // TODO close with comment
+                    // if (!_.find(editingComments, { id: 0 })?.body)
+                    //   createComment({
+                    //     name: nameInSessionStorage,
+                    //     repo: repoInSessionStorage,
+                    //     issueNumber,
+                    //     token,
+                    //     body: _.find(editingComments, { id: 0 })?.body,
+                    //   }).then(() => dispatch(resetNewComment()));
                   }}
                 >
                   <span className='mr-2'>
@@ -425,7 +434,6 @@ const MarkdownView = ({
                   createComment({
                     name: nameInSessionStorage,
                     repo: repoInSessionStorage,
-                    // TODO turn into variables
                     issueNumber,
                     token,
                     body: _.find(editingComments, { id: 0 })?.body,

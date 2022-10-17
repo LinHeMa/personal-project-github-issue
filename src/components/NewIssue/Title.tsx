@@ -134,13 +134,14 @@ const Title: React.FC<IssueData> = ({
           <div className='flex'>
             <Button
               text='Edit'
+              hoverTextColor='black'
               onClick={() => {
                 setTrue();
               }}
             />
             <Button
               text='New Issue'
-              bgColor='#2C974B'
+              bgColor='#2CA44E'
               color='#ffffff'
               hoverColor='#2C974B'
               onClick={() => {
@@ -186,7 +187,7 @@ const Title: React.FC<IssueData> = ({
           </div>
         )}
         <div className='mt-2 flex  flex-wrap text-[#57606A]'>
-          <span className='font-semibold '>{user.login}</span> {state} this
+          <span className='font-semibold mr-1'>{user.login}</span> {state} this
           issue {timeCalc(created_at)} · {comments} comments
         </div>
       </div>
@@ -247,8 +248,22 @@ const Title: React.FC<IssueData> = ({
                 <span className='ml-1 text-[14px]'>{_.upperFirst(state)}</span>
               </div>
             )}
-            {state === 'closed' && <div></div>}
-            {state === 'closed2' && <div></div>}
+            {state === 'closed' && state_reason === 'completed' && (
+              <div
+                className={` mr-2 h-[32px] w-fit min-w-[77px] rounded-[2em] bg-[#8250DF] py-[8px] px-[12px] text-white`}
+              >
+                <IssueClosedIcon />
+                <span className='ml-1'>{_.upperFirst(state)}</span>
+              </div>
+            )}
+            {state === 'closed' && state_reason === 'not_planned' && (
+              <div
+                className={` mr-2 h-[32px] w-fit min-w-[77px] rounded-[2em] bg-[#818890] py-[8px] px-[12px] text-white`}
+              >
+                <SkipIcon />
+                <span className='ml-1'>{_.upperFirst(state)}</span>
+              </div>
+            )}
           </div>
           <div>
             <div className='flex  overflow-hidden pb-[2px]'>

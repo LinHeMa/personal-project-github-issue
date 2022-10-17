@@ -164,7 +164,6 @@ const Subtitle = () => {
     userName,
     repo,
   });
-
   return (
     <Wrapper>
       <TitleWrapper>
@@ -174,7 +173,7 @@ const Subtitle = () => {
               <Icon size={16} />
               <Owner href='/'>{userName}</Owner>
               <Break>/</Break>
-              <Repo>{repo}</Repo>
+              <Repo onClick={() => navigate('/issuelist')}>{repo}</Repo>
               <Label text='Public' borderColor='#d0d7de' color='#57606a' />
             </RouteWrapper>
             <ButtonWrapper>
