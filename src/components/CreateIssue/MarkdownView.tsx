@@ -303,22 +303,28 @@ const MarkdownView = ({
                       : body
                   }
                   onChange={(e) => {
-                    if (firstIssue) return dispatch(addBody(e.target.value));
-                    if (editComment && editCommentId)
+                    console.log(editCommentId);
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //  @ts-ignore
+                    if (editCommentId === 'firstissue') {
+                      return dispatch(addBody(e.target.value));
+                    } else if (editCommentId) {
                       return dispatch(
                         editCommentBody({
-                          id: editCommentId,
+                          id: editCommentId!,
                           body: e.target.value,
                         }),
                       );
-                    if (commentPage)
+                    } else if (commentPage) {
                       return dispatch(
                         editCommentBody({
                           id: 0,
                           body: e.target.value,
                         }),
                       );
-                    dispatch(addBody(e.target.value));
+                    } else {
+                      dispatch(addBody(e.target.value));
+                    }
                   }}
                 />
               </TextareaMarkdown.Wrapper>

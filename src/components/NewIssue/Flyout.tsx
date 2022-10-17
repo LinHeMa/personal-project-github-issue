@@ -40,9 +40,11 @@ const Flyout = ({ commentId, openEdit, body }: FlyoutProps) => {
           className='w-full p-[10px] pl-[16px] text-left hover:bg-[#0969DA] hover:text-white'
           onClick={() => {
             console.log('clicked');
-            if (commentId)
+            if (commentId) {
               dispatch(addEditComment({ id: commentId, body: body! }));
-            dispatch(addEditComment({ id: 'firstissue', body: body! }));
+            } else {
+              dispatch(addEditComment({ id: 'firstissue', body: body! }));
+            }
           }}
         >
           Edit
