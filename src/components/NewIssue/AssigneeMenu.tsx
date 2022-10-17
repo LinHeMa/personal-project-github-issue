@@ -15,7 +15,6 @@ const AssigneeMenu = ({ assignees, clickedAssignees }: assigneeMenuProps) => {
   const handleAddAssignee = (assignee: string) => {
     dispatch(addAssignee(assignee));
   };
-  console.log(clickedAssignees)
   const clickedAssigneesToString = useAppSelector(
     (state) => state.createIssueAction.assignees,
   );

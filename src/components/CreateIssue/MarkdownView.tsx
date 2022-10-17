@@ -218,7 +218,9 @@ const MarkdownView = ({
       <div className='h-fit w-full min-w-0 rounded-xl border-solid border-stone-300 p-2 md:ml-4 md:border'>
         <MarkdownItem>
           {hasInput ? <MarkdownItem.Input /> : <></>}
-          <div className='mt-1 mb-2 flex flex-col md:flex-row md:flex-wrap md:items-end md:justify-between lg:flex-nowrap'>
+          <div
+            className={`mt-1 mb-2 flex flex-col md:flex-row md:flex-wrap md:items-end md:justify-between lg:flex-nowrap `}
+          >
             <MarkdownItem.TabContainer>
               <MarkdownItem.Tab toggle={setTrue} currentView={value}>
                 Write
