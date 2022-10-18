@@ -194,7 +194,6 @@ const MarkdownView = ({
     },
   ];
   const editingComments = useAppSelector((state) => state.updateIssueAction);
-  console.log(editingComments);
   const [updateAComment] = useUpdateACommentMutation();
 
   const updateIssueArray = useAppSelector((state) => state.updateIssueAction);
@@ -379,14 +378,14 @@ const MarkdownView = ({
                       });
                     }
                     // TODO close with comment
-                    // if (!_.find(editingComments, { id: 0 })?.body)
-                    //   createComment({
-                    //     name: nameInSessionStorage,
-                    //     repo: repoInSessionStorage,
-                    //     issueNumber,
-                    //     token,
-                    //     body: _.find(editingComments, { id: 0 })?.body,
-                    //   }).then(() => dispatch(resetNewComment()));
+                    if (_.find(editingComments, { id: 0 })?.body !== '')
+                      createComment({
+                        name: nameInSessionStorage,
+                        repo: repoInSessionStorage,
+                        issueNumber,
+                        token,
+                        body: _.find(editingComments, { id: 0 })?.body,
+                      }).then(() => dispatch(resetNewComment()));
                   }}
                 >
                   <span className='mr-2'>

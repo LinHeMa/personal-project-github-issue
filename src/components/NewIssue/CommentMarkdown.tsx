@@ -1,10 +1,4 @@
-import { IssueClosedIcon, TriangleDownIcon } from '@primer/octicons-react';
 import React from 'react';
-import { useBoolean } from 'usehooks-ts';
-import { User } from '../../feature/user/userSlice';
-import BiFunctionButton from '../button/BiFunctionButton';
-import Button from '../button/Button';
-import MarkdownItem from '../CreateIssue/MarkdownItem';
 import MarkdownView from '../CreateIssue/MarkdownView';
 
 type CommentMarkdownProps = {
