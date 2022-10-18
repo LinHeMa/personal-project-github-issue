@@ -12,7 +12,11 @@ import Label from '../label/Label';
 import { checkLight } from '../../sevices/api/labelApi';
 import { useBoolean } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { editTitle, resetAll } from '../../feature/issueSlice/issueSlice';
+import {
+  editTitle,
+  newIssue,
+  resetAll,
+} from '../../feature/issueSlice/issueSlice';
 import { useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
@@ -52,10 +56,8 @@ const Title: React.FC<IssueData> = ({
       const callback = (entries: IntersectionObserverEntry[]) => {
         if (entries[0].isIntersecting) {
           setFixedHeaderStatus(false);
-          console.log('in');
         } else {
           setFixedHeaderStatus(true);
-          console.log('out');
         }
       };
       observer.current = new IntersectionObserver(callback, options);
@@ -133,7 +135,7 @@ const Title: React.FC<IssueData> = ({
               color='#ffffff'
               hoverColor='#2C974B'
               onClick={() => {
-                dispatch(resetAll());
+                dispatch(newIssue());
                 navigate('/createissue');
               }}
             />

@@ -1,5 +1,4 @@
 import {
-  ArrowDownIcon,
   KebabHorizontalIcon,
   SmileyIcon,
   TriangleDownIcon,
@@ -7,16 +6,14 @@ import {
 import MDEditor from '@uiw/react-md-editor';
 import clsx from 'clsx';
 import _ from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useBoolean, useOnClickOutside } from 'usehooks-ts';
 import {
   Comment as commentType,
   Reactions,
 } from '../../utils/type/commentsType';
 import { timeCalc } from '../IssuePage/Item';
-import CommentMarkdown from './CommentMarkdown';
 import Emoji from './Emoji';
-import { IssueData } from './fakeData/getAnIssue';
 import Flyout from './Flyout';
 
 const CommentEdit = ({

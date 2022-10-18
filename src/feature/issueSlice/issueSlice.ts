@@ -153,6 +153,7 @@ export const createIssueSlice = createSlice({
     changeButtonState: (state, action: PayloadAction<string>) => {
       state.buttonNow = action.payload;
     },
+    newIssue: () => initialState,
   },
 });
 
@@ -165,6 +166,7 @@ export const {
   editAssignee,
   editState,
   changeButtonState,
+  newIssue,
 } = createIssueSlice.actions;
 
 export default createIssueSlice.reducer;

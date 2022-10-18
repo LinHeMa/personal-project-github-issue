@@ -189,7 +189,10 @@ interface Button {
   text?: string;
 }
 const Button = ({ children }: Button) => {
-  const { ...body } = useAppSelector((state) => state.createIssueAction);
+  const { title, body, labels, assignees } = useAppSelector(
+    (state) => state.createIssueAction,
+  );
+
   const token = _.get(
     JSON.parse(localStorage.getItem('supabase.auth.token')!),
     ['currentSession', 'provider_token'],
@@ -198,21 +201,24 @@ const Button = ({ children }: Button) => {
   const [createIssue, { isLoading }] = useCreateIssueMutation();
   const navigate = useNavigate();
   return (
-    <div
+    <button
       onClick={() => {
         createIssue({
           name: JSON.parse(sessionStorage.getItem('user')!),
           repo: JSON.parse(sessionStorage.getItem('repo')!),
-          body,
+          body: { title, body, labels, assignees },
           token,
         })
           .then(() => dispatch(resetAll()))
           .then(() => navigate('/issuelist'));
       }}
       className={clsx({
-        'flex w-full cursor-pointer items-end justify-center	rounded-lg bg-[#2DA44E] p-4 font-[700] text-white':
+        'flex w-full cursor-pointer items-end justify-center	rounded-lg  p-4 font-[700] text-white':
           true,
+        'cursor-not-allowed bg-[#94d3a2]': !title,
+        'bg-[#2DA44E]': title,
       })}
+      disabled={!title}
     >
       {isLoading ? (
         <ReactLoading
@@ -224,7 +230,7 @@ const Button = ({ children }: Button) => {
       ) : (
         children
       )}
-    </div>
+    </button>
   );
 };
 

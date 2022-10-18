@@ -20,7 +20,6 @@ const Flyout = ({ commentId, openEdit, body }: FlyoutProps) => {
   );
   const dispatch = useAppDispatch();
 
-  console.log(token);
 
   return (
     <div className='w-[185px] rounded-xl border border-solid border-stone-300 bg-white'>
@@ -39,7 +38,6 @@ const Flyout = ({ commentId, openEdit, body }: FlyoutProps) => {
         <div
           className='w-full p-[10px] pl-[16px] text-left hover:bg-[#0969DA] hover:text-white'
           onClick={() => {
-            console.log('clicked');
             if (commentId) {
               dispatch(addEditComment({ id: commentId, body: body! }));
             } else {

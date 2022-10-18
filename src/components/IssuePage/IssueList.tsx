@@ -137,7 +137,6 @@ export default function IssueList() {
           <Button
             text=''
             hasDropDown={false}
-            onClick={() => console.log('clicked')}
             popup={<PopupMenu type='Filters' />}
           />
 

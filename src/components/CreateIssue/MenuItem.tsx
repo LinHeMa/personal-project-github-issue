@@ -61,12 +61,6 @@ const MenuItem = (props: MenuItemProps) => {
       body,
       issueNumber,
     });
-    console.log('clicked out', {
-      name: userName,
-      repo: userRepo,
-      token,
-      body,
-    });
   });
   const providerValue: MenuItemContext = {
     isOpen,

@@ -106,13 +106,13 @@ const NewIssueContainer = () => {
             <CommentMarkdown avatar_url={userInfo.avatar_url} />
           </div>
           <div className=' min-w-[256px] lg:min-w-[300px]'>
-            <span onClick={() => console.log('clicked')}>
+            <span>
               <AssigneeMenu
                 assignees={assignees}
                 clickedAssignees={issueData?.assignees}
               />
             </span>
-            <span onClick={() => console.log('clicked')}>
+            <span>
               <LabelMenu
                 labels={labels}
                 clickedLabelsArray={issueData?.labels}

@@ -377,7 +377,6 @@ const MarkdownView = ({
                         issueNumber,
                       });
                     }
-                    // TODO close with comment
                     if (_.find(editingComments, { id: 0 })?.body !== '')
                       createComment({
                         name: nameInSessionStorage,
