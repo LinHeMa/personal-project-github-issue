@@ -63,7 +63,7 @@ type MarkdownView = {
   minHeight: string;
   commentPage?: boolean;
   editComment?: boolean;
-  editCommentId?: number;
+  editCommentId?: number | string;
   firstIssue?: boolean;
 };
 const MarkdownView = ({
@@ -195,7 +195,6 @@ const MarkdownView = ({
 
   const updateIssueArray = useAppSelector((state) => state.updateIssueAction);
   const commentBody = _.find(updateIssueArray, { id: 0 })?.body;
-  console.log('update', commentBody);
   const { name, repo, ...stateBody } = useAppSelector(
     (state) => state.createIssueAction,
   );
@@ -303,28 +302,23 @@ const MarkdownView = ({
                       : body
                   }
                   onChange={(e) => {
-                    console.log(editCommentId);
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    //  @ts-ignore
-                    if (editCommentId === 'firstissue') {
-                      return dispatch(addBody(e.target.value));
-                    } else if (editCommentId) {
+                    if (editCommentId) {
                       return dispatch(
                         editCommentBody({
                           id: editCommentId!,
                           body: e.target.value,
                         }),
                       );
-                    } else if (commentPage) {
+                    }
+                    if (commentPage) {
                       return dispatch(
                         editCommentBody({
                           id: 0,
                           body: e.target.value,
                         }),
                       );
-                    } else {
-                      dispatch(addBody(e.target.value));
                     }
+                    dispatch(addBody(e.target.value));
                   }}
                 />
               </TextareaMarkdown.Wrapper>
@@ -457,7 +451,6 @@ const MarkdownView = ({
                 hoverTextColor='#fff'
                 hoverColor='#A40E26'
                 onClick={() => {
-                  console.log(editCommentId);
                   if (editCommentId)
                     dispatch(removeAnEditingComment(editCommentId));
                   dispatch(removeAnEditingComment('firstissue'));

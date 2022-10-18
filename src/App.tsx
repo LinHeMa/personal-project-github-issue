@@ -7,7 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer/Footer';
 import Subtitle from './components/subtitle/Subtitle';
 import { Outlet } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import { useAppDispatch } from './app/hooks';
 import { addUser, signOutUser } from './feature/user/userSlice';
 import { User as userType } from '../src/feature/user/userSlice';
 import { useSessionStorage } from 'usehooks-ts';
@@ -15,7 +15,6 @@ import { useSessionStorage } from 'usehooks-ts';
 function App() {
   const [user, setUser] = useState<User | null>();
   const [value, setValue] = useSessionStorage('user', '');
-  const userToken = useAppSelector((state) => state.userInfoAction);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

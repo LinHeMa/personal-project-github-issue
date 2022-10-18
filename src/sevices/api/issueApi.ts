@@ -130,7 +130,7 @@ export interface postQuery {
   body: postbody | string;
   token?: string | null;
   issueNumber?: number;
-  commentId?: number;
+  commentId?: number | string;
 }
 
 type getListAssigneesQuery = {
