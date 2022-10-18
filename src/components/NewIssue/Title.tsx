@@ -3,7 +3,7 @@ import {
   IssueOpenedIcon,
   SkipIcon,
 } from '@primer/octicons-react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import Button from '../button/Button';
 import clsx from 'clsx';
 import { timeCalc } from '../IssuePage/Item';
@@ -12,13 +12,7 @@ import Label from '../label/Label';
 import { checkLight } from '../../sevices/api/labelApi';
 import { useBoolean } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  addAssignee,
-  addBody,
-  addLabel,
-  addTitle,
-  resetAll,
-} from '../../feature/Label/createIssueSlice';
+import { editTitle, resetAll } from '../../feature/issueSlice/issueSlice';
 import { useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
@@ -39,9 +33,12 @@ const Title: React.FC<IssueData> = ({
   const dispatch = useAppDispatch();
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
   const sessionUser = JSON.parse(sessionStorage.getItem('user')!);
-  const { name, repo, ...body } = useAppSelector(
-    (state) => state.createIssueAction,
-  );
+  const {
+    title: issuedata,
+    body: issueBody,
+    labels: issueLabels,
+    assignees: issueAssignees,
+  } = useAppSelector((state) => state.createIssueAction);
   const token = useAppSelector((state) => state.userInfoAction.token);
   const titleInput = useAppSelector((state) => state.createIssueAction.title);
   const observer = useRef<IntersectionObserver | null>(null);
@@ -66,20 +63,6 @@ const Title: React.FC<IssueData> = ({
     }
   }, []);
 
-  useEffect(() => {
-    dispatch(resetAll());
-    const prevLabelsArray = labels.map((label) => label.name);
-    const prevAssigneesArray = assignees.map((assignee) => assignee.login);
-    dispatch(addTitle(title));
-    dispatch(addBody(prevBody));
-    prevLabelsArray.forEach((label) => {
-      dispatch(addLabel(label));
-    });
-    prevAssigneesArray.forEach((assignee) => {
-      dispatch(addAssignee(assignee));
-    });
-  }, []);
-
   const [updateIssue] = useUpdateIssueMutation();
   const navigate = useNavigate();
 
@@ -88,7 +71,7 @@ const Title: React.FC<IssueData> = ({
       <div className='md:flex'>
         <input
           value={titleInput}
-          onChange={(e) => dispatch(addTitle(e.target.value))}
+          onChange={(e) => dispatch(editTitle(e.target.value))}
           type='text'
           className={`my-3 h-[32px] w-full rounded-lg border border-solid border-[#d0d7de] bg-[#F5F8FA] py-[5px] px-[12px] text-[16px] md:mr-4 ${clsx(
             {
@@ -104,7 +87,12 @@ const Title: React.FC<IssueData> = ({
               updateIssue({
                 name: sessionUser,
                 repo: sessionRepo,
-                body,
+                body: {
+                  title: issuedata,
+                  body: issueBody,
+                  labels: issueLabels,
+                  assignees: issueAssignees,
+                },
                 token,
                 issueNumber: number,
               });
@@ -187,7 +175,7 @@ const Title: React.FC<IssueData> = ({
           </div>
         )}
         <div className='mt-2 flex  flex-wrap text-[#57606A]'>
-          <span className='font-semibold mr-1'>{user.login}</span> {state} this
+          <span className='mr-1 font-semibold'>{user.login}</span> {state} this
           issue {timeCalc(created_at)} · {comments} comments
         </div>
       </div>

@@ -8,7 +8,6 @@ import {
   useAddLabelListMutation,
   useUpdateLabelListMutation,
 } from '../../sevices/api/labelApi';
-import { useAppSelector } from '../../app/hooks';
 type ChangeColorBtnProps = {
   color: string;
   $isRightFormat?: boolean;
@@ -187,6 +186,12 @@ const EditLabel = ({
   $isWhite,
   setIsCreating,
 }: EditLabelProps) => {
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const userRepo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const [visible, setVisible] = useState(false);
   const [updateBody, setUpdateBody] = useState<updateBody>();
   const [postBody, setPostBody] = useState<postBody>();
@@ -208,14 +213,12 @@ const EditLabel = ({
       return;
     }
   };
-  const userInfo = useAppSelector((state) => state.userInfoAction);
   const [useUpdateLabelList] = useUpdateLabelListMutation();
   const [addLabelList] = useAddLabelListMutation();
   function generateRandomColor() {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
     return randomColor;
   }
-
   useEffect(() => {
     if (newName !== '' || newName !== name) {
       setUpdateBody((prev) => ({ ...prev, new_name: newName }));
@@ -304,17 +307,17 @@ const EditLabel = ({
             setIsEdit(false);
             isCreating
               ? addLabelList({
-                  name: userInfo.user_name,
-                  repo: userInfo.chosenRepo,
+                  name: userName,
+                  repo: userRepo,
                   postBody: postBody,
-                  token: userInfo.token,
+                  token,
                 })
               : useUpdateLabelList({
-                  name: userInfo.user_name,
-                  repo: userInfo.chosenRepo,
+                  name: userName,
+                  repo: userRepo,
                   lableName: name,
                   updateBody: updateBody,
-                  token: userInfo.token,
+                  token,
                 });
             setIsEdit(false);
             if (setIsCreating) {

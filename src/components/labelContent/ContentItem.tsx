@@ -2,10 +2,7 @@ import { KebabHorizontalIcon } from '@primer/octicons-react';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import {
-  labelApi,
-  useDeleteLabelListMutation,
-} from '../../sevices/api/labelApi';
+import { useDeleteLabelListMutation } from '../../sevices/api/labelApi';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
 import Label from '../label/Label';
 import EditLabel from './EditLabel';
@@ -56,15 +53,9 @@ const Description = styled.div<DescritpionProps>`
   word-wrap: break-word;
   width: 239px;
   text-align: start;
-`;
-type IssueCommonProps = {
-  $isEdit: boolean;
-};
-const IssueCommon = styled.a<IssueCommonProps>`
-  visibility: ${(props) => (props.$isEdit ? 'hidden' : 'visible')};
-  color: #57606a;
-  word-wrap: break-word;
-  width: 239px;
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const ToggleBtn = styled.button`
@@ -150,7 +141,6 @@ interface ContentItemProps {
 }
 
 const ContentItem = ({
-  url,
   name,
   color,
   description,
@@ -158,8 +148,12 @@ const ContentItem = ({
   isCreating,
   setIsCreating,
 }: ContentItemProps) => {
-  const dispatch = useDispatch();
-  const userInfo = useAppSelector((state) => state.userInfoAction);
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const userRepo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const [isToggle, setIsToggle] = useState(true);
   const toggleRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
@@ -200,11 +194,6 @@ const ContentItem = ({
           </Description>
         )}
         {!isCreating && (
-          <IssueCommon href={url} $isEdit={isEdit}>
-            1 open issue or pull request
-          </IssueCommon>
-        )}
-        {!isCreating && (
           <FunctionWrapper>
             <FunctionBtn
               onClick={() => {
@@ -221,13 +210,11 @@ const ContentItem = ({
                   )
                 )
                   deleteLabelList({
-                    name: userInfo.user_name,
-                    repo: userInfo.chosenRepo,
+                    name: userName,
+                    repo: userRepo,
                     lableName: name,
-                    token: userInfo.token,
-                  }).then(() =>
-                    dispatch(labelApi.util.invalidateTags(['Labels'])),
-                  );
+                    token,
+                  });
               }}
             >
               Delete
@@ -253,10 +240,10 @@ const ContentItem = ({
                   )
                 ) {
                   deleteLabelList({
-                    name: userInfo.user_name,
-                    repo: userInfo.chosenRepo,
+                    name: userName,
+                    repo: userRepo,
                     lableName: name,
-                    token: userInfo.token,
+                    token,
                   });
                 }
               }}

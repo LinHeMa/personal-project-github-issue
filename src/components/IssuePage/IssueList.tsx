@@ -16,7 +16,7 @@ import {
   addStateCondition,
   resetAll,
 } from '../../feature/Label/LabelListActionSlice';
-import { resetAll as resetIssueInfo } from '../../feature/Label/createIssueSlice';
+import { resetAll as resetIssueInfo } from '../../feature/issueSlice/issueSlice';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import BiFunctionButton from '../button/BiFunctionButton';

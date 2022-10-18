@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addAssignee, addLabel } from '../../feature/Label/createIssueSlice';
+import { editAssignee, editLabel } from '../../feature/issueSlice/issueSlice';
 import { User } from '../../sevices/api/issueApi';
 import { LabelsList } from '../../sevices/api/labelApi';
 import MarkdownItem from './MarkdownItem';
@@ -46,10 +46,10 @@ interface CreateIssueView {
 const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
   const dispatch = useAppDispatch();
   const handleAddLabel = (lable: string) => {
-    dispatch(addLabel(lable));
+    dispatch(editLabel(lable));
   };
   const handleAddAssignee = (assignee: string) => {
-    dispatch(addAssignee(assignee));
+    dispatch(editAssignee(assignee));
   };
   const labelsArray = useAppSelector((state) => state.createIssueAction.labels);
   const assigneesArray = useAppSelector(
@@ -62,7 +62,7 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
     _.includes(assigneesArray, assignee.login),
   );
   return (
-    <div className='flex w-full flex-col md:w-[256px] lg:w-[300px] md:ml-4'>
+    <div className='flex w-full flex-col md:ml-4 md:w-[256px] lg:w-[300px]'>
       <div className='border-b border-solid border-stone-300'>
         <MenuItem notCreated>
           <MenuItem.Title

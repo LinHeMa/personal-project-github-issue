@@ -31,7 +31,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import MarkdownItem from './MarkdownItem';
 import { useBoolean } from 'usehooks-ts';
 import { Fragment, useRef } from 'react';
-import { addBody } from '../../feature/Label/createIssueSlice';
+import { editBody } from '../../feature/issueSlice/issueSlice';
 import Button from '../button/Button';
 import {
   useCompleteIssueMutation,
@@ -45,9 +45,10 @@ import {
   editCommentBody,
   removeAnEditingComment,
   resetNewComment,
-} from '../../feature/updateIssueSlice';
+} from '../../feature/issueSlice/updateIssueSlice';
 import ControlIssueFlyout from '../NewIssue/ControlIssueFlyout';
 import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
+import { resetAll } from '../../feature/Label/LabelListActionSlice';
 
 type showOnMobileIcon = {
   button: JSX.Element;
@@ -76,7 +77,10 @@ const MarkdownView = ({
 }: MarkdownView) => {
   const nameInSessionStorage = JSON.parse(sessionStorage.getItem('user')!);
   const repoInSessionStorage = JSON.parse(sessionStorage.getItem('repo')!);
-  const token = useAppSelector((state) => state.userInfoAction.token);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
   const issueNumber = JSON.parse(sessionStorage.getItem('issueNumber')!);
   const userImg = useAppSelector((state) => state.userInfoAction.avatar_url);
   const { value, setTrue, setFalse } = useBoolean(true);
@@ -195,9 +199,7 @@ const MarkdownView = ({
 
   const updateIssueArray = useAppSelector((state) => state.updateIssueAction);
   const commentBody = _.find(updateIssueArray, { id: 0 })?.body;
-  const { name, repo, ...stateBody } = useAppSelector(
-    (state) => state.createIssueAction,
-  );
+  const { ...stateBody } = useAppSelector((state) => state.createIssueAction);
   const issueStateBtnChanged = useAppSelector(
     (state) => state.createIssueAction.buttonNow,
   );
@@ -318,7 +320,7 @@ const MarkdownView = ({
                         }),
                       );
                     }
-                    dispatch(addBody(e.target.value));
+                    dispatch(editBody(e.target.value));
                   }}
                 />
               </TextareaMarkdown.Wrapper>
@@ -453,6 +455,7 @@ const MarkdownView = ({
                 onClick={() => {
                   if (editCommentId)
                     dispatch(removeAnEditingComment(editCommentId));
+                  dispatch(resetAll());
                   dispatch(removeAnEditingComment('firstissue'));
                 }}
               />

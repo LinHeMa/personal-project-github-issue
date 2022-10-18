@@ -8,10 +8,10 @@ import _ from 'lodash';
 import React, { createContext, Dispatch, useContext, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-  addBody,
-  addTitle,
+  editBody,
+  editTitle,
   resetAll,
-} from '../../feature/Label/createIssueSlice';
+} from '../../feature/issueSlice/issueSlice';
 import ReactLoading from 'react-loading';
 import { useCreateIssueMutation } from '../../sevices/api/issueApi';
 import { useNavigate } from 'react-router-dom';
@@ -68,10 +68,10 @@ const Input = () => {
     <div>
       <input
         value={title}
-        onChange={(e) => dispatch(addTitle(e.target.value))}
+        onChange={(e) => dispatch(editTitle(e.target.value))}
         type='text'
         placeholder='Title'
-        className='w-full rounded-lg border border-solid border-stone-400 bg-[#F5F8FA] p-4 mb-3'
+        className='mb-3 w-full rounded-lg border border-solid border-stone-400 bg-[#F5F8FA] p-4'
       />
     </div>
   );
@@ -89,7 +89,7 @@ interface TabContainer {
 
 const TabContainer = ({ children }: TabContainer) => {
   return (
-    <div className=' flex max-h-[40px] justify-between md:justify-start mb-4'>
+    <div className=' mb-4 flex max-h-[40px] justify-between md:justify-start'>
       {children}
     </div>
   );
@@ -117,7 +117,7 @@ interface FunctionBar {
 }
 const FunctionBar = ({ children }: FunctionBar) => {
   return (
-    <div className='flex w-full flex-wrap justify-between px-4 pb-[8px] lg:w-fit items-center'>
+    <div className='flex w-full flex-wrap items-center justify-between px-4 pb-[8px] lg:w-fit'>
       {children}
     </div>
   );
@@ -177,7 +177,7 @@ const TextArea = ({ forwardedRef }: TextArea) => {
     <textarea
       ref={forwardedRef}
       value={body}
-      onChange={(e) => dispatch(addBody(e.target.value))}
+      onChange={(e) => dispatch(editBody(e.target.value))}
       className='mt- min-h-[200px] w-full resize-y rounded-xl border border-solid border-stone-300 py-6 px-4 text-[14px] leading-normal'
       placeholder='Leave a comment'
     />
@@ -189,10 +189,11 @@ interface Button {
   text?: string;
 }
 const Button = ({ children }: Button) => {
-  const { name, repo, ...body } = useAppSelector(
-    (state) => state.createIssueAction,
+  const { ...body } = useAppSelector((state) => state.createIssueAction);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
   );
-  const token = useAppSelector((state) => state.userInfoAction.token);
   const dispatch = useAppDispatch();
   const [createIssue, { isLoading }] = useCreateIssueMutation();
   const navigate = useNavigate();

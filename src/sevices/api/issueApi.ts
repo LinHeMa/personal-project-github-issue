@@ -116,10 +116,10 @@ type getListAssignees = {
   token?: string | null;
 };
 export interface postbody {
-  title: string;
-  body: string;
-  assignees: string[] | null;
-  labels: string[] | null;
+  title?: string;
+  body?: string;
+  assignees?: string[] | null;
+  labels?: string[] | null;
   state?: string;
   stateReason?: string;
 }
@@ -272,7 +272,6 @@ const issueApi = labelApi.injectEndpoints({
       },
       invalidatesTags: [{ type: 'Issues' }],
     }),
-    // TODO reopen
     reopenIssue: build.mutation<postQuery, Partial<postQuery>>({
       query({ name, repo, body, token, issueNumber }) {
         const querybody = {

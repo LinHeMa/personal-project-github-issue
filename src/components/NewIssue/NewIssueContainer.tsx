@@ -19,7 +19,10 @@ import DevelpomentMenu from './DevelopmentMenu';
 import Participants from './Participants';
 import IssueControlMenu from './IssueControlMenu';
 import _ from 'lodash';
-import { addState, resetAll } from '../../feature/Label/createIssueSlice';
+import {
+  initializeIssue,
+  resetAll,
+} from '../../feature/issueSlice/issueSlice';
 
 const NewIssueContainer = () => {
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
@@ -69,8 +72,17 @@ const NewIssueContainer = () => {
   useEffect(() => {
     let button = '';
     issueData?.state === 'open' ? (button = 'completed') : (button = 'reopen');
+    dispatch(resetAll());
+    const prevLabelsArray = issueData?.labels.map((label) => label.name);
+    const prevAssigneesArray = issueData?.assignees.map(
+      (assignee) => assignee.login,
+    );
     dispatch(
-      addState({
+      initializeIssue({
+        title: issueData?.title,
+        body: issueData?.body,
+        assignees: prevAssigneesArray,
+        labels: prevLabelsArray,
         state: issueData?.state as string,
         stateReason: issueData?.state_reason as string,
         buttonNow: button,

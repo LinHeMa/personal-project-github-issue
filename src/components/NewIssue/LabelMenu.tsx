@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addLabel } from '../../feature/Label/createIssueSlice';
+import { editLabel } from '../../feature/issueSlice/issueSlice';
 import { Label } from '../../sevices/api/issueApi';
 import { LabelsList } from '../../sevices/api/labelApi';
 import MenuItem from '../CreateIssue/MenuItem';
@@ -13,7 +13,7 @@ type LabelMenuProps = {
 const LabelMenu = ({ labels, clickedLabelsArray }: LabelMenuProps) => {
   const dispatch = useAppDispatch();
   const handleAddLabel = (lable: string) => {
-    dispatch(addLabel(lable));
+    dispatch(editLabel(lable));
   };
   const clickedLabelsArrayToString = useAppSelector(
     (state) => state.createIssueAction.labels,

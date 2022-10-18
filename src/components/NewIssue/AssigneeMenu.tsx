@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addAssignee } from '../../feature/Label/createIssueSlice';
+import { editAssignee } from '../../feature/issueSlice/issueSlice';
 import MenuItem from '../CreateIssue/MenuItem';
 import { User } from '../../sevices/api/issueApi';
 import _ from 'lodash';
@@ -13,7 +13,7 @@ type assigneeMenuProps = {
 const AssigneeMenu = ({ assignees, clickedAssignees }: assigneeMenuProps) => {
   const dispatch = useAppDispatch();
   const handleAddAssignee = (assignee: string) => {
-    dispatch(addAssignee(assignee));
+    dispatch(editAssignee(assignee));
   };
   const clickedAssigneesToString = useAppSelector(
     (state) => state.createIssueAction.assignees,

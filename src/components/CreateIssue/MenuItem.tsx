@@ -3,7 +3,6 @@ import React, {
   createContext,
   Dispatch,
   useContext,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -49,9 +48,7 @@ const MenuItem = (props: MenuItemProps) => {
   const issueNumber = JSON.parse(sessionStorage.getItem('issueNumber')!);
   const ref = useRef(null);
   const [searchValue, setSearchValue] = useState<string>('');
-  const { name, repo, ...body } = useAppSelector(
-    (state) => state.createIssueAction,
-  );
+  const { ...body } = useAppSelector((state) => state.createIssueAction);
   const [updateIssue] = useUpdateIssueMutation();
   useOnClickOutside(ref, () => {
     setIsOpen(false);
@@ -70,7 +67,6 @@ const MenuItem = (props: MenuItemProps) => {
       token,
       body,
     });
-
   });
   const providerValue: MenuItemContext = {
     isOpen,

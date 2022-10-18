@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import { addEditComment } from '../../feature/updateIssueSlice';
+import { addEditComment } from '../../feature/issueSlice/updateIssueSlice';
 import { useDeleteCommentMutation } from '../../sevices/api/issueApi';
 
 type FlyoutProps = {

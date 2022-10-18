@@ -1,17 +1,11 @@
 import {
   IssueClosedIcon,
-  IssueOpenedIcon,
   IssueReopenedIcon,
   SkipIcon,
 } from '@primer/octicons-react';
-import clsx from 'clsx';
 import _ from 'lodash';
-import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  addState,
-  changeButtonState,
-} from '../../feature/Label/createIssueSlice';
+import { changeButtonState } from '../../feature/issueSlice/issueSlice';
 
 type ControlIssueFlyoutProps = { closeFlyout: () => void };
 
