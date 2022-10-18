@@ -11,10 +11,11 @@ import { useAppDispatch } from './app/hooks';
 import { addUser, signOutUser } from './feature/user/userSlice';
 import { User as userType } from '../src/feature/user/userSlice';
 import { useSessionStorage } from 'usehooks-ts';
+import Loader from './utils/Loader';
 
 function App() {
   const [user, setUser] = useState<User | null>();
-  const [value, setValue] = useSessionStorage('user', '');
+  const [, setValue] = useSessionStorage('user', '');
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -80,7 +81,8 @@ function App() {
         signOut={signOut}
         user={user}
       />
-      <>請先登入</>
+      <h1>請先登入</h1>
+      <Loader />
       <Footer />
     </div>
   );
