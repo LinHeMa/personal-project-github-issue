@@ -103,7 +103,7 @@ export default function IssueList() {
   });
   return (
     <>
-      <div className='container mx-auto flex flex-wrap justify-center px-4 md:px-6  lg:px-8 '>
+      <div className=' mx-auto flex flex-wrap justify-center px-[16px]  lg:px-[24px] '>
         <div className='md:order-2  md:ml-auto'>
           <div
             onClick={(e) => {
@@ -152,22 +152,22 @@ export default function IssueList() {
           </div>
         </div>
 
-        <div className='mr-auto flex items-center md:order-5 md:mt-4 lg:hidden'>
+        <div className='mr-auto flex w-full items-center md:order-5 md:mt-4 lg:hidden'>
           <a
             href='#'
-            className='flex items-center'
+            className='flex items-center md:mr-2'
             onClick={() => dispatch(addStateCondition('open'))}
           >
-            <IssueOpenedIcon />
-            <p className='ml-1 '>{openIssueQty} Open</p>
+              <IssueOpenedIcon />
+            <p className='mx-2 '>{openIssueQty} Open</p>
           </a>
           <a
             href='#'
-            className='flex items-center'
+            className='flex items-center md:mr-2'
             onClick={() => dispatch(addStateCondition('closed'))}
           >
             <CheckIcon />
-            <p className='ml-1'>{closedIssueQty} Closed</p>
+            <p className='mx-2'>{closedIssueQty} Closed</p>
           </a>
         </div>
         <div

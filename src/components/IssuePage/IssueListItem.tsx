@@ -1,16 +1,16 @@
-import PopupMenu from './PopupMenu';
-import { useGetIssuesQuery } from '../../sevices/api/issueApi';
-import Item from './Item';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import _ from 'lodash';
-import { issueStateType } from './IssueList';
-import { useEffect } from 'react';
 import { CheckIcon, IssueOpenedIcon } from '@primer/octicons-react';
+import _ from 'lodash';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   addStateCondition,
   nextPage,
-  previousPage,
+  previousPage
 } from '../../feature/labelSlice/LabelListActionSlice';
+import { useGetIssuesQuery } from '../../sevices/api/issueApi';
+import { issueStateType } from './IssueList';
+import Item from './Item';
+import PopupMenu from './PopupMenu';
 const subtitleList: string[] = ['Label', 'Assignee', 'Sort'];
 
 type issueListItemProps = {
@@ -76,7 +76,7 @@ const IssueListItem: React.FC<issueListItemProps> = ({
   }, []);
 
   return (
-    <div className='container  mx-auto mt-4 pb-[195px] md:px-6 md:pb-[170px] lg:px-8'>
+    <div className='  mx-auto mt-4 pb-[195px] md:px-6 md:pb-[170px] lg:px-8'>
       <div className=' flex items-center  justify-between border border-solid border-stone-300 bg-primary-bg-gray p-7 px-4 sm:justify-start sm:rounded-t-lg md:justify-start'>
         <input type='checkbox' className='mr-4 hidden lg:block' />
         <div className='mr-auto ml-4  hidden items-center lg:flex '>
