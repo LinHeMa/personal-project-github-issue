@@ -5,9 +5,8 @@ import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
 import SortDropdown from './SortDropdown';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
-import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
+import { useOnClickOutside } from 'usehooks-ts';
 import { useAppSelector } from '../../app/hooks';
-import { useBoolean } from 'usehooks-ts';
 import _ from 'lodash';
 
 const Wrapper = styled.div`

@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { labelApi } from '../sevices/api/labelApi';
-import labelListActionReducer from '../feature/Label/LabelListActionSlice';
-import userInfoReducer from '../feature/user/userSlice';
+import labelListActionReducer from '../feature/labelSlice/LabelListActionSlice';
+import userInfoReducer from '../feature/userSlice/userSlice';
 import createIssueReducer from '../feature/issueSlice/issueSlice';
 import updateIssueReducer from '../feature/issueSlice/updateIssueSlice';
 

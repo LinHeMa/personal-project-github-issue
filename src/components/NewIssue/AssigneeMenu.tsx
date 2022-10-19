@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { editAssignee } from '../../feature/issueSlice/issueSlice';
 import MenuItem from '../CreateIssue/MenuItem';

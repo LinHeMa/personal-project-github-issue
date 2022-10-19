@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
 interface postQuery {
@@ -110,7 +110,7 @@ export const createIssueSlice = createSlice({
         state.labels = labels;
         state.prev_labels = labels;
       }
-      if (state) {
+      if (initailState) {
         state.state = initailState;
         state.prev_state = initailState;
       }

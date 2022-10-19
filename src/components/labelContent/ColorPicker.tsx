@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
+import { useOnClickOutside } from 'usehooks-ts';
 
 const defaultColor = [
   '#b60205',
@@ -18,7 +18,7 @@ const defaultColor = [
   '#bfdadc',
   '#c5def5',
   '#bfd4f2',
-  '#d4c5f9'
+  '#d4c5f9',
 ];
 
 interface ColorBtn {
@@ -70,7 +70,7 @@ type ColorPickerProps = {
 
 const ColorPicker: React.FC<ColorPickerProps> = ({
   setLabelColor,
-  setVisible
+  setVisible,
 }) => {
   const ref = useRef(null);
   useOnClickOutside(ref, () => {

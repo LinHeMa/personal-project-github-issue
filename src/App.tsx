@@ -8,8 +8,8 @@ import Footer from './components/Footer/Footer';
 import Subtitle from './components/subtitle/Subtitle';
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch } from './app/hooks';
-import { addUser, signOutUser } from './feature/user/userSlice';
-import { User as userType } from '../src/feature/user/userSlice';
+import { addUser, signOutUser } from './feature/userSlice/userSlice';
+import { User as userType } from './feature/userSlice/userSlice';
 import { useSessionStorage } from 'usehooks-ts';
 import Loader from './utils/Loader';
 

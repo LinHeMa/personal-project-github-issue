@@ -4,7 +4,7 @@ import {
   MilestoneIcon,
   SearchIcon,
   TagIcon,
-  XIcon,
+  XIcon
 } from '@primer/octicons-react';
 import clsx from 'clsx';
 import _ from 'lodash';
@@ -12,11 +12,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Button from '../../components/button/Button';
+import { resetAll as resetIssueInfo } from '../../feature/issueSlice/issueSlice';
 import {
   addStateCondition,
-  resetAll,
-} from '../../feature/Label/LabelListActionSlice';
-import { resetAll as resetIssueInfo } from '../../feature/issueSlice/issueSlice';
+  resetAll
+} from '../../feature/labelSlice/LabelListActionSlice';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import BiFunctionButton from '../button/BiFunctionButton';
@@ -133,7 +133,7 @@ export default function IssueList() {
         >
           New<div className='hidden md:block'> issue</div>
         </button>
-        <div className='my-6  flex w-full  rounded-md border border-solid border-gray-300 bg-primary-bg-gray md:my-0 md:w-6/12 lg:mr-4 lg:w-7/12 '>
+        <div className='relative my-6  flex w-full  rounded-md border border-solid border-gray-300 bg-primary-bg-gray md:my-0 md:w-6/12 lg:mr-4 lg:w-7/12 '>
           <Button
             text=''
             hasDropDown={false}

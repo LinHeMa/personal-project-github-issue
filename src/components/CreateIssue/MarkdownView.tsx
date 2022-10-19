@@ -47,8 +47,8 @@ import {
   resetNewComment,
 } from '../../feature/issueSlice/updateIssueSlice';
 import ControlIssueFlyout from '../NewIssue/ControlIssueFlyout';
-import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
-import { resetAll } from '../../feature/Label/LabelListActionSlice';
+import { useOnClickOutside } from 'usehooks-ts';
+import { resetAll } from '../../feature/labelSlice/LabelListActionSlice';
 
 type showOnMobileIcon = {
   button: JSX.Element;

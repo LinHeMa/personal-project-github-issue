@@ -1,8 +1,7 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSessionStorage } from 'usehooks-ts';
 import { useAppDispatch } from '../../app/hooks';
-import { chooseRepo } from '../../feature/user/userSlice';
+import { chooseRepo } from '../../feature/userSlice/userSlice';
 
 type RepoItemProps = {
   name: string;
@@ -11,7 +10,7 @@ type RepoItemProps = {
 const RepoItem = ({ name }: RepoItemProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [repo, setRepo] = useSessionStorage('repo', '');
+  const [, setRepo] = useSessionStorage('repo', '');
   return (
     <div className='container mx-auto flex flex-col items-start text-6xl'>
       <h1

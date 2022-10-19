@@ -1,18 +1,17 @@
-import { useRef, useState } from 'react';
-import styled from 'styled-components';
-import { User } from '@supabase/supabase-js';
 import {
   BellIcon,
   MarkGithubIcon,
   PlusIcon,
   ThreeBarsIcon,
-  TriangleDownIcon,
+  TriangleDownIcon
 } from '@primer/octicons-react';
-import profileImg from '../images/github_avatar.png';
-import UserDropDown from './UserDropDown';
-import DropDown from './labelContent/DropDown';
-import useOnClickOutside from '../utils/hooks/useOnClidkOutside';
+import { User } from '@supabase/supabase-js';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useOnClickOutside } from 'usehooks-ts';
+import DropDown from './labelContent/DropDown';
+import UserDropDown from './UserDropDown';
 
 const ListOfCreate = [
   'New repository',

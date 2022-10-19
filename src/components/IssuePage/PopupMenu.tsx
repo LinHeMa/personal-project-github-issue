@@ -3,12 +3,12 @@ import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-  addLabelCondition,
-  resetLabelCondition,
   addAssigneeCondition,
-  addSortCondition,
   addFilterCondition,
-} from '../../feature/Label/LabelListActionSlice';
+  addLabelCondition,
+  addSortCondition,
+  resetLabelCondition
+} from '../../feature/labelSlice/LabelListActionSlice';
 import { Root, useGetListAssigneesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 
@@ -91,8 +91,8 @@ const PopupMenu = ({ type }: PopupMenuProps) => {
           <div
             className={
               renderType !== 'Filters'
-                ? `top-8' absolute left-[20px] right-[20px]  z-20 mx-auto flex max-h-[400px] min-h-[400px] flex-col overflow-y-auto rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:min-h-fit sm:w-[300px] sm:border-stone-300 md:right-auto md:left-[5px] md:top-[25px] lg:right-[0px] lg:left-auto`
-                : `top-8' absolute left-[20px] right-[20px]  z-20 mx-auto flex min-h-[800px] flex-col rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:left-[-33%] sm:top-[23%] sm:min-h-fit sm:w-[300px]  sm:border-stone-300 md:right-auto md:left-[10%] md:top-[25%]  lg:left-[10%] lg:top-[22%]`
+                ? `top-8' fixed sm:absolute left-[20px] right-[20px]  z-20 mx-auto flex max-h-[400px] min-h-[400px] flex-col overflow-y-auto rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:min-h-fit sm:w-[300px] sm:border-stone-300 md:right-auto md:left-[5px] md:top-[25px] lg:right-[0px] lg:left-auto`
+                : `top-8' fixed sm:absolute left-[20px] top-12 right-[20px]  z-20 mx-auto flex min-h-[800px] flex-col rounded-xl border border-solid bg-white opacity-100 group-last:rounded-b-lg sm:left-0 sm:right-auto sm:top-12 sm:min-h-fit sm:w-[300px]  sm:border-stone-300 md:right-auto md:left-0 md:top-12  lg:left-0 lg:top-12`
             }
           >
             <div className='flex h-[54px] items-center justify-between border-b-[1px] border-solid border-stone-300 p-[16px]'>

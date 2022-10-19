@@ -1,13 +1,13 @@
 import { SyncIcon } from '@primer/octicons-react';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Button from '../button/Button';
-import _ from 'lodash';
-import ColorPicker from './ColorPicker';
 import {
   useAddLabelListMutation,
-  useUpdateLabelListMutation,
+  useUpdateLabelListMutation
 } from '../../sevices/api/labelApi';
+import Button from '../button/Button';
+import ColorPicker from './ColorPicker';
 type ChangeColorBtnProps = {
   color: string;
   $isRightFormat?: boolean;
@@ -217,7 +217,11 @@ const EditLabel = ({
   const [addLabelList] = useAddLabelListMutation();
   function generateRandomColor() {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    return randomColor;
+    if (randomColor.length !== 6) {
+      generateRandomColor();
+    } else {
+      return randomColor;
+    }
   }
   useEffect(() => {
     if (newName !== '' || newName !== name) {

@@ -10,7 +10,7 @@ import {
   addStateCondition,
   nextPage,
   previousPage,
-} from '../../feature/Label/LabelListActionSlice';
+} from '../../feature/labelSlice/LabelListActionSlice';
 const subtitleList: string[] = ['Label', 'Assignee', 'Sort'];
 
 type issueListItemProps = {

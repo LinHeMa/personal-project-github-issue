@@ -3,12 +3,10 @@ import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDeleteLabelListMutation } from '../../sevices/api/labelApi';
-import useOnClickOutside from '../../utils/hooks/useOnClidkOutside';
+import { useOnClickOutside } from 'usehooks-ts';
 import Label from '../label/Label';
 import EditLabel from './EditLabel';
 import { checkLight } from '../../sevices/api/labelApi';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../app/hooks';
 
 type FunctionButtonMobileWrapperProps = {
   isToggle: boolean;

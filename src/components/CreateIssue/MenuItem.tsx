@@ -1,18 +1,18 @@
 import { CheckIcon, GearIcon, XIcon } from '@primer/octicons-react';
+import clsx from 'clsx';
+import _ from 'lodash';
 import React, {
   createContext,
   Dispatch,
   useContext,
   useRef,
-  useState,
+  useState
 } from 'react';
-import clsx from 'clsx';
 import { useBoolean, useOnClickOutside } from 'usehooks-ts';
-import _ from 'lodash';
-import Label from '../label/Label';
-import { checkLight, LabelsList } from '../../sevices/api/labelApi';
-import { User, useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import { useAppSelector } from '../../app/hooks';
+import { User, useUpdateIssueMutation } from '../../sevices/api/issueApi';
+import { checkLight, LabelsList } from '../../sevices/api/labelApi';
+import Label from '../label/Label';
 
 interface MenuItemContext {
   isOpen: boolean;

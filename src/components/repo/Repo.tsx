@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { useGetReposQuery } from '../../sevices/api/repoApi';
 import RepoItem from './RepoItem';

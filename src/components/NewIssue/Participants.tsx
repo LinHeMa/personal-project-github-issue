@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
+import ReactLoading from 'react-loading';
 import { useAppSelector } from '../../app/hooks';
 import { Comments } from '../../utils/type/commentsType';
 import MenuItem from '../CreateIssue/MenuItem';
@@ -10,7 +10,15 @@ type ParticipantsType = {
 
 const Participants = ({ comments }: ParticipantsType) => {
   const userImgUrl = useAppSelector((state) => state.userInfoAction.avatar_url);
-  if (!comments) return <>fetching</>;
+  if (!comments)
+    return (
+      <ReactLoading
+        type={'bubbles'}
+        color={'#ffffff'}
+        width='24px'
+        height='14px'
+      />
+    );
   function turnUserIntoImg(array?: Comments) {
     return array?.map((item) => item.user?.avatar_url);
   }
