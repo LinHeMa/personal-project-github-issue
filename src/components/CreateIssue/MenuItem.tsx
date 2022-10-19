@@ -162,15 +162,31 @@ interface List {
 
 const List = ({ children }: List) => {
   const { isOpen, setIsOpen } = useContext(MenuItemContext);
+  const [updateIssue] = useUpdateIssueMutation();
+  const userName = JSON.parse(sessionStorage.getItem('user')!);
+  const userRepo = JSON.parse(sessionStorage.getItem('repo')!);
+  const token = _.get(
+    JSON.parse(localStorage.getItem('supabase.auth.token')!),
+    ['currentSession', 'provider_token'],
+  );
+  const issueNumber = JSON.parse(sessionStorage.getItem('issueNumber')!);
+  const { ...body } = useAppSelector((state) => state.createIssueAction);
   return isOpen ? (
     <div>
       <div
         className='fixed  right-0 left-0 top-0 bottom-0 z-10 bg-black opacity-30 md:hidden'
         onClick={() => {
           setIsOpen(!isOpen);
+          updateIssue({
+            name: userName,
+            repo: userRepo,
+            token,
+            body,
+            issueNumber,
+          });
         }}
       />
-      <ul className=' absolute right-[10px] left-[10px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[400px] md:min-h-0 md:w-[298px]'>
+      <ul className=' fixed right-[20px] left-[20px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[400px] md:min-h-0 md:w-[298px]'>
         {children}
       </ul>
     </div>

@@ -1,28 +1,28 @@
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
+import ReactLoading from 'react-loading';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  initializeIssue,
+  resetAll
+} from '../../feature/issueSlice/issueSlice';
 import {
   useGetAnIssuesQuery,
   useGetCommentsQuery,
-  useGetListAssigneesQuery,
+  useGetListAssigneesQuery
 } from '../../sevices/api/issueApi';
-import CommentBlock from './CommentBlock';
-import { IssueData } from './fakeData/getAnIssue';
-import Title from './Title';
-import ReactLoading from 'react-loading';
-import CommentMarkdown from './CommentMarkdown';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import AssigneeMenu from './AssigneeMenu';
-import LabelMenu from './LabelMenu';
-import ProjectsMenu from './ProjectsMenu';
-import MileStoneMenu from './MileStoneMenu';
+import CommentBlock from './CommentBlock';
+import CommentMarkdown from './CommentMarkdown';
 import DevelpomentMenu from './DevelopmentMenu';
-import Participants from './Participants';
+import { IssueData } from './fakeData/getAnIssue';
 import IssueControlMenu from './IssueControlMenu';
-import _ from 'lodash';
-import {
-  initializeIssue,
-  resetAll,
-} from '../../feature/issueSlice/issueSlice';
+import LabelMenu from './LabelMenu';
+import MileStoneMenu from './MileStoneMenu';
+import Participants from './Participants';
+import ProjectsMenu from './ProjectsMenu';
+import Title from './Title';
 
 const NewIssueContainer = () => {
   const sessionRepo = JSON.parse(sessionStorage.getItem('repo')!);
