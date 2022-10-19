@@ -29,7 +29,7 @@ const CreateIssueContainer = () => {
     dispatch(newIssue());
   }, []);
   return (
-    <div className='flex flex-col p-8 pb-[200px] md:container md:mx-auto  md:flex-row'>
+    <div className='flex flex-col p-8 pb-[200px] md:mx-auto md:flex-row lg:px-[26px]'>
       <MarkdownView hasInput minHeight='' />
       <CreateIssueView assignees={assignees} labels={labels} />
     </div>

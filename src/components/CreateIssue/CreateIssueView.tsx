@@ -62,7 +62,7 @@ const CreateIssueView = ({ assignees, labels }: CreateIssueView) => {
     _.includes(assigneesArray, assignee.login),
   );
   return (
-    <div className='flex w-full flex-col md:ml-4 md:w-[256px] lg:w-[300px]'>
+    <div className='flex w-full flex-col md:ml-4 md:min-w-[256px] md:max-w-[256px] lg:min-w-[300px]'>
       <div className='border-b border-solid border-stone-300'>
         <MenuItem notCreated>
           <MenuItem.Title
