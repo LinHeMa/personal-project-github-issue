@@ -20,10 +20,12 @@ const Participants = ({ comments }: ParticipantsType) => {
       />
     );
   function turnUserIntoImg(array?: Comments) {
+    if (_.isEmpty(array)) return [];
     return array?.map((item) => item.user?.avatar_url);
   }
 
   function addOwnerIntoArray(ownerUrl: string[]) {
+    if (_.isEmpty(ownerUrl)) return [userImgUrl];
     if (_.includes(ownerUrl, userImgUrl)) return ownerUrl;
     return ownerUrl.push(userImgUrl);
   }
@@ -46,7 +48,9 @@ const Participants = ({ comments }: ParticipantsType) => {
       <MenuItem>
         <MenuItem.Title
           source={{
-            title: `${_.uniq(participantsImg).length} participants`,
+            title: `${
+              _.uniq(participantsImgUrl as string[]).length
+            } participants`,
             default: participantsImg,
           }}
           isLabel={false}
