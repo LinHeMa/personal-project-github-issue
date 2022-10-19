@@ -1,7 +1,7 @@
 import {
   KebabHorizontalIcon,
   SmileyIcon,
-  TriangleDownIcon,
+  TriangleDownIcon
 } from '@primer/octicons-react';
 import MDEditor from '@uiw/react-md-editor';
 import clsx from 'clsx';
@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useBoolean, useOnClickOutside } from 'usehooks-ts';
 import {
   Comment as commentType,
-  Reactions,
+  Reactions
 } from '../../utils/type/commentsType';
 import { timeCalc } from '../IssuePage/Item';
 import Emoji from './Emoji';

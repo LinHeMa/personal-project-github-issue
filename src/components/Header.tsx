@@ -7,7 +7,6 @@ import {
 } from '@primer/octicons-react';
 import { User } from '@supabase/supabase-js';
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useOnClickOutside } from 'usehooks-ts';
 import DropDown from './labelContent/DropDown';
@@ -246,7 +245,6 @@ const Header = ({
   signOut,
   user,
 }: HeaderProps) => {
-  const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPlusOpen, setIsPlusOpen] = useState(false);
   const profileRef = useRef(null);
@@ -272,15 +270,19 @@ const Header = ({
         <Link>Marketplace</Link>
         <Link>Explore</Link>
       </ListSearchContainer>
-      {user && <Bell size={16} />}
-      <PlusWrapper
-        hideOnMobile
-        onClick={() => setIsPlusOpen((prev) => !prev)}
-        ref={plusRef}
-      >
-        <PlusIcon size={16} />
-        <TriangleDownIcon size={16} />
-      </PlusWrapper>
+      {user && (
+        <>
+          <Bell size={16} />
+          <PlusWrapper
+            hideOnMobile
+            onClick={() => setIsPlusOpen((prev) => !prev)}
+            ref={plusRef}
+          >
+            <PlusIcon size={16} />
+            <TriangleDownIcon size={16} />
+          </PlusWrapper>
+        </>
+      )}
       {user?.aud === 'authenticated' ? (
         <ProfileWrapper
           hideOnMobile

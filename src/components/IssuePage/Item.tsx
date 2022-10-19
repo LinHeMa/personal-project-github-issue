@@ -140,15 +140,13 @@ const Item: React.FC<ItemProps> = ({ data }) => {
                 <CommentIcon />
               </span>
             ) : (
-              <span className='hidden sm:block'>
-                <CommentIcon />
-              </span>
+              <></>
             )}
             <p className='pl-2'>
               {comments ? (
                 <span className='hidden sm:block'>{comments}</span>
               ) : (
-                <span className=' hidden'>{comments}</span>
+                <></>
               )}
             </p>
           </div>

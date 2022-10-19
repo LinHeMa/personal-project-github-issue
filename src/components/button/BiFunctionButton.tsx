@@ -1,8 +1,5 @@
-import { TriangleDownIcon } from '@primer/octicons-react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ButtonProps } from './Button';
 
 const Wrapper = styled.div`
   display: flex;
@@ -58,6 +55,9 @@ const Right = styled.div<RightProps>`
 `;
 export const Notification = styled.div`
   width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 20px;
   padding: 0 6px;
   font-size: 12px;

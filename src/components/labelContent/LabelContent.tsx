@@ -1,13 +1,14 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
+import _ from 'lodash';
 import { useRef, useState } from 'react';
+import ReactLoading from 'react-loading';
 import styled from 'styled-components';
+import { useOnClickOutside } from 'usehooks-ts';
+import { useAppSelector } from '../../app/hooks';
+import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
 import SortDropdown from './SortDropdown';
-import { useGetLabelListQuery } from '../../sevices/api/labelApi';
-import { useOnClickOutside } from 'usehooks-ts';
-import { useAppSelector } from '../../app/hooks';
-import _ from 'lodash';
 
 const Wrapper = styled.div`
   max-width: 1280px;
@@ -56,7 +57,7 @@ const LabelContent = () => {
     JSON.parse(localStorage.getItem('supabase.auth.token')!),
     ['currentSession', 'provider_token'],
   );
-  const { data, isSuccess, isError } = useGetLabelListQuery({
+  const { data, isSuccess, isLoading, isFetching } = useGetLabelListQuery({
     name,
     repo,
     token,
@@ -81,17 +82,28 @@ const LabelContent = () => {
             </SortBtn>
           </Title>
         </ContentContainer>
-        {data?.map(({ id, url, name, color, description, isLight }) => (
-          <ContentItem
-            key={id}
-            id={id}
-            url={url}
-            name={name}
-            color={color}
-            description={description}
-            isLight={isLight}
-          />
-        ))}
+        {isFetching ? (
+          <div className='w-full flex justify-center mt-12'>
+            <ReactLoading
+              type={'bubbles'}
+              color={'#8250DF'}
+              width='76px'
+              height='36px'
+            />
+          </div>
+        ) : (
+          data?.map(({ id, url, name, color, description, isLight }) => (
+            <ContentItem
+              key={id}
+              id={id}
+              url={url}
+              name={name}
+              color={color}
+              description={description}
+              isLight={isLight}
+            />
+          ))
+        )}
       </Wrapper>
     );
   return <>fetching</>;

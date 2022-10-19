@@ -9,9 +9,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBoolean } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  editTitle, resetAll
-} from '../../feature/issueSlice/issueSlice';
+import { editTitle, resetAll } from '../../feature/issueSlice/issueSlice';
 import { useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import { checkLight } from '../../sevices/api/labelApi';
 import Button from '../button/Button';
@@ -82,6 +80,7 @@ const Title: React.FC<IssueData> = ({
         <div className={`mb-3 flex ${clsx({ hidden: !value })}`}>
           <Button
             text='Save'
+            hoverTextColor='#000000'
             fontSize='14px'
             onClick={() => {
               updateIssue({
@@ -103,6 +102,8 @@ const Title: React.FC<IssueData> = ({
           <Button
             text='Cancel'
             fontSize='14px'
+            hoverColor='transparent'
+            hoverTextColor='#022e61'
             bgColor='transparent'
             color='#0969DA'
             borderColor='transparent'
@@ -137,7 +138,9 @@ const Title: React.FC<IssueData> = ({
               }}
             />
           </div>
-          <div className='text-[#0969DA] md:hidden'>Jump to buttom</div>
+          <a href='#bottom' className='cursor-pointer text-[#0969DA] md:hidden'>
+            Jump to buttom
+          </a>
         </div>
         <div className='flex flex-wrap pb-[8px] md:w-full'>
           <h1 className='text-left text-[26px] font-semibold tracking-wider	'>

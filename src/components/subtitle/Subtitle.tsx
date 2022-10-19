@@ -12,13 +12,12 @@ import {
   RepoIcon,
   ShieldIcon,
   StarIcon,
-  TabIcon,
+  TabIcon
 } from '@primer/octicons-react';
 import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { resetAll } from '../../feature/issueSlice/issueSlice';
+import { useAppDispatch } from '../../app/hooks';
 import { resetNewComment } from '../../feature/issueSlice/updateIssueSlice';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
 import Button from '../button/Button';
@@ -205,6 +204,10 @@ const Subtitle = () => {
             icon={<Issue size={16} />}
             text='Issues'
             onClick={() => {
+              if (!repo) {
+                alert('請先選擇repo');
+                return;
+              }
               navigate('/issuelist');
               dispatch(resetNewComment());
             }}

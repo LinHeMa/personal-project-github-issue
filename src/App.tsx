@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
-import { supabase } from './supabase/client';
 import { User } from '@supabase/supabase-js';
-import { ResetStyle, GlobalStyle } from './components/globalStyle';
-import './App.css';
-import Header from './components/Header';
-import Footer from './components/Footer/Footer';
-import Subtitle from './components/subtitle/Subtitle';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppDispatch } from './app/hooks';
-import { addUser, signOutUser } from './feature/userSlice/userSlice';
-import { User as userType } from './feature/userSlice/userSlice';
 import { useSessionStorage } from 'usehooks-ts';
+import './App.css';
+import { useAppDispatch } from './app/hooks';
+import Footer from './components/Footer/Footer';
+import { GlobalStyle, ResetStyle } from './components/globalStyle';
+import Header from './components/Header';
+import Subtitle from './components/subtitle/Subtitle';
+import { addUser, signOutUser, User as userType } from './feature/userSlice/userSlice';
+import { supabase } from './supabase/client';
 import Loader from './utils/Loader';
 
 function App() {
@@ -81,7 +80,7 @@ function App() {
         signOut={signOut}
         user={user}
       />
-      <h1>請先登入</h1>
+      <h1 className=' text-[48px] mt-14'>請先登入</h1>
       <Loader />
       <Footer />
     </div>

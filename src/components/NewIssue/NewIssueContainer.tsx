@@ -2,10 +2,7 @@ import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  initializeIssue,
-  resetAll
-} from '../../feature/issueSlice/issueSlice';
+import { initializeIssue, resetAll } from '../../feature/issueSlice/issueSlice';
 import {
   useGetAnIssuesQuery,
   useGetCommentsQuery,
@@ -91,7 +88,7 @@ const NewIssueContainer = () => {
   }, [issueData]);
   if (isSuccess)
     return (
-      <div className=' mx-auto max-w-[1280px] p-[16px] pb-[180px] '>
+      <div className=' mx-auto max-w-[1280px] p-[16px] pb-[250px] sm:pb-[180px]'>
         <Title {...(issueData as IssueData)} isSuccess={isSuccess} />
         <div className='flex flex-col md:flex-row'>
           <div className='md:mr-8 md:w-full'>
@@ -103,7 +100,9 @@ const NewIssueContainer = () => {
                 returnEditStatus={returnEditStatus}
               />
             ))}
-            <CommentMarkdown avatar_url={userInfo.avatar_url} />
+            <span id='bottom'>
+              <CommentMarkdown avatar_url={userInfo.avatar_url} />
+            </span>
           </div>
           <div className=' min-w-[256px] lg:min-w-[300px]'>
             <span>

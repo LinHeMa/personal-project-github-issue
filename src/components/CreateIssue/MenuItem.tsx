@@ -9,7 +9,8 @@ import React, {
   useState
 } from 'react';
 import { useBoolean, useOnClickOutside } from 'usehooks-ts';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { editAssignee } from '../../feature/issueSlice/issueSlice';
 import { User, useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import { checkLight, LabelsList } from '../../sevices/api/labelApi';
 import Label from '../label/Label';
@@ -94,8 +95,10 @@ interface Toggle {
 const Toggle = ({ children }: Toggle) => {
   const { isOpen, setIsOpen } = useContext(MenuItemContext);
   return (
-    <div className=' cursor-pointer' onClick={() => setIsOpen(!isOpen)}>
-      <GearIcon />
+    <div className=' cursor-pointer ' onClick={() => setIsOpen(!isOpen)}>
+      <span className='hover:text-[#0969da]'>
+        <GearIcon />
+      </span>
       {children}
     </div>
   );
@@ -113,15 +116,33 @@ interface source {
 }
 
 const Title = ({ source, clickedArray, isLabel }: Title) => {
+  const dispatch = useAppDispatch();
+  const userName = useAppSelector((state) => state.userInfoAction.user_name);
   return (
     <div className='flex flex-col  items-start '>
-      <h1 className=' pb-6 font-[700] '>{source.title}</h1>
+      <h1 className='cursor-pointer pb-6 font-[700] hover:text-[#0969da]'>
+        {source.title}
+      </h1>
       <h1
         className={`${clsx({
           hidden: !_.isEmpty(clickedArray),
         })} flex justify-start text-left`}
       >
-        {source.default}
+        {source.default === 'No one' ? (
+          <span className='flex flex-wrap'>
+            {source.default}--
+            <div
+              className=' cursor-pointer text-[#57606a]'
+              onClick={() => {
+                dispatch(editAssignee(userName));
+              }}
+            >
+              assign yourself
+            </div>
+          </span>
+        ) : (
+          source.default
+        )}
       </h1>
 
       <div
@@ -186,7 +207,7 @@ const List = ({ children }: List) => {
           });
         }}
       />
-      <ul className=' fixed right-[20px] left-[20px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[400px] md:min-h-0 md:w-[298px]'>
+      <ul className=' absolute right-[20px] left-[20px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[400px] md:min-h-0 md:w-[298px]'>
         {children}
       </ul>
     </div>

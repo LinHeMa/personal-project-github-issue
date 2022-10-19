@@ -15,40 +15,42 @@ import {
   ReplyIcon,
   SkipIcon,
   TasklistIcon,
-  TriangleDownIcon,
+  TriangleDownIcon
 } from '@primer/octicons-react';
-import avatar from '../../images/github_avatar.png';
-import TextareaMarkdown, {
-  TextareaMarkdownRef,
-  CommandHandler,
-} from 'textarea-markdown-editor';
 import MDEditor from '@uiw/react-md-editor';
-import TextareaAutosize from 'react-textarea-autosize';
-import '../../utils/hooks/markdown.css';
 import clsx from 'clsx';
 import _ from 'lodash';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import MarkdownItem from './MarkdownItem';
-import { useBoolean } from 'usehooks-ts';
 import { Fragment, useRef } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
+import TextareaMarkdown, {
+  CommandHandler,
+  TextareaMarkdownRef
+} from 'textarea-markdown-editor';
+import { useBoolean } from 'usehooks-ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { editBody } from '../../feature/issueSlice/issueSlice';
-import Button from '../button/Button';
+import avatar from '../../images/github_avatar.png';
+import '../../utils/hooks/markdown.css';
+import MarkdownItem from './MarkdownItem';
+
+import ReactLoading from 'react-loading';
+import { useOnClickOutside } from 'usehooks-ts';
+import {
+  editCommentBody,
+  removeAnEditingComment,
+  resetNewComment
+} from '../../feature/issueSlice/updateIssueSlice';
+import { resetAll } from '../../feature/labelSlice/LabelListActionSlice';
 import {
   useCompleteIssueMutation,
   useCreateCommentMutation,
   useNotPlannedIssueMutation,
   useReopenIssueMutation,
   useUpdateACommentMutation,
-  useUpdateIssueMutation,
+  useUpdateIssueMutation
 } from '../../sevices/api/issueApi';
-import {
-  editCommentBody,
-  removeAnEditingComment,
-  resetNewComment,
-} from '../../feature/issueSlice/updateIssueSlice';
+import Button from '../button/Button';
 import ControlIssueFlyout from '../NewIssue/ControlIssueFlyout';
-import { useOnClickOutside } from 'usehooks-ts';
-import { resetAll } from '../../feature/labelSlice/LabelListActionSlice';
 
 type showOnMobileIcon = {
   button: JSX.Element;
@@ -108,7 +110,8 @@ const MarkdownView = ({
     if (content) return cursor.insert(` - [ ] ${content}`);
     cursor.replaceLine(currentLine.lineNumber, ` - [ ] ${lineText}`);
   };
-  const [createComment] = useCreateCommentMutation();
+  const [createComment, { isLoading: isCommentCreating }] =
+    useCreateCommentMutation();
   const showOnMobileIcon: showOnMobileIcon[] = [
     {
       button: <HeadingIcon key='HeadingIcon' />,
@@ -348,98 +351,130 @@ const MarkdownView = ({
           )}
           {commentPage ? (
             <div className=' mt-4 ml-auto flex w-fit cursor-pointer justify-end'>
-              <div className='mr-6 flex'>
-                <div
-                  className='rounded-l-lg border border-solid border-stone-300 bg-[#f6f8fa] py-[5px] px-[16px] text-[14px] leading-[20px]'
-                  onClick={() => {
-                    if (issueStateBtnChanged === 'reopen') {
-                      reopenIssue({
-                        name: nameInSessionStorage,
-                        repo: repoInSessionStorage,
-                        token: token,
-                        body: stateBody,
-                        issueNumber,
-                      });
-                    } else if (issueStateBtnChanged === 'completed') {
-                      completeIssue({
-                        name: nameInSessionStorage,
-                        repo: repoInSessionStorage,
-                        token: token,
-                        body: stateBody,
-                        issueNumber,
-                      });
-                    } else if (issueStateBtnChanged === 'not_planned') {
-                      closeIssueAsNotPlanned({
-                        name: nameInSessionStorage,
-                        repo: repoInSessionStorage,
-                        token: token,
-                        body: stateBody,
-                        issueNumber,
-                      });
-                    }
-                    if (_.find(editingComments, { id: 0 })?.body !== '')
-                      createComment({
-                        name: nameInSessionStorage,
-                        repo: repoInSessionStorage,
-                        issueNumber,
-                        token,
-                        body: _.find(editingComments, { id: 0 })?.body,
-                      }).then(() => dispatch(resetNewComment()));
-                  }}
-                >
-                  <span className='mr-2'>
-                    {issueStateBtnChanged === 'reopen' ? (
-                      <IssueReopenedIcon fill='#1A7F38' />
-                    ) : issueStateBtnChanged === 'not_planned' ? (
-                      <SkipIcon fill='#818890' />
-                    ) : (
-                      <IssueClosedIcon fill='#8250DF' />
-                    )}
-                  </span>
-                  {issueStateBtnChanged === 'reopen'
-                    ? 'Reopen'
-                    : issueStateBtnChanged === 'not_planned'
-                    ? commentBody
-                      ? 'Close with comment'
-                      : 'Close as not planned'
-                    : commentBody
-                    ? 'Close with comment'
-                    : 'Close issue'}
-                </div>
-                <div className='rounded-r-lg border border-l-0 border-solid border-stone-300 bg-[#f6f8fa] py-[5px] px-[9px] text-[14px] leading-[20px]'>
-                  <span
-                    ref={flyoutRef}
-                    className='relative'
-                    onClick={(e) => {
-                      if (closeFlyoutState) return;
-                      openFlyout();
-                      e.stopPropagation();
+              {isCommentCreating ? (
+                <></>
+              ) : (
+                <div className='mr-6 flex'>
+                  <div
+                    className='rounded-l-lg border border-solid border-stone-300 bg-[#f6f8fa] py-[5px] px-[16px] text-[14px] leading-[20px]'
+                    onClick={() => {
+                      if (issueStateBtnChanged === 'reopen') {
+                        reopenIssue({
+                          name: nameInSessionStorage,
+                          repo: repoInSessionStorage,
+                          token: token,
+                          body: stateBody,
+                          issueNumber,
+                        });
+                      } else if (issueStateBtnChanged === 'completed') {
+                        completeIssue({
+                          name: nameInSessionStorage,
+                          repo: repoInSessionStorage,
+                          token: token,
+                          body: stateBody,
+                          issueNumber,
+                        });
+                      } else if (issueStateBtnChanged === 'not_planned') {
+                        closeIssueAsNotPlanned({
+                          name: nameInSessionStorage,
+                          repo: repoInSessionStorage,
+                          token: token,
+                          body: stateBody,
+                          issueNumber,
+                        });
+                      }
+                      if (_.find(editingComments, { id: 0 })?.body !== '')
+                        createComment({
+                          name: nameInSessionStorage,
+                          repo: repoInSessionStorage,
+                          issueNumber,
+                          token,
+                          body: _.find(editingComments, { id: 0 })?.body,
+                        }).then(() => dispatch(resetNewComment()));
                     }}
                   >
-                    <TriangleDownIcon />
-                    {closeFlyoutState && (
-                      <ControlIssueFlyout closeFlyout={closeFlyout} />
-                    )}
+                    <span className='mr-2'>
+                      {issueStateBtnChanged === 'reopen' ? (
+                        <IssueReopenedIcon fill='#1A7F38' />
+                      ) : issueStateBtnChanged === 'not_planned' ? (
+                        <SkipIcon fill='#818890' />
+                      ) : (
+                        <IssueClosedIcon fill='#8250DF' />
+                      )}
+                    </span>
+                    {issueStateBtnChanged === 'reopen'
+                      ? 'Reopen'
+                      : issueStateBtnChanged === 'not_planned'
+                      ? commentBody
+                        ? 'Close with comment'
+                        : 'Close as not planned'
+                      : commentBody
+                      ? 'Close with comment'
+                      : 'Close issue'}
+                  </div>
+                  <div className='rounded-r-lg border border-l-0 border-solid border-stone-300 bg-[#f6f8fa] py-[5px] px-[9px] text-[14px] leading-[20px]'>
+                    <span
+                      ref={flyoutRef}
+                      className='relative'
+                      onClick={(e) => {
+                        if (closeFlyoutState) return;
+                        openFlyout();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <TriangleDownIcon />
+                      {closeFlyoutState && (
+                        <ControlIssueFlyout closeFlyout={closeFlyout} />
+                      )}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {isCommentCreating ? (
+                <div className='m-8 mb-12 min-w-[32px]'>
+                  <ReactLoading
+                    type={'bubbles'}
+                    color={'#8250DF'}
+                    width='48px'
+                    height='20px'
+                  />
+                </div>
+              ) : (
+                <div
+                  className={`${
+                    !_.find(editingComments, { id: 0 })?.body &&
+                    'cursor-not-allowed'
+                  }`}
+                >
+                  <span
+                    className={`${
+                      !_.find(editingComments, { id: 0 })?.body &&
+                      'pointer-events-none'
+                    }`}
+                  >
+                    <Button
+                      fontSize='14px'
+                      text='Comment'
+                      bgColor={
+                        _.find(editingComments, { id: 0 })?.body
+                          ? '#2da44e'
+                          : '#94d3a2'
+                      }
+                      color={`#ffffff`}
+                      hoverColor='#2C974B'
+                      onClick={() => {
+                        createComment({
+                          name: nameInSessionStorage,
+                          repo: repoInSessionStorage,
+                          issueNumber,
+                          token,
+                          body: _.find(editingComments, { id: 0 })?.body,
+                        }).then(() => dispatch(resetNewComment()));
+                      }}
+                    />
                   </span>
                 </div>
-              </div>
-
-              <Button
-                fontSize='14px'
-                text='Comment'
-                bgColor='#2da44e'
-                color='#ffffff'
-                hoverColor='#2C974B'
-                onClick={() => {
-                  createComment({
-                    name: nameInSessionStorage,
-                    repo: repoInSessionStorage,
-                    issueNumber,
-                    token,
-                    body: _.find(editingComments, { id: 0 })?.body,
-                  }).then(() => dispatch(resetNewComment()));
-                }}
-              />
+              )}
             </div>
           ) : editComment ? (
             <div className=' mt-4 ml-auto flex w-fit justify-end'>

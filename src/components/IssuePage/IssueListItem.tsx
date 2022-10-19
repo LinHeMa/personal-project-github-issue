@@ -1,4 +1,5 @@
 import { CheckIcon, IssueOpenedIcon } from '@primer/octicons-react';
+import clsx from 'clsx';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -86,15 +87,17 @@ const IssueListItem: React.FC<issueListItemProps> = ({
             onClick={() => dispatch(addStateCondition('open'))}
           >
             <IssueOpenedIcon />
-            <p className='ml-1 '>{openIssueQty} Open</p>
+            <p className='ml-2 '>{openIssueQty} Open</p>
           </a>
           <a
             href='#'
             className='flex items-center'
             onClick={() => dispatch(addStateCondition('closed'))}
           >
-            <CheckIcon />
-            <p className='ml-1'>{closedIssueQty} Closed</p>
+            <span className='ml-3'>
+              <CheckIcon />
+            </span>
+            <p className='ml-2'>{closedIssueQty} Closed</p>
           </a>
         </div>
         {subtitleList.map((item, index) => (
@@ -136,7 +139,9 @@ const IssueListItem: React.FC<issueListItemProps> = ({
       </>
       <div className='l mx-auto mt-[30px] flex w-[250px] justify-between text-sky-700 '>
         <div
-          className=' cursor-pointer text-[14px]'
+          className={` cursor-pointer text-[14px] ${clsx({
+            invisible: queryStringPage === 0,
+          })}`}
           onClick={() => {
             if (queryStringPage === 0) return;
             dispatch(previousPage());
@@ -145,7 +150,10 @@ const IssueListItem: React.FC<issueListItemProps> = ({
           {'< '}Previous
         </div>
         <div
-          className=' cursor-pointer text-[14px]'
+          className={`  ${clsx({
+            invisible: data && data?.length < 30,
+            'cursor-pointer text-[14px]': true,
+          })}`}
           onClick={() => {
             if (data?.length === 0) return;
             dispatch(nextPage());
