@@ -1,4 +1,7 @@
 import _ from 'lodash';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { newIssue } from '../../feature/issueSlice/issueSlice';
 import { useGetListAssigneesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
 import CreateIssueView from './CreateIssueView';
@@ -21,7 +24,10 @@ const CreateIssueContainer = () => {
     repo,
     token,
   });
-  
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(newIssue());
+  }, []);
   return (
     <div className='flex flex-col p-8 pb-[200px] md:container md:mx-auto  md:flex-row'>
       <MarkdownView hasInput minHeight='' />

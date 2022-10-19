@@ -1,25 +1,23 @@
 import {
   IssueClosedIcon,
   IssueOpenedIcon,
-  SkipIcon,
+  SkipIcon
 } from '@primer/octicons-react';
-import React, { useCallback, useRef, useState } from 'react';
-import Button from '../button/Button';
 import clsx from 'clsx';
-import { timeCalc } from '../IssuePage/Item';
-import { IssueData } from './fakeData/getAnIssue';
-import Label from '../label/Label';
-import { checkLight } from '../../sevices/api/labelApi';
+import _ from 'lodash';
+import React, { useCallback, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useBoolean } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-  editTitle,
-  newIssue,
-  resetAll,
+  editTitle, resetAll
 } from '../../feature/issueSlice/issueSlice';
 import { useUpdateIssueMutation } from '../../sevices/api/issueApi';
-import _ from 'lodash';
-import { useNavigate } from 'react-router-dom';
+import { checkLight } from '../../sevices/api/labelApi';
+import Button from '../button/Button';
+import { timeCalc } from '../IssuePage/Item';
+import Label from '../label/Label';
+import { IssueData } from './fakeData/getAnIssue';
 
 const Title: React.FC<IssueData> = ({
   title,
@@ -135,7 +133,6 @@ const Title: React.FC<IssueData> = ({
               color='#ffffff'
               hoverColor='#2C974B'
               onClick={() => {
-                dispatch(newIssue());
                 navigate('/createissue');
               }}
             />
