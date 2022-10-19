@@ -128,7 +128,7 @@ const ChangeColorBtn = styled.div<ChangeColorBtnProps>`
       _.lowerCase(props.color) === 'ffffff' ? '#d0d7de' : 'transparent'};
   background-color: ${(props) => '#' + props.color};
   background-color: ${(props) =>
-    props.$isRightFormat ? props.$newColor : null};
+    props.$newColor ? props.$newColor : null};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -204,21 +204,33 @@ const EditLabel = ({
     setNewDescription(target.value);
   };
   const handleNewColorChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const colorReg = new RegExp('^#([A-F0-9]{2,3}|[A-F0-9]{5})$', 'i');
+    const colorReg = new RegExp('^[0-9a-fA-F]+$', 'i');
     const target = e.target as HTMLInputElement;
+    const inputColorValue = _.trim(target.value, '#');
+    const checkLength = (color: string): boolean => {
+      if (color.length === 3 || color.length === 6) return true;
+      return false;
+    };
+    console.log(
+      inputColorValue,
+      checkLength(inputColorValue),
+      !colorReg.test(labelColor),
+    );
     setIsRightFormat(true);
     setLabelColor(target.value);
-    if (!colorReg.test(labelColor)) {
+
+    if ( colorReg.test(labelColor) ||!checkLength(inputColorValue)) {
       setIsRightFormat(false);
       return;
     }
   };
   const [useUpdateLabelList] = useUpdateLabelListMutation();
   const [addLabelList] = useAddLabelListMutation();
-  function generateRandomColor() {
+  function generateRandomColor(): string {
+    setIsRightFormat(true)
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
     if (randomColor.length !== 6) {
-      generateRandomColor();
+      return generateRandomColor();
     } else {
       return randomColor;
     }

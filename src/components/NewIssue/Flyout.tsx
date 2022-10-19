@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import React from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { addEditComment } from '../../feature/issueSlice/updateIssueSlice';
 import { useDeleteCommentMutation } from '../../sevices/api/issueApi';
@@ -19,7 +18,6 @@ const Flyout = ({ commentId, openEdit, body }: FlyoutProps) => {
     ['currentSession', 'provider_token'],
   );
   const dispatch = useAppDispatch();
-
 
   return (
     <div className='w-[185px] rounded-xl border border-solid border-stone-300 bg-white'>
@@ -53,14 +51,19 @@ const Flyout = ({ commentId, openEdit, body }: FlyoutProps) => {
         {commentId && (
           <div
             className='w-full p-[10px] pl-[16px] text-left text-[#cf222e] hover:bg-[#cf232e] hover:text-white'
-            onClick={() =>
-              deleteAcomments({
-                name,
-                repo,
-                token,
-                commentId,
-              })
-            }
+            onClick={() => {
+              if (
+                confirm(
+                  'Are you sure? Deleting a comment will remove it from all issues and pull requests.',
+                )
+              )
+                deleteAcomments({
+                  name,
+                  repo,
+                  token,
+                  commentId,
+                });
+            }}
           >
             Delete
           </div>
