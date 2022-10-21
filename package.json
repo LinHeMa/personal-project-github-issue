@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@primer/octicons-react": "^17.5.0",
+    "@reduxjs/toolkit": "^1.8.5",
+    "@supabase/supabase-js": "^1.35.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -12,13 +14,26 @@
     "@types/node": "^16.11.59",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.26",
+    "@uiw/react-md-editor": "^3.18.1",
+    "clsx": "^1.2.1",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loading": "^2.0.3",
+    "react-markdown": "^8.0.3",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.4.0",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "react-textarea-autosize": "^8.3.4",
     "redux": "^4.2.0",
+    "remark-footnotes": "^4.0.1",
+    "remark-gfm": "^3.0.1",
+    "styled-components": "^5.3.5",
+    "textarea-markdown-editor": "^1.0.1",
+    "usehooks-ts": "^2.7.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -35,6 +50,14 @@
       "react-app/jest"
     ],
     "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      },
       {
         "files": [
           "**/*.stories.*"
@@ -69,12 +92,20 @@
     "@storybook/preset-create-react-app": "^4.1.2",
     "@storybook/react": "^6.5.12",
     "@storybook/testing-library": "^0.0.13",
+    "@tailwindcss/typography": "^0.5.7",
+    "@types/react-syntax-highlighter": "^15.5.5",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
+    "autoprefixer": "^10.4.12",
     "babel-plugin-named-exports-order": "^0.0.2",
     "eslint": "^8.23.1",
     "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-storybook": "^0.6.4",
+    "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
     "prop-types": "^15.8.1",
+    "tailwindcss": "^3.1.8",
     "typescript": "^4.8.3",
     "webpack": "^5.74.0"
   }
