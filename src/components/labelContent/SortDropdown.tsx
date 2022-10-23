@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import { useAppDispatch } from '../../app/hooks';
+import {
+  sortAlphabetically,
+  sortReverseAlphabetically
+} from '../../slices/labelSlice/LabelList';
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,11 +39,16 @@ const Choice = styled.div`
 `;
 
 const SortDropdown = () => {
+  const dispatch = useAppDispatch();
   return (
     <Wrapper>
       <Title>Sort</Title>
-      <Choice>Alphabetically</Choice>
-      <Choice>Reverse alphabetically</Choice>
+      <Choice onClick={() => dispatch(sortAlphabetically())}>
+        Alphabetically
+      </Choice>
+      <Choice onClick={() => dispatch(sortReverseAlphabetically())}>
+        Reverse alphabetically
+      </Choice>
       <Choice>Most issues</Choice>
       <Choice>Fewest issues</Choice>
     </Wrapper>

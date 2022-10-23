@@ -1,6 +1,5 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Label from '../components/label/Label';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import Label from '../components/Label/Label';
 
 export default {
   title: 'GithubIssue/Label',

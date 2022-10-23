@@ -119,7 +119,6 @@ const repoApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${query.token}`,
           },
-          cache: 'no-cache',
         };
       },
       providesTags: ['Users'],

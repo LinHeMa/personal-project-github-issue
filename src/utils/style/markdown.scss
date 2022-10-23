@@ -1,0 +1,29 @@
+.wmde-markdown-var {
+    max-width: 100%;
+    font-size: 14px;
+    color: #3b4045;
+    text-align: left;
+    .w-md-editor-toolbar {
+        margin: -2px;
+        border: 3px solid white;
+        border-bottom: 1px solid #d0d7de;
+    }
+    p{
+        margin-bottom: 0;
+    }
+    em {
+        font-style: italic;
+    }
+    ul {
+        max-height: fit-content;
+        li {
+            list-style: disc;
+        }
+    }
+    ol {
+        li {
+            list-style: decimal;
+        }
+    }
+}
+// FIXME re import 

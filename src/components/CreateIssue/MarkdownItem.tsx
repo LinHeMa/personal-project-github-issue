@@ -1,20 +1,20 @@
 import {
   ChevronDownIcon,
   ChevronUpIcon,
-  TypographyIcon,
+  TypographyIcon
 } from '@primer/octicons-react';
 import clsx from 'clsx';
 import _ from 'lodash';
 import React, { createContext, Dispatch, useContext, useState } from 'react';
+import ReactLoading from 'react-loading';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useCreateIssueMutation } from '../../sevices/api/issueApi';
 import {
   editBody,
   editTitle,
-  resetAll,
-} from '../../feature/issueSlice/issueSlice';
-import ReactLoading from 'react-loading';
-import { useCreateIssueMutation } from '../../sevices/api/issueApi';
-import { useNavigate } from 'react-router-dom';
+  resetAll
+} from '../../slices/issueSlice/issueSlice';
 
 interface MarkdownContext {
   isPreview: string;
@@ -102,10 +102,10 @@ const Tab = ({ children, toggle }: Tab) => {
       className={`flex flex-1 cursor-pointer items-center justify-center border border-solid border-stone-300 p-8 text-[16px] md:flex-none md:rounded-t-lg md:p-6 
       ${clsx({ ' border-b-1 bg-[#F6F8FA]': isPreview !== children })}
        `}
-      onClick={() => {
+      onClick={_.debounce(() => {
         toggle();
         setIsPreview(children);
-      }}
+      }, 250)}
     >
       {children}
     </div>
@@ -202,7 +202,7 @@ const Button = ({ children }: Button) => {
   const navigate = useNavigate();
   return (
     <button
-      onClick={() => {
+      onClick={_.debounce(() => {
         createIssue({
           name: JSON.parse(sessionStorage.getItem('user')!),
           repo: JSON.parse(sessionStorage.getItem('repo')!),
@@ -211,7 +211,7 @@ const Button = ({ children }: Button) => {
         })
           .then(() => dispatch(resetAll()))
           .then(() => navigate('/issuelist'));
-      }}
+      }, 250)}
       className={clsx({
         'flex w-full cursor-pointer items-end justify-center	rounded-lg  p-4 font-[700] text-white':
           true,

@@ -1,11 +1,11 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import '../../.storybook/stories.css';
-import LabelMenu from '../components/NewIssue/LabelMenu';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Provider } from 'react-redux';
+import '../../.storybook/stories.css';
 import { store } from '../app/store';
-import { fakeIssueData } from '../components/NewIssue/fakeData/getAnIssue';
+import { fakeIssueData } from '../components/IssuePage/fakeData/getAnIssue';
+import LabelMenu from '../components/IssuePage/LabelMenu';
 import { LabelsList } from '../sevices/api/labelApi';
+import { GlobalStyle, ResetStyle } from '../utils/style/globalStyle';
 
 const apple = {
   id: 4576400410,
@@ -48,6 +48,8 @@ export default {
 const Template: ComponentStory<typeof LabelMenu> = (args) => (
   <Provider store={store}>
     <div className='flex items-center justify-center'>
+      <ResetStyle />
+      <GlobalStyle />
       <div className='w-[300px]'>
         <LabelMenu {...args} />
       </div>

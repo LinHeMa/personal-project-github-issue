@@ -6,7 +6,7 @@ import {
   useAddLabelListMutation,
   useUpdateLabelListMutation
 } from '../../sevices/api/labelApi';
-import Button from '../button/Button';
+import Button from '../Button/Button';
 import ColorPicker from './ColorPicker';
 type ChangeColorBtnProps = {
   color: string;
@@ -196,6 +196,10 @@ const EditLabel = ({
   const [postBody, setPostBody] = useState<postBody>();
   const handleNameChange = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
+    if (target.value.length > 15) {
+      alert('Label name cannot longer than 15 words');
+      return;
+    }
     setNewName(target.value);
   };
   const handleDescriptionChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -315,6 +319,10 @@ const EditLabel = ({
 
         <SaveChangeWrapper
           onClick={() => {
+            if (!isRightFormat) {
+              alert('Please check the format');
+              return;
+            }
             setIsEdit(false);
             isCreating
               ? addLabelList({
@@ -341,7 +349,7 @@ const EditLabel = ({
             color='#ffffff'
             bgColor='#2da44e'
             fontSize='14px'
-            hoverColor='#2c974b;'
+            hoverBgColor='#2c974b;'
           />
         </SaveChangeWrapper>
       </BottomBlock>

@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import { newIssue } from '../../feature/issueSlice/issueSlice';
 import { useGetListAssigneesQuery } from '../../sevices/api/issueApi';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
+import { newIssue } from '../../slices/issueSlice/issueSlice';
 import CreateIssueView from './CreateIssueView';
 import MarkdownView from './MarkdownView';
 

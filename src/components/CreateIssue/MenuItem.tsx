@@ -10,10 +10,10 @@ import React, {
 } from 'react';
 import { useBoolean, useOnClickOutside } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { editAssignee } from '../../feature/issueSlice/issueSlice';
 import { User, useUpdateIssueMutation } from '../../sevices/api/issueApi';
 import { checkLight, LabelsList } from '../../sevices/api/labelApi';
-import Label from '../label/Label';
+import { editAssignee } from '../../slices/issueSlice/issueSlice';
+import Label from '../Label/Label';
 
 interface MenuItemContext {
   isOpen: boolean;
@@ -196,7 +196,7 @@ const List = ({ children }: List) => {
     <div>
       <div
         className='fixed  right-0 left-0 top-0 bottom-0 z-10 bg-black opacity-30 md:hidden'
-        onClick={() => {
+        onClick={_.debounce(() => {
           setIsOpen(!isOpen);
           updateIssue({
             name: userName,
@@ -205,7 +205,7 @@ const List = ({ children }: List) => {
             body,
             issueNumber,
           });
-        }}
+        }, 250)}
       />
       <ul className=' absolute right-[20px] left-[20px] top-28 z-20 flex max-h-[780px] min-h-[600px] w-auto flex-col overflow-y-auto rounded-lg border border-solid border-stone-300 bg-white md:left-auto md:top-0 md:bottom-auto md:max-h-[400px] md:min-h-0 md:w-[298px]'>
         {children}
@@ -235,14 +235,14 @@ const Item = ({
   clickedArray,
   img,
 }: Item) => {
-  const { value, toggle } = useBoolean(false);
+  const { toggle } = useBoolean(false);
   const { searchValue } = useContext(MenuItemContext);
   const replaceWhite = (string: string) => _.replace(string, / /g, '');
   const textRefact = _.flow([replaceWhite, _.toLower]);
 
   return (
     <li
-      className={`flex items-end  justify-start border-b border-solid border-stone-300 p-4 ${clsx(
+      className={`flex items-end  justify-start border-b  border-solid border-stone-300 p-4 hover:bg-[#0969da] hover:text-[#ffffff] ${clsx(
         {
           hidden: !_.includes(textRefact(children), textRefact(searchValue)),
         },

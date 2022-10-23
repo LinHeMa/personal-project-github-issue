@@ -1,6 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface BifunctionButtonProps extends RightProps {
+  iconLeft: React.ReactNode;
+  textLeft: string;
+  numberLeft?: number;
+  textRight?: string;
+  iconRight?: React.ReactNode;
+  numberRight?: number;
+}
+
+interface RightProps {
+  $bgColorRight?: string;
+}
+
 const Wrapper = styled.div`
   display: flex;
   margin-right: 8px;
@@ -19,20 +32,13 @@ const Left = styled.div`
   border: 1px solid rgba(27, 31, 36, 0.15);
   border-radius: 6px 0 0 6px;
   color: #24292f;
-  /* color: #f3f4f6; */
   background-color: #f6f8fa;
-
-  /* background-color: #0969da; */
   padding: 5px 16px;
   font-weight: 500;
   &:hover {
     background-color: #f3f4f6;
   }
 `;
-
-type RightProps = {
-  $bgColorRight?: string;
-};
 
 const Right = styled.div<RightProps>`
   display: flex;
@@ -68,22 +74,10 @@ export const Notification = styled.div`
   margin-right: 4px;
 `;
 
-interface BifunctionButtonProps {
-  icon: React.ReactNode;
-  text: string;
-  number?: number;
-  hasDropDown?: boolean;
-  iconRight?: React.ReactNode;
-  textRight?: string;
-  numberRight?: number;
-  $bgColorRight?: string;
-}
-
 const BiFunctionButton = ({
-  icon,
-  text,
-  number,
-  hasDropDown = false,
+  iconLeft,
+  textLeft,
+  numberLeft,
   iconRight,
   textRight,
   numberRight,
@@ -92,14 +86,16 @@ const BiFunctionButton = ({
   return (
     <Wrapper>
       <Left>
-        <span className='mr-2'>{icon}</span>
-        {text}
-        {number !== undefined ? <Notification>{number}</Notification> : null}
+        <span className='mr-2'>{iconLeft}</span>
+        {textLeft}
+        {numberLeft !== 0 ? (
+          <Notification>{numberLeft}</Notification>
+        ) : null}
       </Left>
       <Right $bgColorRight={$bgColorRight}>
         {iconRight}
         {textRight}
-        {numberRight !== undefined ? (
+        {numberRight !== 0 ? (
           <Notification>{numberRight}</Notification>
         ) : null}
       </Right>

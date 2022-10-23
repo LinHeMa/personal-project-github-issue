@@ -1,8 +1,8 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import '../../.storybook/stories.css';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Provider } from 'react-redux';
+import '../../.storybook/stories.css';
 import { store } from '../app/store';
-import Emoji from '../components/NewIssue/Emoji';
+import Emoji from '../components/IssuePage/Emoji';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

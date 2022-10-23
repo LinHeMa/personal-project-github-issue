@@ -1,18 +1,27 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import '../../.storybook/stories.css';
-import Title from '../components/NewIssue/Title';
-import { fakeIssueData } from '../components/NewIssue/fakeData/getAnIssue';
+import { store } from '../app/store';
+import { fakeIssueData } from '../components/IssuePage/fakeData/getAnIssue';
+import Title from '../components/IssuePage/Title';
+import { GlobalStyle, ResetStyle } from '../utils/style/globalStyle';
 
 export default {
-  title: 'GithubIssue/NewIssue(S4)',
+  title: 'GithubIssue/NewIssue',
   component: Title,
 } as ComponentMeta<typeof Title>;
 
 const Template: ComponentStory<typeof Title> = (args) => (
-  <div className='container mx-auto'>
-    <Title {...args} />
-  </div>
+  <Provider store={store}>
+    <BrowserRouter>
+      <ResetStyle />
+      <GlobalStyle />
+      <div className='container mx-auto'>
+        <Title {...args} />
+      </div>
+    </BrowserRouter>
+  </Provider>
 );
 
 export const Primary = Template.bind({});

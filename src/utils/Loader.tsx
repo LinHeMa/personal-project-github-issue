@@ -1,9 +1,7 @@
 /* eslint-disable */
-import * as THREE from 'three';
-import * as React from 'react';
-import { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { IcosahedronGeometry, TorusGeometry, TorusKnotGeometry } from 'three';
+import { useRef, useState } from 'react';
+import * as THREE from 'three';
 
 function Box(props: JSX.IntrinsicElements['mesh']) {
   // This reference will give us direct access to the THREE.Mesh object

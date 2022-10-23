@@ -1,24 +1,28 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import '../../.storybook/stories.css';
-import { Menu } from '../components/CreateIssue/CreateIssueView';
-import LabelMenu from '../components/NewIssue/LabelMenu';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Provider } from 'react-redux';
+import '../../.storybook/stories.css';
 import { store } from '../app/store';
-import { fakeIssueData } from '../components/NewIssue/fakeData/getAnIssue';
-import { LabelsList } from '../sevices/api/labelApi';
-import AssigneeMenu from '../components/NewIssue/AssigneeMenu';
+import AssigneeMenu from '../components/IssuePage/AssigneeMenu';
+import { fakeIssueData } from '../components/IssuePage/fakeData/getAnIssue';
 import { User } from '../sevices/api/issueApi';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'GithubIssue/AssigneeMenu(s4)',
   component: AssigneeMenu,
-
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
+  argTypes: {
+    assignees: {
+      table: {
+        disable: true,
+      },
+    },
+    clickedAssignees: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 } as ComponentMeta<typeof AssigneeMenu>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof AssigneeMenu> = (args) => (
   <Provider store={store}>
     <div className='flex items-center justify-center'>

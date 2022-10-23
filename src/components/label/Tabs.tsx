@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
-import { Notification } from '../button/BiFunctionButton';
+import { Notification } from '../Button/BiFunctionButton';
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,13 +44,13 @@ interface TabsProps {
   onClick?: () => void;
 }
 
-const Tabs = ({ icon, number, text, onClick }: TabsProps) => {
+const Tabs = ({ icon, number = 0, text, onClick }: TabsProps) => {
   return (
     <Wrapper onClick={onClick}>
       <TabWrapper>
         {icon}
         {text}
-        {number && number > 0 && <Notify>{number}</Notify>}
+        {number > 0 && <Notify>{number}</Notify>}
       </TabWrapper>
     </Wrapper>
   );

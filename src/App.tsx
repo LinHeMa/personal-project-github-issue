@@ -1,22 +1,24 @@
 import { User } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useSessionStorage } from 'usehooks-ts';
-import './App.css';
 import { useAppDispatch } from './app/hooks';
 import Footer from './components/Footer/Footer';
-import { GlobalStyle, ResetStyle } from './components/globalStyle';
-import Header from './components/Header';
-import Subtitle from './components/subtitle/Subtitle';
-import { addUser, signOutUser, User as userType } from './feature/userSlice/userSlice';
+import Header from './components/Header/Header';
+import Subtitle from './components/Subtitle/Subtitle';
+import {
+  addUser,
+  signOutUser,
+  User as userType
+} from './slices/userSlice/userSlice';
 import { supabase } from './supabase/client';
-import Loader from './utils/Loader';
+import { GlobalStyle, ResetStyle } from './utils/style/globalStyle';
 
 function App() {
   const [user, setUser] = useState<User | null>();
   const [, setValue] = useSessionStorage('user', '');
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   useEffect(() => {
     checkUser();
     window.addEventListener('hashchange', () => {
@@ -50,6 +52,7 @@ function App() {
     await supabase.auth.signOut();
     setUser(null);
     dispatch(signOutUser());
+    navigate('/');
   }
 
   if (user) {
@@ -80,8 +83,9 @@ function App() {
         signOut={signOut}
         user={user}
       />
-      <h1 className=' text-[48px] mt-14'>請先登入</h1>
-      <Loader />
+      <h1 className=' mt-14 flex w-full justify-center text-[48px]'>
+        請先登入
+      </h1>
       <Footer />
     </div>
   );

@@ -28,19 +28,14 @@ import TextareaMarkdown, {
 } from 'textarea-markdown-editor';
 import { useBoolean } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { editBody } from '../../feature/issueSlice/issueSlice';
 import avatar from '../../images/github_avatar.png';
-import '../../utils/hooks/markdown.css';
+import { editBody } from '../../slices/issueSlice/issueSlice';
+import '../../utils/style/markdown.css';
+import '../../utils/style/markdownStyle';
 import MarkdownItem from './MarkdownItem';
 
 import ReactLoading from 'react-loading';
 import { useOnClickOutside } from 'usehooks-ts';
-import {
-  editCommentBody,
-  removeAnEditingComment,
-  resetNewComment
-} from '../../feature/issueSlice/updateIssueSlice';
-import { resetAll } from '../../feature/labelSlice/LabelListActionSlice';
 import {
   useCompleteIssueMutation,
   useCreateCommentMutation,
@@ -49,8 +44,14 @@ import {
   useUpdateACommentMutation,
   useUpdateIssueMutation
 } from '../../sevices/api/issueApi';
-import Button from '../button/Button';
-import ControlIssueFlyout from '../NewIssue/ControlIssueFlyout';
+import {
+  editCommentBody,
+  removeAnEditingComment,
+  resetNewComment
+} from '../../slices/issueSlice/updateIssueSlice';
+import { resetAll } from '../../slices/labelSlice/LabelListActionSlice';
+import Button from '../Button/Button';
+import ControlIssueFlyout from '../IssuePage/ControlIssueFlyout';
 
 type showOnMobileIcon = {
   button: JSX.Element;
@@ -218,7 +219,7 @@ const MarkdownView = ({
           className=' mx-4 mt-4 hidden h-[40px] w-[40px] rounded-full md:block'
         />
       )}
-      <div className='h-fit w-full min-w-0 rounded-xl border-solid border-stone-300 p-2 md:ml-4 md:border'>
+      <div className='mb-8 h-fit w-full min-w-0 rounded-xl border-solid border-stone-300 p-2 md:ml-4 md:border'>
         <MarkdownItem>
           {hasInput ? <MarkdownItem.Input /> : <></>}
           <div
@@ -461,8 +462,8 @@ const MarkdownView = ({
                           : '#94d3a2'
                       }
                       color={`#ffffff`}
-                      hoverColor='#2C974B'
-                      onClick={() => {
+                      hoverBgColor='#2C974B'
+                      onClick={_.debounce(() => {
                         createComment({
                           name: nameInSessionStorage,
                           repo: repoInSessionStorage,
@@ -470,7 +471,7 @@ const MarkdownView = ({
                           token,
                           body: _.find(editingComments, { id: 0 })?.body,
                         }).then(() => dispatch(resetNewComment()));
-                      }}
+                      }, 250)}
                     />
                   </span>
                 </div>
@@ -484,21 +485,21 @@ const MarkdownView = ({
                 bgColor='#f6f8fa'
                 color='#cf222e'
                 hoverTextColor='#fff'
-                hoverColor='#A40E26'
-                onClick={() => {
+                hoverBgColor='#A40E26'
+                onClick={_.debounce(() => {
                   if (editCommentId)
                     dispatch(removeAnEditingComment(editCommentId));
                   dispatch(resetAll());
                   dispatch(removeAnEditingComment('firstissue'));
-                }}
+                }, 250)}
               />
               <Button
                 fontSize='14px'
                 text='Update comment'
                 bgColor='#2da44e'
                 color='#ffffff'
-                hoverColor='#2C974B'
-                onClick={() => {
+                hoverBgColor='#2C974B'
+                onClick={_.debounce(() => {
                   editCommentId
                     ? updateAComment({
                         name: nameInSessionStorage,
@@ -520,7 +521,7 @@ const MarkdownView = ({
                   if (editCommentId)
                     dispatch(removeAnEditingComment(editCommentId));
                   dispatch(removeAnEditingComment('firstissue'));
-                }}
+                }, 250)}
               />
             </div>
           ) : (

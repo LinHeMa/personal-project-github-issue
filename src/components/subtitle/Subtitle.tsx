@@ -1,29 +1,29 @@
 import {
-  BookIcon,
-  CodeIcon,
-  EyeIcon,
-  GearIcon,
-  GitPullRequestIcon,
-  GraphIcon,
-  IssueOpenedIcon,
-  PinIcon,
-  PlayIcon,
-  RepoForkedIcon,
-  RepoIcon,
-  ShieldIcon,
-  StarIcon,
-  TabIcon
+    BookIcon,
+    CodeIcon,
+    EyeIcon,
+    GearIcon,
+    GitPullRequestIcon,
+    GraphIcon,
+    IssueOpenedIcon,
+    PinIcon,
+    PlayIcon,
+    RepoForkedIcon,
+    RepoIcon,
+    ShieldIcon,
+    StarIcon,
+    TabIcon
 } from '@primer/octicons-react';
 import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAppDispatch } from '../../app/hooks';
-import { resetNewComment } from '../../feature/issueSlice/updateIssueSlice';
 import { useGetIssuesQuery } from '../../sevices/api/issueApi';
-import Button from '../button/Button';
-import DoubleButton from '../button/DoubleButton';
-import Label from '../label/Label';
-import Tabs from '../label/Tabs';
+import { resetNewComment } from '../../slices/issueSlice/updateIssueSlice';
+import Button from '../Button/Button';
+import DoubleButton from '../Button/DoubleButton';
+import Label from '../Label/Label';
+import Tabs from '../Label/Tabs';
 
 const Wrapper = styled.div`
   line-height: 30px;
@@ -211,7 +211,7 @@ const Subtitle = () => {
               navigate('/issuelist');
               dispatch(resetNewComment());
             }}
-            number={data?.length}
+            number={data?.length !== 0 ? data?.length : undefined}
           />
           <Tabs icon={<PullRequest size={16} />} text='Pull requests' />
           <Tabs icon={<Actions size={16} />} text='Actions' />

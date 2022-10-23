@@ -1,11 +1,12 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
 import _ from 'lodash';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactLoading from 'react-loading';
 import styled from 'styled-components';
 import { useOnClickOutside } from 'usehooks-ts';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useGetLabelListQuery } from '../../sevices/api/labelApi';
+import { initializeLabelList } from '../../slices/labelSlice/LabelList';
 import ContentItem from './ContentItem';
 import FunctionBar from './FunctionBar';
 import SortDropdown from './SortDropdown';
@@ -50,24 +51,27 @@ const SortBtn = styled.div`
 const LabelContent = () => {
   const [open, setOpen] = useState(false);
   const dropDownRef = useRef(null);
-  const userInfo = useAppSelector((state) => state.userInfoAction);
   const name = JSON.parse(sessionStorage.getItem('user')!);
   const repo = JSON.parse(sessionStorage.getItem('repo')!);
   const token = _.get(
     JSON.parse(localStorage.getItem('supabase.auth.token')!),
     ['currentSession', 'provider_token'],
   );
-  const { data, isSuccess, isLoading, isFetching } = useGetLabelListQuery({
+  const { data, isSuccess, isFetching } = useGetLabelListQuery({
     name,
     repo,
     token,
   });
+  const dispatch = useAppDispatch();
   useOnClickOutside(dropDownRef, () => setOpen(false));
-
+  useEffect(() => {
+    dispatch(initializeLabelList(data!));
+  }, [data]);
+  const sortedLabels = useAppSelector((state) => state.labelListDataAction);
   if (isSuccess)
     return (
       <Wrapper>
-        <FunctionBar />
+        <FunctionBar data={data}/>
         <ContentContainer>
           <Title>
             <LabelCount>{isSuccess ? data?.length : 0} labels</LabelCount>
@@ -83,7 +87,7 @@ const LabelContent = () => {
           </Title>
         </ContentContainer>
         {isFetching ? (
-          <div className='w-full flex justify-center mt-12'>
+          <div className='mt-12 flex w-full justify-center'>
             <ReactLoading
               type={'bubbles'}
               color={'#8250DF'}
@@ -92,17 +96,19 @@ const LabelContent = () => {
             />
           </div>
         ) : (
-          data?.map(({ id, url, name, color, description, isLight }) => (
-            <ContentItem
-              key={id}
-              id={id}
-              url={url}
-              name={name}
-              color={color}
-              description={description}
-              isLight={isLight}
-            />
-          ))
+          sortedLabels?.map(
+            ({ id, url, name, color, description, isLight }) => (
+              <ContentItem
+                key={id}
+                id={id}
+                url={url}
+                name={name}
+                color={color}
+                description={description}
+                isLight={isLight}
+              />
+            ),
+          )
         )}
       </Wrapper>
     );

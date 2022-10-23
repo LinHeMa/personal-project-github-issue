@@ -2,11 +2,10 @@ import { KebabHorizontalIcon } from '@primer/octicons-react';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useDeleteLabelListMutation } from '../../sevices/api/labelApi';
 import { useOnClickOutside } from 'usehooks-ts';
-import Label from '../label/Label';
+import { checkLight, useDeleteLabelListMutation } from '../../sevices/api/labelApi';
+import Label from '../Label/Label';
 import EditLabel from './EditLabel';
-import { checkLight } from '../../sevices/api/labelApi';
 
 type FunctionButtonMobileWrapperProps = {
   isToggle: boolean;

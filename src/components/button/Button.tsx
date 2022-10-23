@@ -1,13 +1,23 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
-import React, { Children } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface WrapperProps {
   bgColor?: string;
-  hoverColor?: string;
+  hoverBgColor?: string;
   fontSize?: string;
   borderColor?: string;
   hoverTextColor?: string;
+}
+
+export interface ButtonProps extends WrapperProps {
+  icon?: React.ReactNode;
+  text: string;
+  number?: number;
+  hasDropDown?: boolean;
+  color?: string;
+  onClick?: () => void;
+  popup?: React.ReactNode;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -29,7 +39,7 @@ const Wrapper = styled.div<WrapperProps>`
   margin-right: 8px;
   &:hover {
     background-color: ${(props) =>
-      props.hoverColor ? props.hoverColor : '#f3f4f6;'};
+      props.hoverBgColor ? props.hoverBgColor : '#f3f4f6;'};
     color: ${(props) =>
       props.hoverTextColor ? props.hoverTextColor : '#ffffff;'};
   }
@@ -52,21 +62,6 @@ const Notification = styled.div`
   justify-content: center;
 `;
 
-export interface ButtonProps {
-  icon?: React.ReactNode;
-  text: string;
-  number?: number;
-  hasDropDown?: boolean;
-  bgColor?: string;
-  color?: string;
-  hoverColor?: string;
-  fontSize?: string;
-  onClick?: () => void;
-  popup?: React.ReactNode;
-  borderColor?: string;
-  hoverTextColor?: string;
-}
-
 const Button = ({
   icon,
   text,
@@ -74,7 +69,7 @@ const Button = ({
   hasDropDown,
   bgColor,
   color,
-  hoverColor,
+  hoverBgColor,
   fontSize,
   popup,
   borderColor,
@@ -86,7 +81,7 @@ const Button = ({
       onClick={onClick}
       bgColor={bgColor}
       color={color}
-      hoverColor={hoverColor}
+      hoverBgColor={hoverBgColor}
       fontSize={fontSize}
       borderColor={borderColor}
       hoverTextColor={hoverTextColor}

@@ -1,22 +1,28 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import IssueItem from "./IssueItem";
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { GlobalStyle, ResetStyle } from '../utils/style/globalStyle';
+import IssueItem from './IssueItem';
 
 export default {
-  title: "GithubIssue/IssueListItem",
+  title: 'GithubIssue/IssueListItem',
   component: IssueItem,
   argTypes: {
     status: {
-      options: ["open", "closed", "notPlaned"],
-      control: { type: "radio" },
+      options: ['open', 'closed', 'notPlaned'],
+      control: { type: 'radio' },
     },
   },
 } as ComponentMeta<typeof IssueItem>;
 
 const Template: ComponentStory<typeof IssueItem> = (args) => (
-  <IssueItem {...args} />
+  <div className='container'>
+    <ResetStyle />
+    <GlobalStyle />
+    <IssueItem {...args} />
+  </div>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  status: "open",
+  status: 'open',
 };
+

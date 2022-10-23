@@ -1,4 +1,4 @@
-import { IssueData } from '../../components/NewIssue/fakeData/getAnIssue';
+import { IssueData } from '../../components/IssuePage/fakeData/getAnIssue';
 import { Comments } from '../../utils/type/commentsType';
 import { labelApi, LabelsList } from './labelApi';
 
@@ -112,9 +112,6 @@ type query = {
   issue_number?: number;
 };
 
-type getListAssignees = {
-  token?: string | null;
-};
 export interface postbody {
   title?: string;
   body?: string;
@@ -149,7 +146,6 @@ const issueApi = labelApi.injectEndpoints({
             Authorization: `Bearer ${query.token}`,
             'if-none-match': '',
           },
-          cache: 'no-cache',
         };
       },
       providesTags: ['Issues'],
@@ -162,7 +158,6 @@ const issueApi = labelApi.injectEndpoints({
             Authorization: `Bearer ${query.token}`,
             'if-none-match': '',
           },
-          cache: 'no-cache',
         };
       },
       providesTags: ['Issues'],
@@ -175,7 +170,6 @@ const issueApi = labelApi.injectEndpoints({
             Authorization: `Bearer ${query.token}`,
             'if-none-match': '',
           },
-          cache: 'no-cache',
         };
       },
       providesTags: ['Issues'],
@@ -188,7 +182,6 @@ const issueApi = labelApi.injectEndpoints({
             Authorization: `Bearer ${token}`,
             'if-none-match': '',
           },
-          cache: 'no-cache',
         };
       },
       providesTags: ['Issues'],
@@ -201,7 +194,6 @@ const issueApi = labelApi.injectEndpoints({
             Authorization: `Bearer ${token}`,
             'if-none-match': '',
           },
-          cache: 'no-cache',
         };
       },
       providesTags: ['Issues'],
@@ -214,7 +206,7 @@ const issueApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          cache: 'no-cache',
+
           body,
         };
       },
@@ -228,7 +220,7 @@ const issueApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          cache: 'no-cache',
+
           body,
         };
       },
@@ -247,7 +239,7 @@ const issueApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          cache: 'no-cache',
+
           body: querybody,
         };
       },
@@ -266,7 +258,7 @@ const issueApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          cache: 'no-cache',
+
           body: querybody,
         };
       },
@@ -285,7 +277,7 @@ const issueApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          cache: 'no-cache',
+
           body: querybody,
         };
       },
@@ -299,7 +291,7 @@ const issueApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          cache: 'no-cache',
+
           body: { body },
         };
       },
@@ -313,7 +305,6 @@ const issueApi = labelApi.injectEndpoints({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          cache: 'no-cache',
         };
       },
       invalidatesTags: [{ type: 'Issues' }],
@@ -327,7 +318,6 @@ const issueApi = labelApi.injectEndpoints({
             Authorization: `Bearer ${token}`,
           },
           body: { body },
-          cache: 'no-cache',
         };
       },
       invalidatesTags: [{ type: 'Issues' }],

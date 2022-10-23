@@ -1,8 +1,7 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import DoubleButton from '../components/button/DoubleButton';
 import { CodeIcon } from '@primer/octicons-react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import '../../.storybook/stories.css';
+import DoubleButton from '../components/Button/DoubleButton';
 
 export default {
   title: 'GithubIssue/DoubleButton',

@@ -108,6 +108,7 @@
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "prop-types": "^15.8.1",
+    "react-image-webp": "^0.8.0",
     "tailwindcss": "^3.1.8",
     "typescript": "^4.8.3",
     "webpack": "^5.74.0"

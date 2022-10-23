@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { editAssignee, editLabel } from '../../feature/issueSlice/issueSlice';
 import { User } from '../../sevices/api/issueApi';
 import { LabelsList } from '../../sevices/api/labelApi';
+import { editAssignee, editLabel } from '../../slices/issueSlice/issueSlice';
 import MarkdownItem from './MarkdownItem';
 import MenuItem from './MenuItem';
 

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSessionStorage } from 'usehooks-ts';
 import { useAppDispatch } from '../../app/hooks';
-import { chooseRepo } from '../../feature/userSlice/userSlice';
+import { chooseRepo } from '../../slices/userSlice/userSlice';
 
 type RepoItemProps = {
   name: string;

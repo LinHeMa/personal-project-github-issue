@@ -1,5 +1,4 @@
 import { TriangleDownIcon } from '@primer/octicons-react';
-import React from 'react';
 import styled from 'styled-components';
 import { ButtonProps } from './Button';
 

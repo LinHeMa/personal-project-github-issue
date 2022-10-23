@@ -1,7 +1,6 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import SearchBar from '../components/SearchBar';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import '../../.storybook/stories.css';
+import SearchBar from '../components/Header/SearchBar';
 
 export default {
   title: 'GithubIssue/SearchBar',

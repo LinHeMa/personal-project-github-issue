@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { useAppSelector } from '../../app/hooks';
-import { supabase } from '../../supabase/client';
+import _ from 'lodash';
 
 export type LabelsList = {
   id: number;
@@ -55,57 +54,54 @@ export function addLightOrDark(data: LabelsList[]) {
   });
   return result;
 }
+
 export const labelApi = createApi({
   reducerPath: 'labelApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.github.com',
+    prepareHeaders: (headers) => {
+      const token = _.get(
+        JSON.parse(localStorage.getItem('supabase.auth.token')!),
+        ['currentSession', 'provider_token'],
+      );
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      headers.set('if-none-match', '');
+
+      return headers;
+    },
   }),
-  tagTypes: ['Labels', 'Issues','Users'],
+  tagTypes: ['Labels', 'Issues', 'Users'],
   endpoints: (build) => ({
     getLabelList: build.query<LabelsList[], QueryParams>({
-      query: ({ name, repo, token }) => {
+      query: ({ name, repo }) => {
         return {
           url: `/repos/${name}/${repo}/labels`,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          cache: 'no-cache',
         };
       },
       providesTags: ['Labels'],
       transformResponse: (response: LabelsList[]) => addLightOrDark(response),
     }),
     addLabelList: build.mutation<LabelsList, QueryParams>({
-      query: ({ name, repo, postBody, token }) => ({
+      query: ({ name, repo, postBody }) => ({
         url: `/repos/${name}/${repo}/labels`,
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        cache: 'no-cache',
         body: postBody,
       }),
       invalidatesTags: ['Labels'],
     }),
     updateLabelList: build.mutation<LabelsList, QueryParams>({
-      query: ({ name, repo, lableName, updateBody, token }) => ({
+      query: ({ name, repo, lableName, updateBody }) => ({
         url: `/repos/${name}/${repo}/labels/${lableName}`,
         method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        cache: 'no-cache',
         body: updateBody,
       }),
       invalidatesTags: ['Labels'],
     }),
     deleteLabelList: build.mutation<LabelsList, QueryParams>({
-      query: ({ name, repo, lableName, token }) => ({
+      query: ({ name, repo, lableName }) => ({
         url: `/repos/${name}/${repo}/labels/${lableName}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        cache: 'no-cache',
         method: 'DELETE',
       }),
       invalidatesTags: ['Labels'],

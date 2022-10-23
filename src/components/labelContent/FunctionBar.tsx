@@ -1,8 +1,14 @@
 import { MilestoneIcon, SearchIcon, TagIcon } from '@primer/octicons-react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import BiFunctionButton from '../button/BiFunctionButton';
-import Button from '../button/Button';
+import { useAppDispatch } from '../../app/hooks';
+import { LabelsList } from '../../sevices/api/labelApi';
+import {
+  initializeLabelList,
+  searchLables
+} from '../../slices/labelSlice/LabelList';
+import BiFunctionButton from '../Button/BiFunctionButton';
+import Button from '../Button/Button';
 import ContentItem from './ContentItem';
 
 const Wrapper = styled.div`
@@ -76,22 +82,38 @@ const CreateWrapper = styled.div`
   margin-top: 24px;
 `;
 
-const FunctionBar = () => {
-  const [isCreating, setIsCreating] = useState(false);
+type FunctionBarProps = {
+  data?: LabelsList[];
+};
 
+const FunctionBar = ({ data }: FunctionBarProps) => {
+  const [isCreating, setIsCreating] = useState(false);
+  const [searchParams, setSearchParams] = useState('');
+  const dispatch = useAppDispatch();
   return (
     <Wrapper>
       <DoubleBtn>
         <BiFunctionButton
-          icon={<Tag />}
+          iconLeft={<Tag />}
           iconRight={<MileStone />}
-          text='Labels'
+          textLeft='Labels'
           textRight='Milestones'
+          numberLeft={0}
+          numberRight={0}
         />
       </DoubleBtn>
       <SearchWrapper>
         <Icon />
-        <SearchBar placeholder='Search all labels' />
+        <SearchBar
+          value={searchParams}
+          onChange={(e) => {
+            setSearchParams(e.target.value);
+            if (e.target.value === '')
+              return dispatch(initializeLabelList(data!));
+            dispatch(searchLables(e.target.value));
+          }}
+          placeholder='Search all labels'
+        />
       </SearchWrapper>
 
       <NewLabelWrapper onClick={() => setIsCreating((prev) => !prev)}>
@@ -100,7 +122,7 @@ const FunctionBar = () => {
           hasDropDown={false}
           bgColor='#2da44e'
           color='#ffffff'
-          hoverColor='#2c974b;'
+          hoverBgColor='#2c974b;'
           fontSize='14px'
         />
       </NewLabelWrapper>

@@ -1,9 +1,8 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Header from '../components/Header';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
+import Header from '../components/Header/Header';
 
 export default {
   title: 'GithubIssue/Header',

@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { labelApi } from '../sevices/api/labelApi';
-import labelListActionReducer from '../feature/labelSlice/LabelListActionSlice';
-import userInfoReducer from '../feature/userSlice/userSlice';
-import createIssueReducer from '../feature/issueSlice/issueSlice';
-import updateIssueReducer from '../feature/issueSlice/updateIssueSlice';
+import createIssueReducer from '../slices/issueSlice/issueSlice';
+import updateIssueReducer from '../slices/issueSlice/updateIssueSlice';
+import labelListReducer from '../slices/labelSlice/LabelList';
+import labelListActionReducer from '../slices/labelSlice/LabelListActionSlice';
+import userInfoReducer from '../slices/userSlice/userSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,7 @@ export const store = configureStore({
     userInfoAction: userInfoReducer,
     createIssueAction: createIssueReducer,
     updateIssueAction: updateIssueReducer,
-
+    labelListDataAction: labelListReducer,
     // Api
     [labelApi.reducerPath]: labelApi.reducer,
   },
